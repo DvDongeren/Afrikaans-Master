@@ -103,10 +103,18 @@ jobs:
             exit 0
           fi
           printf '%s' "$SA" > "$RUNNER_TEMP/sa.json"
-          PROJECT=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['project_id'])" "$RUNNER_TEMP/sa.json")
+          # Project: variabele FIREBASE_PROJECT (Settings > Secrets and variables > Actions > Variables), anders het project van de sleutel.
+          PROJECT="${{ vars.FIREBASE_PROJECT }}"
+          [ -n "$PROJECT" ] || PROJECT=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['project_id'])" "$RUNNER_TEMP/sa.json")
           export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json"
-          npx --yes firebase-tools@14 deploy --only hosting,firestore:rules --project "$PROJECT" --non-interactive --message "GitHub ${GITHUB_SHA::7}"
+          set +e
+          npx --yes firebase-tools@14 deploy --only hosting,firestore:rules --project "$PROJECT" --non-interactive --message "GitHub ${GITHUB_SHA::7}" 2>&1 | tee "$RUNNER_TEMP/deploy.log"
+          rc=${PIPESTATUS[0]}
           rm -f "$RUNNER_TEMP/sa.json"
+          if grep -q "Failed to get Firebase project" "$RUNNER_TEMP/deploy.log"; then
+            echo "::error::Project '$PROJECT' is geen Firebase-project of de sleutel mag er niet bij. Maak de sleutel aan in het Firebase-project zelf (Projectinstellingen > Serviceaccounts) of zet de variabele FIREBASE_PROJECT. Zie README.md."
+          fi
+          exit $rc
 
   # Voorbeeldversie op GitHub Pages (zonder inloggen, niet vindbaar in zoekmachines).
   # Vereist eenmalig: Settings > Pages > Source: GitHub Actions.

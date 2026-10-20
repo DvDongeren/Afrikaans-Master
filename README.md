@@ -57,7 +57,9 @@ Eenmalig instellen kost ongeveer een half uur en gaat helemaal via de browser.
 GitHub heeft een sleutel nodig waarmee het (alleen) op dit Firebase-project mag publiceren.
 
 1. Ga naar https://console.cloud.google.com/iam-admin/serviceaccounts en kies bovenaan je
-   Firebase-project.
+   Firebase-project. **Let op:** Google Cloud opent vaak een ander project (met een naam als
+   *My First Project* en een ID als `nth-plexus-123456`). Kies het project met dezelfde ID als
+   in de Firebase-console (Projectinstellingen > Project-ID).
 2. Klik **Create service account**. Naam: `github-publiceren`. Klik **Create and continue**.
 3. Geef deze rollen (zoek ze op naam en klik telkens **Add another role**):
    - **Firebase Hosting Admin**
@@ -77,6 +79,12 @@ GitHub heeft een sleutel nodig waarmee het (alleen) op dit Firebase-project mag 
 
 **Controle:** in Authentication > Settings > **Authorized domains** moeten je adressen
 (`…web.app` en `…firebaseapp.com`) staan. Meestal staan ze er al.
+
+**Mislukt het publiceren met "Failed to get Firebase project …"?** Dan hoort de sleutel bij een
+Google Cloud-project waar Firebase niet aan hangt. Maak de sleutel opnieuw aan in het juiste project
+(stap 1) en vervang het geheim. Gebruik je bewust één sleutel voor een ander project, zet dan bij
+**Settings > Secrets and variables > Actions > Variables** de variabele `FIREBASE_PROJECT` op de
+project-ID van Firebase.
 
 **Mislukt het publiceren met "permission denied"?** Voeg de rol toe die in de foutmelding
 genoemd wordt (IAM > je service account > potloodje), of als het snel moet de rol **Firebase Admin**.
