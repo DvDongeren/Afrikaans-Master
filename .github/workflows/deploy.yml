@@ -42,9 +42,11 @@ jobs:
           key: audio-${{ hashFiles('bron/data.json', 'bron/tools/uitspraak.py') }}
           restore-keys: audio-
 
+      # Staat uit. Aanzetten: variabele UITSPRAAK = aan (Settings > Secrets and variables > Actions > Variables),
+      # plus Text-to-Speech API en facturering in Google Cloud. Zonder bestanden gebruikt de app de stem van het toestel.
       - name: Uitspraak maken (Google Text-to-Speech)
         id: audio
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && vars.UITSPRAAK == 'aan'
         env:
           SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
@@ -110,7 +112,10 @@ jobs:
           set +e
           npx --yes firebase-tools@14 deploy --only hosting,firestore:rules --project "$PROJECT" --non-interactive --message "GitHub ${GITHUB_SHA::7}" 2>&1 | tee "$RUNNER_TEMP/deploy.log"
           rc=${PIPESTATUS[0]}
-          if [ "$rc" != 0 ]; then python3 bron/tools/firebase_check.py "$PROJECT" || true; fi
+          if [ "$rc" != 0 ]; then
+            grep -iE "error|denied|permission|missing|required|enable" "$RUNNER_TEMP/deploy.log" | grep -v "^\s*$" | tail -6 | while IFS= read -r l; do echo "::error::${l:0:400}"; done
+            python3 bron/tools/firebase_check.py "$PROJECT" || true
+          fi
           rm -f "$RUNNER_TEMP/sa.json"
           if grep -q "Failed to get Firebase project" "$RUNNER_TEMP/deploy.log"; then
             echo "::error::Project '$PROJECT' is geen Firebase-project of de sleutel mag er niet bij. Maak de sleutel aan in het Firebase-project zelf (Projectinstellingen > Serviceaccounts) of zet de variabele FIREBASE_PROJECT. Zie README.md."
