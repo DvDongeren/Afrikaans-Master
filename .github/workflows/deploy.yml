@@ -110,6 +110,7 @@ jobs:
           set +e
           npx --yes firebase-tools@14 deploy --only hosting,firestore:rules --project "$PROJECT" --non-interactive --message "GitHub ${GITHUB_SHA::7}" 2>&1 | tee "$RUNNER_TEMP/deploy.log"
           rc=${PIPESTATUS[0]}
+          if [ "$rc" != 0 ]; then python3 bron/tools/firebase_check.py "$PROJECT" || true; fi
           rm -f "$RUNNER_TEMP/sa.json"
           if grep -q "Failed to get Firebase project" "$RUNNER_TEMP/deploy.log"; then
             echo "::error::Project '$PROJECT' is geen Firebase-project of de sleutel mag er niet bij. Maak de sleutel aan in het Firebase-project zelf (Projectinstellingen > Serviceaccounts) of zet de variabele FIREBASE_PROJECT. Zie README.md."
