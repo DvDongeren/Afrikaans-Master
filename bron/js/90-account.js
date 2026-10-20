@@ -45,6 +45,7 @@ function cleanState(o){if(!o||typeof o!=='object'||Array.isArray(o))return null;
  r.theme=['auto','light','dark'].includes(o.theme)?o.theme:d.theme;r.goal=[10,15,25,40].includes(o.goal)?o.goal:d.goal;r.rate=[0.7,0.85,1].includes(o.rate)?o.rate:d.rate;
  r.startLv=['','Beginner','Intermediate','Advanced'].includes(o.startLv)?o.startLv:'';r.games={};if(obj(o.games))for(const k of['mem','race'])if(num(o.games[k])&&o.games[k]>=0&&o.games[k]<1e4)r.games[k]=o.games[k]|0;
  r.fs=['n','l','xl'].includes(o.fs)?o.fs:'n';
+ r.ms={};if(obj(o.ms))for(const[k,v]of Object.entries(o.ms).slice(0,1000))if(/^(_|[a-zA-Z0-9]{1,20}:\d{1,2})$/.test(k)&&num(v))r.ms[k]=v;
  for(const k of['typed','lvDone','haptic','instHide','read'])r[k]=typeof o[k]==='boolean'?o[k]:d[k];
  r.lp=str(o.lp,60)?o.lp:'';for(const k of['mt','resetAt','cloud'])if(num(o[k]))r[k]=o[k];return Object.assign(d,r)}
 function mergeState(a,b){
@@ -60,6 +61,7 @@ function mergeState(a,b){
  const own=new Map(),used=new Set();for(const x of[...(b.own||[]),...(a.own||[])]){const key=x.id+'|'+x.af;if(own.has(key))continue;let c={...x};if(used.has(c.id))c.id=-Date.now()-own.size-1;used.add(c.id);own.set(key,c)}o.own=[...own.values()];
  const rp=new Map();for(const r of[...(b.reports||[]),...(a.reports||[])])rp.set(r.id+'|'+r.t,r);o.reports=[...rp.values()];
  const ga=a.games||{},gb=b.games||{};o.games={};if(ga.race!=null||gb.race!=null)o.games.race=Math.max(ga.race??0,gb.race??0);if(ga.mem!=null||gb.mem!=null)o.games.mem=Math.min(ga.mem??1e4,gb.mem??1e4);
+ o.ms={...(b.ms||{})};for(const[k,v]of Object.entries(a.ms||{}))o.ms[k]=o.ms[k]?Math.min(o.ms[k],v):v;
  o.theme=a.theme;o.rate=a.rate;o.haptic=a.haptic;o.fs=a.fs||'n';o.read=!!a.read;o.instHide=a.instHide||b.instHide;
  o.mt=Math.max(a.mt||0,b.mt||0);o.cloud=1;return o}
 function applyState(n){S=n;for(let i=CARDS.length-1;i>=0;i--)if(CARDS[i].own)CARDS.splice(i,1);for(const o of S.own)CARDS.push(ownCard(o));resetCards();theme();

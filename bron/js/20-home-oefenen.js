@@ -12,7 +12,7 @@ V.home=()=>{const h=new Date().getHours(),hi=h<12?['Goeiemôre','Goedemorgen']:h
  <div class="quick" style="margin-top:12px"><button data-a="quiz">${I.quiz}Quiz</button><button data-a="dlgs">${I.dlg}Dialogen</button><button data-a="stories">${I.story}Verhalen</button></div>
  ${!S.lvDone&&Object.keys(S.srs).length<30?`<div class="card stack" style="margin-top:12px"><h2>Wat is je niveau?</h2><p class="muted">Doe de niveautoets van 12 vragen. Daarna start je sessie op jouw niveau.</p><div class="row"><button class="btn ghost" data-lvskip="1">Niet nu</button><button class="btn" data-a="toets">Start toets</button></div></div>`:''}
  ${installBox(true)}
- ${cont}</div><div class="col">
+ ${cont}${(()=>{const nx=msNext();return nx?`<div class="sec">Volgende mijlpaal</div><button class="card ms home-ms" data-a="mijlpalen" style="width:100%;text-align:left"><div class="row" style="gap:10px"><span class="msmedal ${nx.n?'t'+Math.min(nx.n-1,8):'off'}">${I[nx.f.ic]||I.medal}</span><span class="grow"><h2>${esc(nx.next.name)}</h2><span class="muted small">${esc(nx.f.t)}</span></span></div>${msBar(nx)}</button>`:''})()}</div><div class="col">
  <div class="sec">Woord van de dag</div>
  <div class="card entry"><div class="row sp"><div class="grow"><div class="af">${esc(wc.af)}</div><div class="nl">${esc(wc.nl)}</div></div>${spk(wc.af)}</div>${wc.voorbeeld?`<p class="ex">${esc(wc.voorbeeld)}</p>`:''}</div>
  <div class="sec">Weetje van de dag</div>

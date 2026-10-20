@@ -57,7 +57,7 @@ const LVN=[0,1,2],GOT=new Set();let ALLP=null;
 function addLevel(i){if(GOT.has(i))return;GOT.add(i);const own=CARDS.filter(c=>c.own);CARDS=CARDS.filter(c=>!c.own).concat(parseCards(D['cards'+i],META)).concat(own);resetCards()}
 /* Kaarten die bij een taalcontrole zijn geschrapt, verdwijnen ook uit de voortgang (anders blijven ze als 'te herhalen' staan). */
 function pruneGone(){const m=byId();let n=0;for(const k in S.srs)if(+k>0&&!m.has(+k)){delete S.srs[k];n++}const f=S.favs.filter(x=>x<0||m.has(x));if(f.length!==S.favs.length){S.favs=f;n++}if(n)save()}
-const allCards=()=>ALLP||(ALLP=Promise.all(LVN.map(i=>load('cards'+i).then(()=>addLevel(i)))).then(()=>{pruneGone();if(['home','meer'].includes(view))render()}).catch(e=>{ALLP=null;throw e}));
+const allCards=()=>ALLP||(ALLP=Promise.all(LVN.map(i=>load('cards'+i).then(()=>addLevel(i)))).then(()=>{pruneGone();try{checkMs()}catch{}if(['home','meer'].includes(view))render()}).catch(e=>{ALLP=null;throw e}));
 const NEEDALL=v=>!['home','paden','dlgs','dlg','gram','les','media','klank','cult','reis','vv','stories','story','beheer'].includes(v);
 async function boot(){try{let m=null;try{m=JSON.parse(app.dataset.meta||'null')}catch{}if(!m)m=await load('meta');META=m;N=m.n||{};const first=[...new Set([0,rank[S.startLv]||0])];
  await Promise.all(first.map(i=>load('cards'+i)));first.forEach(addLevel);for(const o of S.own)CARDS.push(ownCard(o));resetCards();

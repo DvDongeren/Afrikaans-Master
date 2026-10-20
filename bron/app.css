@@ -394,3 +394,25 @@ nav{view-transition-name:hoofdmenu}
 .ti.h-af,.topic.h-af .ti{background:var(--afs);color:var(--af)}
 .ti.h-nl,.topic.h-nl .ti{background:color-mix(in srgb,var(--nl) 14%,transparent);color:var(--nl)}
 .ti.h-gold,.topic.h-gold .ti{background:var(--golds);color:var(--goldi)}
+/* mijlpalen */
+.ms h2{margin:0;font-size:1.02rem}
+.ms .ibar{margin-top:10px}
+.ms p.small{margin:6px 0 0}
+.ms-grid{display:grid;gap:12px}
+@media (min-width:760px){.ms-grid{grid-template-columns:1fr 1fr}}
+.msmedal{display:grid;place-items:center;flex:none;width:40px;height:40px;border-radius:50%;color:#fff;background:var(--t,#9aa59f);box-shadow:inset 0 -3px 0 rgba(0,0,0,.18),0 2px 6px rgba(0,0,0,.12)}
+.msmedal svg{width:21px;height:21px}
+.msmedal.off{background:var(--sunk);color:var(--muted,#7a857f);box-shadow:none}
+.msdots{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.msdots i{width:14px;height:14px;border-radius:50%;background:var(--sunk);box-shadow:inset 0 0 0 1.5px var(--hair)}
+.msdots i.on{background:var(--t);box-shadow:none}
+.msmini{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--t);margin-right:2px}
+.t0{--t:#b7773f}.t1{--t:#9aa6ad}.t2{--t:#d6a419}.t3{--t:#1f9a63}.t4{--t:#2f6fd0}.t5{--t:#c23b4b}.t6{--t:#47b6d6}.t7{--t:#7b4bd1}.t8{--t:#e2683c}
+.home-ms .ibar{margin-top:12px}
+#mstoast{position:fixed;left:16px;right:16px;bottom:calc(84px + env(safe-area-inset-bottom));max-width:420px;margin:0 auto;z-index:41;display:flex;align-items:center;gap:12px;background:var(--btn);color:var(--btni);padding:12px 14px;border-radius:18px;box-shadow:0 12px 32px rgba(0,0,0,.28);animation:mspop .45s cubic-bezier(.2,1.4,.4,1)}
+#mstoast .grow{display:flex;flex-direction:column;min-width:0}
+#mstoast .grow span{opacity:.85;font-size:.9rem}
+#mstoast .chip.on{background:var(--gold);color:#14201a}
+#mstoast.out{opacity:0;transform:translateY(10px);transition:.35s}
+@keyframes mspop{from{opacity:0;transform:translateY(16px) scale(.92)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#mstoast{animation:none}#mstoast.out{transition:none}}

@@ -35,12 +35,13 @@ function wordOfDay(){const P=CARDS.filter(c=>c.niveau==='Beginner'&&!c.own).sort
 
 /* ---------- opslag: gebundeld schrijven, altijd wegschrijven bij verlaten ---------- */
 const KEY='af2';
-const DEF=()=>({srs:{},favs:[],streak:0,last:'',days:{},theme:'auto',goal:15,paths:{},dlg:{},les:{},lp:'',typed:false,stories:{},own:[],reports:[],rate:1,startLv:'',lvDone:false,haptic:true,games:{},instHide:false,fs:'n',read:false});
+const DEF=()=>({srs:{},favs:[],streak:0,last:'',days:{},theme:'auto',goal:15,paths:{},dlg:{},les:{},lp:'',typed:false,stories:{},own:[],reports:[],rate:1,startLv:'',lvDone:false,haptic:true,games:{},instHide:false,fs:'n',read:false,ms:{}});
 let S=DEF();try{Object.assign(S,JSON.parse(localStorage.getItem(KEY))||{})}catch{}
 const ownCard=o=>({id:o.id,niveau:'Beginner',categorie:'Eigen kaarten',nl:o.nl,af:o.af,voorbeeld:o.vb||'',tips:'',own:1});
 let saveT=0;
-const saveNow=()=>{clearTimeout(saveT);saveT=0;S.mt=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch{}if(cloud.user)schedulePush()};
+const saveNow=()=>{clearTimeout(saveT);saveT=0;msSoon();S.mt=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch{}if(cloud.user)schedulePush()};
 const save=()=>{if(!saveT)saveT=setTimeout(saveNow,400)};
+let msT=0;const msSoon=()=>{if(!msT&&typeof checkMs==='function'&&CARDS.length)msT=setTimeout(()=>{msT=0;try{checkMs()}catch{}},250)};
 addEventListener('pagehide',saveNow);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')saveNow()});
 

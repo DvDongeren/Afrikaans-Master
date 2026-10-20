@@ -5,13 +5,13 @@ let view='home',st={};
 const NAV=[['home','Home',I.home],['oef','Oefen',I.oef],['paden','Paden',I.pad],['kaart','Kaarten',I.kaart],['zoek','Zoeken',I.search],['meer','Meer',I.meer]];
 const navEl=document.getElementById('nav');
 navEl.innerHTML=NAV.map(([k,l,i])=>`<button data-v="${k}" ${k==='zoek'?'class="desk"':''}>${i}<span>${l}</span></button>`).join('');
-const PARENT={sess:'oef',quiz:'oef',dlgs:'oef',dlg:'oef',gram:'oef',les:'oef',mc:'oef',zin:'oef',reis:'oef',cult:'oef',media:'oef',klank:'oef',vertaal:'oef',print:'kaart',spel:'oef',mem:'oef',race:'oef',inzicht:'meer',beheer:'meer',vv:'oef',stories:'oef',story:'oef',path:'paden',luister:'oef',weak:'oef',toets:'home',own:'kaart',zoek:'zoek'};
+const PARENT={sess:'oef',quiz:'oef',dlgs:'oef',dlg:'oef',gram:'oef',les:'oef',mc:'oef',zin:'oef',reis:'oef',cult:'oef',media:'oef',klank:'oef',vertaal:'oef',print:'kaart',spel:'oef',mem:'oef',race:'oef',inzicht:'meer',beheer:'meer',mijlpalen:'meer',vv:'oef',stories:'oef',story:'oef',path:'paden',luister:'oef',weak:'oef',toets:'home',own:'kaart',zoek:'zoek'};
 function setNav(){const cur=st&&st.ret?'paden':PARENT[view]||view;for(const b of navEl.children){const on=b.dataset.v===cur;b.classList.toggle('on',on);on?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')}}
 const motionOk=()=>!navigator.webdriver&&!(matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
 function go(v,s){const run=()=>{view=v;st=s||{};render();scrollTo(0,0)};if(document.startViewTransition&&motionOk()&&v!==view)document.startViewTransition(run);else run()}
 const V={};
-const WIDE=new Set(['home','oef','kaart','paden','zoek','vv','gram','dlgs','stories','cult','reis','path','media','klank']);
-const DEPS={home:['facts','paths'],paden:['paths'],path:['paths','les','dlg'],dlgs:['dlg'],dlg:['dlg'],gram:['les'],les:['les'],mc:['ext','vv'],zin:['ext'],reis:['ext'],cult:['ext','facts'],media:['media'],klank:['ext'],vertaal:['ext','dlg','vv'],vv:['vv'],stories:['vv'],story:['vv'],luister:['ext','dlg'],zoek:['dlg','vv','les','ext','paths','media'],meer:['paths']};
+const WIDE=new Set(['home','mijlpalen','oef','kaart','paden','zoek','vv','gram','dlgs','stories','cult','reis','path','media','klank']);
+const DEPS={home:['facts','paths'],paden:['paths'],path:['paths','les','dlg'],dlgs:['dlg'],dlg:['dlg'],gram:['les'],les:['les'],mc:['ext','vv'],zin:['ext'],reis:['ext'],cult:['ext','facts'],media:['media'],klank:['ext'],vertaal:['ext','dlg','vv'],vv:['vv'],stories:['vv'],story:['vv'],luister:['ext','dlg'],zoek:['dlg','vv','les','ext','paths','media'],meer:['paths'],mijlpalen:['paths','les']};
 function render(){setNav();app.className=WIDE.has(view)?'wide':'focus';const need=(DEPS[view]||[]).filter(n=>!D[n]);
  if(NEEDALL(view)&&GOT.size<3){const v=view,s0=st;app.innerHTML='<p class="loading" role="status">Laden…</p>';allCards().then(()=>{if(view===v&&st===s0)render()},loadError);return}
  if(need.length){const v=view,s0=st;app.innerHTML='<p class="loading" role="status">Laden…</p>';Promise.all(need.map(load)).then(()=>{if(view===v&&st===s0)render()},loadError);return}
