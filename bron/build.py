@@ -11,6 +11,8 @@ de naam vanzelf en haalt iedereen de nieuwe versie op.
 import base64, datetime, hashlib, json, os, re, shutil, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+BASE = os.environ.get('SITE_BASE', '/').rstrip('/') + '/'  # bijv. /Afrikaans-Master/ voor GitHub Pages
+PREVIEW = os.environ.get('PREVIEW') == '1'      # voorbeeldversie: inloggen uit, niet indexeren
 OUT = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, '..', 'public'))
 src = lambda *p: os.path.join(HERE, *p)
 read = lambda p: open(src(p), encoding='utf-8').read()
@@ -27,10 +29,10 @@ def emit(folder, name, ext, data):
     if isinstance(data, str):
         data = data.encode('utf-8')
     h = hashlib.sha256(data).hexdigest()[:10]
-    rel = f'/{folder}/{name}.{h}.{ext}'
-    with open(OUT + rel, 'wb') as f:
+    rel = f'{folder}/{name}.{h}.{ext}'
+    with open(os.path.join(OUT, rel), 'wb') as f:
         f.write(data)
-    return rel
+    return BASE + rel
 
 # ---------- data ----------
 d = json.load(open(src('data.json'), encoding='utf-8'))
@@ -86,12 +88,12 @@ for fn in os.listdir(src('icons')):
 manifest = {
     'name': 'Afrikaans Master', 'short_name': 'Afrikaans', 'lang': 'nl', 'dir': 'ltr',
     'description': 'Leer Afrikaans vanuit het Nederlands.',
-    'start_url': '/', 'scope': '/', 'id': '/', 'display': 'standalone',
+    'start_url': BASE, 'scope': BASE, 'id': BASE, 'display': 'standalone',
     'background_color': '#eef1ec', 'theme_color': '#14603f',
     'icons': [
-        {'src': '/icons/icon-192.png', 'sizes': '192x192', 'type': 'image/png'},
-        {'src': '/icons/icon-512.png', 'sizes': '512x512', 'type': 'image/png'},
-        {'src': '/icons/icon-maskable-512.png', 'sizes': '512x512', 'type': 'image/png', 'purpose': 'maskable'},
+        {'src': BASE + 'icons/icon-192.png', 'sizes': '192x192', 'type': 'image/png'},
+        {'src': BASE + 'icons/icon-512.png', 'sizes': '512x512', 'type': 'image/png'},
+        {'src': BASE + 'icons/icon-maskable-512.png', 'sizes': '512x512', 'type': 'image/png', 'purpose': 'maskable'},
     ],
 }
 open(os.path.join(OUT, 'manifest.webmanifest'), 'w', encoding='utf-8').write(j(manifest))
@@ -103,9 +105,9 @@ head = f'''<meta charset="utf-8">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#eef1ec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0b110e" media="(prefers-color-scheme: dark)">
-<link rel="icon" type="image/svg+xml" href="/icons/favicon.svg">
-<link rel="apple-touch-icon" href="/icons/apple-180.png">
-<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="{BASE}icons/favicon.svg">
+<link rel="apple-touch-icon" href="{BASE}icons/apple-180.png">
+<link rel="manifest" href="{BASE}manifest.webmanifest">
 <script src="{BOOT}"></script>
 <link rel="preload" href="{fonts['lora-600'][2]}" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="{CSS}">'''
@@ -115,7 +117,7 @@ index = f'''<!doctype html>
 {head}
 <title>Afrikaans Master – leer Afrikaans vanuit het Nederlands</title>
 <meta name="description" content="Gratis Afrikaans leren vanuit het Nederlands: woordkaarten, grammatica, dialogen, verhaaltjes, luisteroefeningen en leerpaden. Werkt ook offline.">
-<meta name="apple-mobile-web-app-title" content="Afrikaans Master">
+<meta name="apple-mobile-web-app-title" content="Afrikaans Master">{'<meta name="robots" content="noindex">' if PREVIEW else ''}
 <meta property="og:title" content="Afrikaans Master">
 <meta property="og:description" content="Leer Afrikaans vanuit het Nederlands: kaarten, grammatica, dialogen en verhaaltjes.">
 <meta property="og:type" content="website">
@@ -134,17 +136,19 @@ open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(index)
 
 today = datetime.date.today().strftime('%d-%m-%Y')
 for page in ('privacy.html', '404.html'):
-    t = read(page).replace('__BOOT__', BOOT).replace('__CSS__', CSS).replace('__DATUM__', today)
+    t = read(page).replace('__BOOT__', BOOT).replace('__CSS__', CSS).replace('__DATUM__', today).replace('__BASE__', BASE)
     open(os.path.join(OUT, page), 'w', encoding='utf-8').write(t)
 
-open(os.path.join(OUT, 'robots.txt'), 'w').write('User-agent: *\nAllow: /\n')
+open(os.path.join(OUT, 'robots.txt'), 'w').write('User-agent: *\n' + ('Disallow: /\n' if PREVIEW else 'Allow: /\n'))
 cfg = json.load(open(src('config.json'), encoding='utf-8'))  # controleert meteen of het geldige JSON is
+if PREVIEW:
+    cfg = {'firebase': None, 'appCheckSiteKey': ''}
 assert set(cfg) <= {'firebase', 'appCheckSiteKey'}, 'onbekende sleutel in config.json'
 open(os.path.join(OUT, 'config.json'), 'w', encoding='utf-8').write(j(cfg))
 
 # ---------- headers voor andere hosts (Netlify, Cloudflare Pages) ----------
 fbj = os.path.join(HERE, '..', 'firebase.json')
-if os.path.exists(fbj):
+if os.path.exists(fbj) and BASE == '/':
     hs = json.load(open(fbj, encoding='utf-8'))['hosting']['headers']
     find = lambda src_: next(h['headers'] for h in hs if h['source'] == src_)
     block = lambda path, kv: path + '\n' + ''.join(f"  {x['key']}: {x['value']}\n" for x in kv)
@@ -156,10 +160,10 @@ if os.path.exists(fbj):
     open(os.path.join(OUT, '_headers'), 'w', encoding='utf-8').write('\n'.join(parts))
 
 # ---------- service worker ----------
-precache = ['/', '/privacy.html', '/manifest.webmanifest', '/icons/favicon.svg', '/icons/icon-192.png',
+precache = [BASE + p_ for p_ in ('', 'privacy.html', 'manifest.webmanifest', 'icons/favicon.svg', 'icons/icon-192.png')] + [
             BOOT, CSS, JS] + [p for _, _, p in fonts.values()] + list(FILES.values())
 version = hashlib.sha256(j(precache).encode() + index.encode() + read('privacy.html').encode() + read('sw.template.js').encode()).hexdigest()[:10]
-sw = read('sw.template.js').replace('__VERSION__', version).replace('__PRECACHE__', j(precache))
+sw = read('sw.template.js').replace('__VERSION__', version).replace('__BASE__', BASE).replace('__PRECACHE__', j(precache))
 open(os.path.join(OUT, 'sw.js'), 'w', encoding='utf-8').write(sw)
 
 total = sum(os.path.getsize(os.path.join(r, f)) for r, _, fs in os.walk(OUT) for f in fs)

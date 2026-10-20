@@ -61,3 +61,31 @@ jobs:
           export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json"
           npx --yes firebase-tools@14 deploy --only hosting,firestore:rules --project "$PROJECT" --non-interactive --message "GitHub ${GITHUB_SHA::7}"
           rm -f "$RUNNER_TEMP/sa.json"
+
+  # Voorbeeldversie op GitHub Pages (zonder inloggen, niet vindbaar in zoekmachines).
+  # Vereist eenmalig: Settings > Pages > Source: GitHub Actions.
+  preview:
+    needs: build-test-deploy
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Voorbeeldversie bouwen
+        run: |
+          SITE_BASE="/${GITHUB_REPOSITORY#*/}/" PREVIEW=1 python3 bron/build.py preview
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: preview
+      - id: deploy
+        uses: actions/deploy-pages@v4

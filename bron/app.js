@@ -482,7 +482,7 @@ const SDKV='12.19.0',SDK=n=>`https://www.gstatic.com/firebasejs/${SDKV}/firebase
 const cloud={avail:undefined,user:null,status:'',at:0,busy:false};
 let CFG;
 async function getCfg(){if(CFG!==undefined)return CFG;if(TESTHOOK&&window.__cloudAdapter)return CFG={fb:{}};if(!/^https?:$/.test(location.protocol))return CFG=null;
- let c={};try{const r=await fetch('/config.json',{cache:'no-store'});if(r.ok)c=await r.json()}catch{}
+ let c={};try{const r=await fetch('config.json',{cache:'no-store'});if(r.ok)c=await r.json()}catch{}
  let fb=c&&'firebase' in c?c.firebase:'auto';if(fb==='auto'){fb=null;try{const r=await fetch('/__/firebase/init.json',{cache:'no-store'});if(r.ok)fb=await r.json()}catch{}}
  return CFG=fb&&fb.apiKey?{fb,appCheck:typeof c.appCheckSiteKey==='string'?c.appCheckSiteKey.trim():''}:null}
 let FB=null;
@@ -548,7 +548,7 @@ function accountBox(){
  const u=cloud.user,st={saving:'Bezig met opslaan…',ok:'Opgeslagen'+(cloud.at?' om '+new Date(cloud.at).toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'}):''),offline:'Offline. Wordt opgeslagen zodra je weer online bent.',error:'Opslaan lukte niet. Probeer het opnieuw.'}[cloud.status]||'';
  return`<div id="acct"><div class="sec">Account</div><div class="card stack">${u?`<div class="row"><span class="avatar">${u.photo?`<img src="${esc(u.photo)}" alt="" referrerpolicy="no-referrer">`:esc((u.name||u.email||'?')[0].toUpperCase())}</span><span class="grow"><b>${esc(u.name||'Ingelogd')}</b><span class="muted" style="display:block">${esc(u.email)}</span></span></div>
  <p class="muted" role="status">${st||'Je voortgang wordt bewaard in je account.'}</p><div class="row"><button class="btn soft" id="csync" style="box-shadow:inset 0 0 0 1.5px var(--hair)">Nu opslaan</button><button class="btn ghost" id="cout">Uitloggen</button></div><button class="linkbtn" id="cdel" style="color:var(--bad)">${I.trash}Account en cloudgegevens verwijderen</button>`
- :`<p>Log in met je Google-account om je voortgang te bewaren en op andere apparaten verder te gaan.</p><button class="btn" id="cin">${I.user}Inloggen met Google</button><p class="muted small">Alleen je leervoortgang wordt opgeslagen. Niemand anders kan hem lezen. <a href="/privacy.html" style="color:var(--nl)">Privacyverklaring</a>.${cloud.loginErr?'<br><span style="color:var(--bad)">'+esc(cloud.loginErr)+'</span>':''}</p>`}</div></div>`}
+ :`<p>Log in met je Google-account om je voortgang te bewaren en op andere apparaten verder te gaan.</p><button class="btn" id="cin">${I.user}Inloggen met Google</button><p class="muted small">Alleen je leervoortgang wordt opgeslagen. Niemand anders kan hem lezen. <a href="privacy.html" style="color:var(--nl)">Privacyverklaring</a>.${cloud.loginErr?'<br><span style="color:var(--bad)">'+esc(cloud.loginErr)+'</span>':''}</p>`}</div></div>`}
 function acctRefresh(){if(view!=='meer')return;const el=$('#acct');if(!el)return;el.outerHTML=accountBox();bindAccount()}
 function bindAccount(){const i=$('#cin'),o=$('#cout'),y=$('#csync');
  if(i)i.onclick=async()=>{cloud.loginErr='';i.disabled=true;try{await startCloud();await FB.signIn()}catch(e){cloud.loginErr='Inloggen lukte niet ('+(e&&e.code||e&&e.message||'onbekende fout')+').';i.disabled=false;acctRefresh()}};
@@ -571,7 +571,7 @@ V.meer=()=>{const k=Object.values(S.srs),m=k.filter(r=>r.box>=4).length,nd=Objec
  ${S.reports.length?`<div class="sec">Meldingen (${S.reports.length})</div><div class="card stack"><p class="muted">Kaarten waarvan je zei dat er iets niet klopt. Kopieer de lijst en stuur hem naar een nakijker.</p><textarea id="rpt" readonly aria-label="Meldingen">${esc(reportText())}</textarea><div class="row"><button class="btn soft" id="rpc" style="box-shadow:inset 0 0 0 1.5px var(--hair)">Kopiëren</button><button class="btn danger" id="rpx">Wissen</button></div><p class="muted" id="rpm" role="status"></p></div>`:''}
  <div class="sec">Back-up</div><div class="card stack"><p class="muted">Kopieer je voortgang, of plak een eerdere back-up om die terug te zetten.</p><textarea id="bk" aria-label="Back-up" placeholder="Plak hier je back-up"></textarea><div class="row"><button class="btn soft" id="cp" style="box-shadow:inset 0 0 0 1.5px var(--hair)">Kopiëren</button><button class="btn ghost" id="rs">Herstel</button></div><p class="muted" id="msg" role="status"></p></div>
  <div class="sec">Oude voortgang</div><div class="card stack"><p class="muted">Eerder een oudere versie van Afrikaans Master gebruikt op dit toestel? Neem je kaartvoortgang en favorieten over.</p><button class="btn soft" id="io" style="box-shadow:inset 0 0 0 1.5px var(--hair)">Voortgang overnemen</button><p class="muted" id="iom" role="status"></p></div>
- <div class="stack" style="margin-top:22px"><button class="btn danger" id="rst">Voortgang wissen</button></div><p class="muted small" style="text-align:center;margin-top:22px"><a href="/privacy.html" style="color:var(--nl)">Privacyverklaring</a> · Afrikaans Master</p>`);
+ <div class="stack" style="margin-top:22px"><button class="btn danger" id="rst">Voortgang wissen</button></div><p class="muted small" style="text-align:center;margin-top:22px"><a href="privacy.html" style="color:var(--nl)">Privacyverklaring</a> · Afrikaans Master</p>`);
  if($('#rpc')){$('#rpc').onclick=async()=>{try{await navigator.clipboard.writeText(reportText());$('#rpm').textContent='Gekopieerd.'}catch{$('#rpt').select();$('#rpm').textContent='Selecteer en kopieer de tekst hierboven.'}};$('#rpx').onclick=()=>{if(confirm('Alle meldingen wissen?')){S.reports=[];saveNow();V.meer()}}}
  {const c=$('#cal');if(c)c.scrollLeft=c.scrollWidth}
  bindAccount();
@@ -626,7 +626,7 @@ async function boot(){try{const[m,c]=await Promise.all([load('meta'),load('cards
 boot();
 /* offline en updates */
 if('serviceWorker' in navigator&&(location.protocol==='https:'||TESTHOOK&&location.protocol==='http:')){const had=!!navigator.serviceWorker.controller;
- addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+ addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!had||document.getElementById('toast'))return;const t=document.createElement('div');t.id='toast';t.setAttribute('role','status');
   t.innerHTML='<span>Er is een nieuwe versie.</span><button class="chip on" data-reload="1">Vernieuwen</button>';document.body.appendChild(t)})}
 })();

@@ -11,6 +11,12 @@ GitHub bouwt, test en publiceert de website automatisch op Firebase Hosting.
 4. Elke run bewaart de gebouwde site als download (*Artifacts* > `website`).
 5. Terug naar een vorige versie: Firebase-console > **Hosting** > *Release history* > ⋮ > **Rollback**.
 
+## Voorbeeldversie
+Bij elke update komt ook een voorbeeldversie online op
+https://dvdongeren.github.io/Afrikaans-Master/ — handig om te kijken. Daar werkt inloggen niet,
+de extra beveiligingsheaders ontbreken en zoekmachines slaan hem over. Voor echte bezoekers
+gebruik je de Firebase-versie. (Eenmalig aanzetten: **Settings > Pages > Source: GitHub Actions**.)
+
 ## Wat zit erin
 
 | Map / bestand        | Wat het is |

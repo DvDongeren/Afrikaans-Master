@@ -16,4 +16,6 @@ De eigenaar schrijft Nederlands; antwoord in het Nederlands.
 1. Wijzig in `bron/`, draai `python3 bron/build.py` en `python3 tests/run_all.py`.
 2. Commit en push naar `main`. GitHub Actions bouwt, test en publiceert naar Firebase
    (geheim `FIREBASE_SERVICE_ACCOUNT`). Faalt een test, dan wordt er niet gepubliceerd.
-3. Afrikaanse inhoud: controleer twijfelgevallen online (bijv. DSAE, WAT) voordat je iets wijzigt.
+3. Daarna zet de job `preview` een voorbeeld op GitHub Pages (`SITE_BASE=/Afrikaans-Master/ PREVIEW=1`).
+   Paden in de app zijn daarom relatief (geen `/`-paden gebruiken in app.js).
+4. Afrikaanse inhoud: controleer twijfelgevallen online (bijv. DSAE, WAT) voordat je iets wijzigt.
