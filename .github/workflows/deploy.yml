@@ -41,7 +41,7 @@ jobs:
         run: python3 tests/run_all.py
 
       - name: Gebouwde site bewaren (downloadbaar bij deze run)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: website
           path: public/
@@ -53,7 +53,7 @@ jobs:
           SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
           if [ -z "$SA" ]; then
-            echo "::warning::Geheim FIREBASE_SERVICE_ACCOUNT ontbreekt nog; de site is gebouwd en getest maar niet gepubliceerd. Zie LEESMIJ.md."
+            echo "::warning::Geheim FIREBASE_SERVICE_ACCOUNT ontbreekt nog; de site is gebouwd en getest maar niet gepubliceerd. Zie README.md."
             exit 0
           fi
           printf '%s' "$SA" > "$RUNNER_TEMP/sa.json"

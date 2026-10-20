@@ -63,6 +63,7 @@ FILES = {
 fonts = {}
 for w, style, fn in (('300 499', 'normal', 'lora-400'), ('500 800', 'normal', 'lora-600'), ('300 800', 'italic', 'lora-400i')):
     fonts[fn] = (w, style, emit('assets/fonts', fn, 'woff', open(src('fonts', fn + '.woff'), 'rb').read()))
+shutil.copy(src('fonts', 'OFL.txt'), os.path.join(OUT, 'assets', 'fonts', 'OFL.txt'))
 fontcss = '/* Lora (c) The Lora Project Authors, SIL Open Font License 1.1 */' + ''.join(
     f"@font-face{{font-family:'Lora';font-style:{s};font-weight:{w};font-display:swap;src:url({p}) format('woff')}}"
     for w, s, p in fonts.values())
