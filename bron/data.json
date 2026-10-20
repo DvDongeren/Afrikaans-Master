@@ -53131,7 +53131,298 @@
    "2821": 28,
    "3668": 407,
    "3669": 406
-  }
+  },
+  "KLANK": [
+   {
+    "k": "sk",
+    "t": "Gewoon s + k",
+    "nl": "Anders dan het Nederlandse \"sch\": je zegt echt een k.",
+    "ex": [
+     [
+      "skool",
+      "school"
+     ],
+     [
+      "skip",
+      "schip"
+     ],
+     [
+      "skoen",
+      "schoen"
+     ]
+    ]
+   },
+   {
+    "k": "v",
+    "t": "Aan het begin als f",
+    "nl": "Een v aan het begin van een woord klinkt altijd als f.",
+    "ex": [
+     [
+      "vier",
+      "vier"
+     ],
+     [
+      "vis",
+      "vis"
+     ],
+     [
+      "vol",
+      "vol"
+     ]
+    ]
+   },
+   {
+    "k": "w",
+    "t": "Meestal als v",
+    "nl": "Tanden op de onderlip, zoals een v. Na een medeklinker als k, t of s klinkt hij als de Engelse w.",
+    "ex": [
+     [
+      "water",
+      "water"
+     ],
+     [
+      "wit",
+      "wit"
+     ],
+     [
+      "twee",
+      "twee"
+     ],
+     [
+      "kwaad",
+      "boos"
+     ]
+    ]
+   },
+   {
+    "k": "g",
+    "t": "Rauwe g",
+    "nl": "Achter in de keel, zoals de g in het noorden van Nederland. Nooit zacht.",
+    "ex": [
+     [
+      "goed",
+      "goed"
+     ],
+     [
+      "gesig",
+      "gezicht"
+     ],
+     [
+      "berg",
+      "berg"
+     ]
+    ]
+   },
+   {
+    "k": "r",
+    "t": "Gerolde r",
+    "nl": "Met de tongpunt gerold of getikt. In delen van de West-Kaap hoor je ook een r achter in de keel.",
+    "ex": [
+     [
+      "rooi",
+      "rood"
+     ],
+     [
+      "groot",
+      "groot"
+     ],
+     [
+      "rugby",
+      "rugby"
+     ]
+    ]
+   },
+   {
+    "k": "ee",
+    "t": "Tweeklank: ie-uh",
+    "nl": "Niet de lange Nederlandse ee, maar een glijdende klank van ie naar uh.",
+    "ex": [
+     [
+      "weet",
+      "weet"
+     ],
+     [
+      "been",
+      "been"
+     ],
+     [
+      "lees",
+      "lees"
+     ]
+    ]
+   },
+   {
+    "k": "oo",
+    "t": "Tweeklank: oe-uh",
+    "nl": "Niet de lange Nederlandse oo, maar een glijdende klank van oe naar uh.",
+    "ex": [
+     [
+      "brood",
+      "brood"
+     ],
+     [
+      "boom",
+      "boom"
+     ],
+     [
+      "groot",
+      "groot"
+     ]
+    ]
+   },
+   {
+    "k": "y en ei",
+    "t": "Uh-ie",
+    "nl": "Allebei dezelfde klank: donkerder dan de Nederlandse ij, meer \"uh-ie\".",
+    "ex": [
+     [
+      "hy",
+      "hij"
+     ],
+     [
+      "wyn",
+      "wijn"
+     ],
+     [
+      "eiland",
+      "eiland"
+     ]
+    ]
+   },
+   {
+    "k": "ui",
+    "t": "Bijna als het Nederlandse ui",
+    "nl": "Lijkt sterk op de Nederlandse ui, maar eindigt iets platter.",
+    "ex": [
+     [
+      "huis",
+      "huis"
+     ],
+     [
+      "uit",
+      "uit"
+     ],
+     [
+      "muis",
+      "muis"
+     ]
+    ]
+   },
+   {
+    "k": "eu",
+    "t": "Ie-eu",
+    "nl": "Begint bij een ie en glijdt naar eu.",
+    "ex": [
+     [
+      "seun",
+      "zoon"
+     ],
+     [
+      "deur",
+      "deur"
+     ],
+     [
+      "neus",
+      "neus"
+     ]
+    ]
+   },
+   {
+    "k": "ê",
+    "t": "Lange open e",
+    "nl": "Het dakje maakt de e lang en open, ongeveer als in \"crème\".",
+    "ex": [
+     [
+      "sê",
+      "zeggen"
+     ],
+     [
+      "lê",
+      "liggen"
+     ],
+     [
+      "wêreld",
+      "wereld"
+     ]
+    ]
+   },
+   {
+    "k": "ô en û",
+    "t": "Lange o en lange eu",
+    "nl": "Ook hier maakt het dakje de klinker lang.",
+    "ex": [
+     [
+      "môre",
+      "morgen"
+     ],
+     [
+      "brûe",
+      "bruggen"
+     ],
+     [
+      "rûe",
+      "ruggen"
+     ]
+    ]
+   },
+   {
+    "k": "aai, ooi, oei",
+    "t": "Tweeklanken met -i",
+    "nl": "Net als in het Nederlands, met een duidelijke i aan het eind.",
+    "ex": [
+     [
+      "haai",
+      "haai"
+     ],
+     [
+      "mooi",
+      "mooi"
+     ],
+     [
+      "groei",
+      "groei"
+     ]
+    ]
+   },
+   {
+    "k": "-tjie en -jie",
+    "t": "Verkleinwoord klinkt als \"kie\"",
+    "nl": "Het verkleinwoord schrijf je met -tjie of -jie, maar je zegt \"kie\".",
+    "ex": [
+     [
+      "hondjie",
+      "hondje"
+     ],
+     [
+      "mandjie",
+      "mandje"
+     ],
+     [
+      "katjie",
+      "katje"
+     ]
+    ]
+   },
+   {
+    "k": "n voor s",
+    "t": "De n verdwijnt in de neus",
+    "nl": "Voor een s valt de n weg: de klinker ervoor wordt lang en door de neus gesproken.",
+    "ex": [
+     [
+      "mens",
+      "mens"
+     ],
+     [
+      "dans",
+      "dans"
+     ],
+     [
+      "spons",
+      "spons"
+     ]
+    ]
+   }
+  ]
  },
  "vvd": {
   "VV": [
@@ -56452,6 +56743,109 @@
    "Zet ondertitels aan. Eerst in het Nederlands of Engels, later in het Afrikaans als die er zijn.",
    "Films met \"Kaaps\" spelen op de Kaapse Vlakte: prachtig, maar lastiger te volgen.",
    "Zoek songteksten op en zing mee: zo leer je uitspraak en ritme."
-  ]
+  ],
+  "lezen": {
+   "nieuws": [
+    {
+     "n": "Maroela Media",
+     "url": "https://maroelamedia.co.za",
+     "d": "Gratis Afrikaanse nieuwssite met korte, duidelijke berichten.",
+     "prijs": "Gratis"
+    },
+    {
+     "n": "RSG Nuus",
+     "url": "https://www.rsg.co.za",
+     "d": "Het nieuws van de Afrikaanse publieke radio, live te beluisteren via de website.",
+     "prijs": "Gratis"
+    },
+    {
+     "n": "Wikipedia in het Afrikaans",
+     "url": "https://af.wikipedia.org",
+     "d": "Lees over onderwerpen die je al kent: dan raad je onbekende woorden makkelijker.",
+     "prijs": "Gratis"
+    },
+    {
+     "n": "LitNet",
+     "url": "https://www.litnet.co.za",
+     "d": "Literatuur, columns en recensies. Voor gevorderden.",
+     "prijs": "Gratis"
+    },
+    {
+     "n": "Netwerk24",
+     "url": "https://www.netwerk24.com",
+     "d": "Het grootste Afrikaanse nieuwsplatform (onder meer Beeld, Die Burger en Volksblad).",
+     "prijs": "Betaald"
+    }
+   ],
+   "boeken": [
+    {
+     "t": "Liewe Heksie",
+     "a": "Verna Vels",
+     "lv": "Makkelijk",
+     "d": "Klassieke kinderverhalen over een vergeetachtig heksje. Korte zinnen."
+    },
+    {
+     "t": "Trompie",
+     "a": "Topsy Smith",
+     "lv": "Makkelijk",
+     "d": "Avonturen van een ondeugende jongen; een geliefde jeugdreeks."
+    },
+    {
+     "t": "Jakkals en Wolf",
+     "a": "Volksverhalen",
+     "lv": "Makkelijk",
+     "d": "Korte fabels over de slimme jakhals en de domme wolf; er bestaan veel uitgaven."
+    },
+    {
+     "t": "Kringe in 'n Bos",
+     "a": "Dalene Matthee",
+     "lv": "Gemiddeld",
+     "d": "Roman over houtkappers en olifanten in de bossen bij Knysna."
+    },
+    {
+     "t": "Fiela se Kind",
+     "a": "Dalene Matthee",
+     "lv": "Gemiddeld",
+     "d": "Het boek achter de film: kijk eerst de film en lees dan het boek."
+    },
+    {
+     "t": "Vaselinetjie",
+     "a": "Anoeschka von Meck",
+     "lv": "Gemiddeld",
+     "d": "Jeugdroman over een meisje dat in een kindertehuis opgroeit."
+    },
+    {
+     "t": "Wolwedans in die Skemer",
+     "a": "Leon van Nierop",
+     "lv": "Gemiddeld",
+     "d": "Spannende roman, ook verfilmd als serie."
+    },
+    {
+     "t": "Die Swerfjare van Poppie Nongena",
+     "a": "Elsa Joubert",
+     "lv": "Gemiddeld",
+     "d": "Het leven van een vrouw onder apartheid; basis van de film Poppie Nongena."
+    },
+    {
+     "t": "Gedigte van Ingrid Jonker",
+     "a": "Ingrid Jonker",
+     "lv": "Gevorderd",
+     "d": "Bekende dichteres; korte gedichten om hardop te lezen."
+    },
+    {
+     "t": "Triomf",
+     "a": "Marlene van Niekerk",
+     "lv": "Gevorderd",
+     "d": "Rauwe roman over een arm gezin in Johannesburg. Veel spreektaal."
+    },
+    {
+     "t": "Agaat",
+     "a": "Marlene van Niekerk",
+     "lv": "Gevorderd",
+     "d": "Groot literair werk, ook in het Nederlands vertaald: handig om naast elkaar te lezen."
+    }
+   ],
+   "tip": "Zoek een boek via de knop hieronder: je ziet dan uitgaven, e-boeken en waar je het kunt kopen. Afrikaanse boeken zijn in Nederland vooral als e-boek of via import te krijgen."
+  }
  }
 }

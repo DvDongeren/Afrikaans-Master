@@ -22,6 +22,34 @@ service cloud.firestore {
       allow delete: if isOwner(userId);
     }
 
+    // Meldingen over kaarten: iedereen mag er een insturen (ook zonder account), alleen in de
+    // verwachte vorm en met het tijdstip van de server. Alleen beheerders mogen ze lezen en wissen.
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+    function validReport() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['id', 'af', 'nl', 'note', 't', 'by'])
+        && d.keys().hasAll(['id', 'af', 'nl', 'note', 't'])
+        && d.id is int && d.id >= 0 && d.id < 1000000
+        && d.af is string && d.af.size() > 0 && d.af.size() <= 200
+        && d.nl is string && d.nl.size() <= 200
+        && d.note is string && d.note.size() <= 500
+        && d.t == request.time
+        && (!('by' in d) || (request.auth != null && d.by == request.auth.uid));
+    }
+    match /reports/{reportId} {
+      allow create: if validReport();
+      allow read, delete: if isAdmin();
+    }
+
+    // Beheerders: maak in de Firebase-console een document admins/{jouw-uid} aan.
+    // Alleen jijzelf mag controleren of je beheerder bent; niemand kan zichzelf toevoegen.
+    match /admins/{userId} {
+      allow get: if request.auth != null && request.auth.uid == userId;
+    }
+
     // Al het andere is dicht (ook lijsten van alle gebruikers opvragen).
     match /{document=**} {
       allow read, write: if false;

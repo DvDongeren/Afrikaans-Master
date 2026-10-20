@@ -298,3 +298,39 @@ body.page{padding-left:0}
 .tips summary{cursor:pointer;font-weight:600}
 .tips ul{margin:10px 0 0 18px;line-height:1.6}
 .tips li+li{margin-top:4px}
+/* uitspraakgids */
+.card.media h2.klank{font-size:1.5rem}
+.card.warn{margin-top:14px;box-shadow:inset 0 0 0 1.5px var(--gold)}
+.card.warn h2{font-size:1rem;margin-bottom:6px}
+.card.warn p{line-height:1.55}
+/* spelletjes */
+.mem{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+@media(min-width:560px){.mem{grid-template-columns:repeat(4,1fr)}}
+.mt{aspect-ratio:1/1;border-radius:14px;background:var(--btn);color:var(--btni);display:grid;place-items:center;padding:6px;font-weight:600;font-size:.95rem;line-height:1.2;text-align:center;overflow-wrap:anywhere;transition:transform .15s,background .15s}
+.mt:active{transform:scale(.96)}
+.mt.open{background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--hair)}
+.mt.open.af{color:var(--af);font-family:var(--serif)}
+.mt.open.nl{color:var(--nl)}
+.mt.done{background:var(--afs);box-shadow:none;opacity:.75}
+.race-q{margin:14px 0;text-align:center;padding:30px 18px}
+.race-q .big{font-family:var(--serif);font-size:2rem;font-weight:600}
+/* inzicht */
+.wkbars{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
+.wkbars b{display:block;font-size:.85rem}
+.wkbars .col{display:flex;align-items:flex-end;height:80px;margin:4px 0;background:var(--sunk);border-radius:8px;overflow:hidden}
+.wkbars .col i{display:block;width:100%;background:var(--af);min-height:2px}
+.ibar{position:relative;height:8px;border-radius:99px;background:var(--sunk);margin-top:6px;overflow:hidden}
+.ibar i{position:absolute;left:0;top:0;bottom:0;border-radius:99px}
+.ibar i.st{background:var(--afs)}
+.ibar i.ma{background:var(--af)}
+.key{display:inline-block;width:10px;height:10px;border-radius:3px;margin:0 4px 0 8px;vertical-align:-1px}
+.key:first-child{margin-left:0}
+.key.st{background:var(--afs)}.key.ma{background:var(--af)}
+/* installeren */
+.inst .ico{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:var(--afs);color:var(--af)}
+.inst .ico svg{width:20px;height:20px}
+.mt:not(.open)::after{content:"?";font-family:var(--serif);font-size:1.6rem;opacity:.35}
+.mt:not(.open) span{display:none}
+#mt{overflow-x:auto;scrollbar-width:none}
+#mt::-webkit-scrollbar{display:none}
+#mt .chip{flex:1 0 auto;padding:8px 11px}

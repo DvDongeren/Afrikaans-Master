@@ -7,9 +7,10 @@ De eigenaar schrijft Nederlands; antwoord in het Nederlands.
 - `bron/app.js`, `bron/app.css` — de app (views in `V.*`, staat in `S`, opgeslagen in localStorage `af2`).
 - `bron/data.json` — alle kaarten, dialogen, paden, lessen, extra's.
 - `bron/build.py` — bouwt `public/` (bestanden met hash in de naam, sw.js, manifest, _headers). `public/` staat niet in git.
-- `bron/config.json` — `{"firebase": "auto" | null | {config}, "appCheckSiteKey": ""}`.
+- `bron/config.json` — `{"firebase": "auto" | null | {config}, "appCheckSiteKey": "", "siteUrl": "", "authDomain": ""}`.
 - `firebase.json` — hosting + beveiligingsheaders (strenge CSP: geen inline scripts toevoegen!).
-- `firestore.rules` — alleen eigenaar; doc `users/{uid}` = `{data, mt, v}`.
+- `firestore.rules` — `users/{uid}` = `{data, mt, v}` (alleen eigenaar); `reports/*` (iedereen maakt aan, beheerders lezen/wissen); `admins/{uid}` (handmatig in console).
+- Nieuwe velden in `S` altijd ook toevoegen aan `DEF`, `cleanState` en zo nodig `mergeState`.
 - `tests/` — Playwright-tests; `python3 tests/run_all.py` start zelf een server die de headers van firebase.json toepast.
 
 ## Werkwijze

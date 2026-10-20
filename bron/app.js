@@ -27,7 +27,7 @@ function wordOfDay(){const d=Math.floor(Date.now()/DAY),n=CARDS.length;let i=(d*
 
 /* ---------- opslag: gebundeld schrijven, altijd wegschrijven bij verlaten ---------- */
 const KEY='af2';
-const DEF=()=>({srs:{},favs:[],streak:0,last:'',days:{},theme:'auto',goal:15,paths:{},dlg:{},les:{},lp:'',typed:false,stories:{},own:[],reports:[],rate:1,startLv:'',lvDone:false,haptic:true});
+const DEF=()=>({srs:{},favs:[],streak:0,last:'',days:{},theme:'auto',goal:15,paths:{},dlg:{},les:{},lp:'',typed:false,stories:{},own:[],reports:[],rate:1,startLv:'',lvDone:false,haptic:true,games:{},instHide:false});
 let S=DEF();try{Object.assign(S,JSON.parse(localStorage.getItem(KEY))||{})}catch{}
 const ownCard=o=>({id:o.id,niveau:'Beginner',categorie:'Eigen kaarten',nl:o.nl,af:o.af,voorbeeld:o.vb||'',tips:'',own:1});
 let saveT=0;
@@ -40,7 +40,7 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 const todayN=()=>S.days[fmt(new Date())]||0;
 const streak=()=>{const t=fmt(new Date()),y=fmt(new Date(Date.now()-DAY));return(S.last===t||S.last===y)?S.streak:0};
 function count(){const t=fmt(new Date());S.days[t]=(S.days[t]||0)+1;if(S.last!==t){S.streak=S.last===fmt(new Date(Date.now()-DAY))?S.streak+1:1;S.last=t}save()}
-function grade(id,ok){const r=S.srs[id]||{box:0};r.box=ok?Math.min(r.box+1,6):0;r.due=Date.now()+(ok?BOX[r.box]*DAY:6e5);r.t=Date.now();S.srs[id]=r;count()}
+function grade(id,ok){const r=S.srs[id]||{box:0};r.box=ok?Math.min(r.box+1,6):0;r.due=Date.now()+(ok?BOX[r.box]*DAY:6e5);r.t=Date.now();if(!r.f)r.f=r.t;S.srs[id]=r;count()}
 const isDue=id=>{const r=S.srs[id];return!!r&&r.due<=Date.now()};
 function dueCount(){const now=Date.now();let n=0;for(const k in S.srs)if(S.srs[k].due<=now)n++;return n}
 function sessionQueue(n){const now=Date.now(),due=[],m=byId();
@@ -58,8 +58,9 @@ function poolFor(sc){const now=Date.now(),k=c=>S.srs[c.id];let r;
  return r.length>=4?r:CARDS}
 
 /* ---------- spraak ---------- */
-let VOICE;
-const pickVoice=()=>{try{const v=speechSynthesis.getVoices();VOICE=v.find(x=>/^af/i.test(x.lang))||v.find(x=>/^nl/i.test(x.lang))||null}catch{}};
+let VOICE,AFV=null;
+const pickVoice=()=>{try{const v=speechSynthesis.getVoices();VOICE=v.find(x=>/^af/i.test(x.lang))||v.find(x=>/^nl/i.test(x.lang))||null;const was=AFV;AFV=v.length?!!v.find(x=>/^af/i.test(x.lang)):null;if(was!==AFV)setTimeout(()=>{if(view==='klank')render()})}catch{}};
+const voiceNote=()=>AFV===false?`<div class="card warn" role="note"><h2>Geen Afrikaanse stem op dit toestel</h2><p>De voorleesknop gebruikt nu een Nederlandse stem, dus de uitspraak klopt niet helemaal. Lees de uitleg en luister vooral naar echte sprekers, bijvoorbeeld via Muziek, films en series. Op Android kun je bij Instellingen › Tekst-naar-spraak kijken of er een Afrikaanse stem te downloaden is.</p></div>`:'';
 try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice}catch{}
 function utt(t,r){const u=new SpeechSynthesisUtterance(t);u.lang='af-ZA';u.rate=r||S.rate||1;if(VOICE){u.voice=VOICE;u.lang=VOICE.lang}return u}
 function speak(t,r){try{speechSynthesis.cancel();speechSynthesis.speak(utt(t,r))}catch{}}
@@ -89,6 +90,11 @@ zin:ic('<rect x="2.5" y="5.5" width="8" height="5.5" rx="1.6"/><rect x="13.5" y=
 nie:ic('<circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/>'),
 vv:ic('<path d="M4 8h14l-3.5-3.5M20 16H6l3.5 3.5"/>'),
 story:ic('<path d="M2.5 5.5c3-1.2 6.2-1 9.5 1 3.3-2 6.5-2.2 9.5-1V19c-3-1.2-6.2-1-9.5 1-3.3-2-6.5-2.2-9.5-1z"/><path d="M12 6.5V20"/>'),
+klank:ic('<path d="M12 3a3 3 0 00-3 3v6a3 3 0 006 0V6a3 3 0 00-3-3z"/><path d="M5 11a7 7 0 0014 0M12 18v3"/>'),
+spel:ic('<rect x="2.5" y="7" width="19" height="11" rx="4"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="16" cy="11.5" r="1"/><circle cx="18" cy="13.5" r="1"/>'),
+chart:ic('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),
+dl:ic('<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>'),
+inbox:ic('<path d="M3 13l3-8h12l3 8v6H3z"/><path d="M3 13h5l1 2h6l1-2h5"/>'),
 media:ic('<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>'),
 reis:ic('<rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M9 7V5.5A1.5 1.5 0 0110.5 4h3A1.5 1.5 0 0115 5.5V7M3 12h18"/>'),
 cult:ic('<path d="M2 20h20"/><path d="M3.5 20L7 10h10l3.5 10"/><path d="M7 10l2-2h6l2 2"/>'),
@@ -111,12 +117,12 @@ let view='home',st={};
 const NAV=[['home','Home',I.home],['oef','Oefen',I.oef],['paden','Paden',I.pad],['kaart','Kaarten',I.kaart],['zoek','Zoeken',I.search],['meer','Meer',I.meer]];
 const navEl=document.getElementById('nav');
 navEl.innerHTML=NAV.map(([k,l,i])=>`<button data-v="${k}" ${k==='zoek'?'class="desk"':''}>${i}<span>${l}</span></button>`).join('');
-const PARENT={sess:'oef',quiz:'oef',dlgs:'oef',dlg:'oef',gram:'oef',les:'oef',mc:'oef',zin:'oef',reis:'oef',cult:'oef',media:'oef',vv:'oef',stories:'oef',story:'oef',path:'paden',luister:'oef',weak:'oef',toets:'home',own:'kaart',zoek:'zoek'};
+const PARENT={sess:'oef',quiz:'oef',dlgs:'oef',dlg:'oef',gram:'oef',les:'oef',mc:'oef',zin:'oef',reis:'oef',cult:'oef',media:'oef',klank:'oef',spel:'oef',mem:'oef',race:'oef',inzicht:'meer',beheer:'meer',vv:'oef',stories:'oef',story:'oef',path:'paden',luister:'oef',weak:'oef',toets:'home',own:'kaart',zoek:'zoek'};
 function setNav(){const cur=st&&st.ret?'paden':PARENT[view]||view;for(const b of navEl.children){const on=b.dataset.v===cur;b.classList.toggle('on',on);on?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')}}
 function go(v,s){view=v;st=s||{};render();scrollTo(0,0)}
 const V={};
 const WIDE=new Set(['home','oef','kaart','paden','zoek','vv','gram','dlgs','stories','cult','reis','path']);
-const DEPS={home:['facts','paths'],paden:['paths'],path:['paths','les','dlg'],dlgs:['dlg'],dlg:['dlg'],gram:['les'],les:['les'],mc:['ext','vv'],zin:['ext'],reis:['ext'],cult:['ext','facts'],media:['media'],vv:['vv'],stories:['vv'],story:['vv'],luister:['ext','dlg'],zoek:['dlg','vv','les','ext','paths','media'],meer:['paths']};
+const DEPS={home:['facts','paths'],paden:['paths'],path:['paths','les','dlg'],dlgs:['dlg'],dlg:['dlg'],gram:['les'],les:['les'],mc:['ext','vv'],zin:['ext'],reis:['ext'],cult:['ext','facts'],media:['media'],klank:['ext'],vv:['vv'],stories:['vv'],story:['vv'],luister:['ext','dlg'],zoek:['dlg','vv','les','ext','paths','media'],meer:['paths']};
 function render(){setNav();app.className=WIDE.has(view)?'wide':'focus';const need=(DEPS[view]||[]).filter(n=>!D[n]);
  if(need.length){const v=view,s0=st;app.innerHTML='<p class="loading" role="status">Laden…</p>';Promise.all(need.map(load)).then(()=>{if(view===v&&st===s0)render()},loadError);return}
  (V[view]||V.home)()}
@@ -145,6 +151,7 @@ V.home=()=>{const h=new Date().getHours(),hi=h<12?['Goeiemôre','Goedemorgen']:h
  ${cta()}
  <div class="quick" style="margin-top:12px"><button data-a="quiz">${I.quiz}Quiz</button><button data-a="dlgs">${I.dlg}Dialogen</button><button data-a="stories">${I.story}Verhalen</button></div>
  ${!S.lvDone&&Object.keys(S.srs).length<30?`<div class="card stack" style="margin-top:12px"><h2>Wat is je niveau?</h2><p class="muted">Doe de niveautoets van 12 vragen. Daarna start je sessie op jouw niveau.</p><div class="row"><button class="btn ghost" data-lvskip="1">Niet nu</button><button class="btn" data-a="toets">Start toets</button></div></div>`:''}
+ ${installBox(true)}
  ${cont}</div><div class="col">
  <div class="sec">Woord van de dag</div>
  <div class="card entry"><div class="row sp"><div class="grow"><div class="af">${esc(wc.af)}</div><div class="nl">${esc(wc.nl)}</div></div>${spk(wc.af)}</div><p class="ex">${esc(wc.voorbeeld)}</p></div>
@@ -157,9 +164,11 @@ V.oef=()=>{const lv=st.lv||'Alles';
  draw(`<div class="row sp"><h1>Oefenen</h1><button class="x" data-a="zoek" aria-label="Zoeken">${I.search}</button></div><div style="margin-top:18px">${cta()}</div>
  <div class="secs"><section><div class="sec">Slim oefenen</div><div class="list">
  ${row('data-a="weak"',I.bolt,'Moeilijke kaarten',weakList().length?weakList().length+' kaarten die je vaak fout hebt':'Nog geen moeilijke kaarten')}
+ ${row('data-a="spel"',I.spel,'Spelletjes','Memory en tijdrace')}
  ${row('data-a="luister"',I.ear,'Luisteren',canSpeak()?'Hoor een zin en typ wat je hoort':'Niet beschikbaar op dit toestel')}</div>
 </section><section><div class="sec">Taal en grammatica</div><div class="list">
  ${row('data-a="gram"',I.gram,'Grammatica',N.les+' lessen met uitleg en oefeningen')}
+ ${row('data-a="klank"',I.klank,'Uitspraakgids','De klanken die anders zijn dan in het Nederlands')}
  ${row('data-a="zin"',I.zin,'Zinnen bouwen',N.bs+' zinnen in de goede volgorde')}
  ${row('data-a="mc:nie"',I.nie,'Nie-drill',N.nie+' vragen over nie … nie')}
  ${row('data-a="vv"',I.vv,'Valse vrienden',N.vv+' woorden die misleiden')}</div>
@@ -168,7 +177,7 @@ V.oef=()=>{const lv=st.lv||'Alles';
  ${row('data-a="stories"',I.story,'Verhaaltjes',N.st+' verhalen met woordhulp')}
  ${row('data-a="reis"',I.reis,'Reisgids',N.reis+' handige zinnen')}
  ${row('data-a="cult"',I.cult,'Cultuur','Weetjes en lokale woorden')}
- ${row('data-a="media"',I.media,'Muziek, films en series','Afrikaans luisteren en kijken, gratis of betaald')}</div>
+ ${row('data-a="media"',I.media,'Muziek, films en series','Luisteren, kijken en lezen, gratis of betaald')}</div>
 </section><section><div class="sec">In de praktijk</div><div class="list">
  ${row('data-a="mc:wa"',I.wa,'WhatsApp',N.wa+' chats: kies het beste antwoord')}
  ${row('data-a="mc:menu"',I.menu,'Restaurant',N.menu+' menu\'s om van te bestellen')}
@@ -337,21 +346,105 @@ V.cult=()=>{st.tab=st.tab||'weetjes';const x=X();let body='';
 const ext=(u,l,cls='')=>`<a class="chip ${cls}" href="${esc(u)}" target="_blank" rel="noopener noreferrer">${l}<span class="sr"> (opent in nieuw venster)</span></a>`;
 const enc=encodeURIComponent,YT=q=>'https://www.youtube.com/results?search_query='+enc(q),SP=q=>'https://open.spotify.com/search/'+enc(q),JW=q=>'https://www.justwatch.com/nl/search?q='+enc(q);
 V.media=()=>{const m=MED();st.tab=st.tab||'muziek';st.lv=st.lv||'';let body='';
- const lvl=l=>`<span class="tag ${l.startsWith('Makkelijk')?'ok':l.startsWith('Lastig')?'hard':''}">${esc(l)}</span>`;
+ const lvl=l=>`<span class="tag ${l.startsWith('Makkelijk')?'ok':/^(Lastig|Gevorderd)/.test(l)?'hard':''}">${esc(l)}</span>`;
  const title=x=>`<div class="card media"><div class="mh"><h2 class="af">${esc(x.t)}</h2>${lvl(x.lv)}</div><div class="muted small">${esc(x.g)}${x.j?' · '+x.j:''}</div><p>${esc(x.d)}</p><div class="chips wrap mlinks">${ext(JW(x.t),'Waar te zien','on')}${ext(YT(x.t+' trailer'),'Trailer')}</div></div>`;
  const filt=list=>{const L=st.lv?list.filter(x=>x.lv.startsWith(st.lv)):list;return`<div class="seg" id="mlv" style="margin:0 0 14px">${[['','Alle'],['Makkelijk','Makkelijk'],['Gemiddeld','Gemiddeld'],['Lastig','Kaaps']].map(([v,l])=>`<button class="chip ${st.lv===v?'on':''}" data-lv="${v}">${l}</button>`).join('')}</div><div class="stack">${L.map(title).join('')}</div>`};
  if(st.tab==='muziek'){const G=[...new Set(m.muziek.map(x=>x.g))];
   body=G.map(g=>`<section><div class="sec">${esc(g)}</div><div class="stack">${m.muziek.filter(x=>x.g===g).map(x=>`<div class="card media"><h2 class="af">${esc(x.n)}</h2><p>${esc(x.d)}</p>${x.s?`<p class="small"><span class="muted">Begin met:</span> <span class="af">${esc(x.s)}</span></p>`:''}<div class="chips wrap mlinks">${ext(SP(x.n),'Spotify','on')}${ext(YT(x.n+(x.s?' '+x.s:'')),'YouTube')}</div></div>`).join('')}</div></section>`).join('')}
  else if(st.tab==='films')body=filt(m.films);
  else if(st.tab==='series')body=filt(m.series);
+ else if(st.tab==='lezen'){const R=m.lezen,GB=q=>'https://www.google.com/search?tbm=bks&q='+enc(q);
+  body=`<section><div class="sec">Nieuws en artikelen</div><div class="stack">${R.nieuws.map(x=>`<div class="card media"><div class="mh"><h2>${esc(x.n)}</h2><span class="tag ${x.prijs==='Gratis'?'ok':''}">${esc(x.prijs)}</span></div><p>${esc(x.d)}</p><div class="chips mlinks">${ext(x.url,'Openen','on')}</div></div>`).join('')}</div></section>
+  ${['Makkelijk','Gemiddeld','Gevorderd'].map(l=>`<section><div class="sec">Boeken · ${l.toLowerCase()}</div><div class="stack">${R.boeken.filter(b=>b.lv===l).map(b=>`<div class="card media"><div class="mh"><h2 class="af">${esc(b.t)}</h2>${lvl(b.lv)}</div><div class="muted small">${esc(b.a)}</div><p>${esc(b.d)}</p><div class="chips mlinks">${ext(GB(b.t+' '+b.a),'Zoek dit boek','on')}</div></div>`).join('')}</div></section>`).join('')}
+  <p class="muted small" style="margin-top:14px">${esc(R.tip)}</p>`}
  else body=`<section><div class="sec">Gratis</div><div class="stack">${m.gratis.map(x=>`<div class="card media"><div class="mh"><h2>${esc(x.n)}</h2><span class="tag ok">Gratis</span></div><p>${esc(x.d)}</p><div class="chips mlinks">${ext(x.url,'Openen','on')}</div></div>`).join('')}</div></section>
   <section><div class="sec">Betaald</div><div class="stack">${m.betaald.map(x=>`<div class="card media"><div class="mh"><h2>${esc(x.n)}</h2>${x.n==='JustWatch'?'<span class="tag ok">Gratis hulpmiddel</span>':'<span class="tag">Betaald</span>'}</div><p>${esc(x.d)}</p><div class="chips mlinks">${ext(x.url,'Openen','on')}</div></div>`).join('')}</div></section>
   <p class="muted small" style="margin-top:14px">Waar een film of serie te zien is, verandert vaak. Daarom linken we naar zoekpagina's in plaats van naar vaste adressen.</p>`;
- draw(`${back('oef','Oefenen')}<h1>Muziek, films en series</h1><p class="muted" style="margin-top:6px">Leer Afrikaans door te luisteren en te kijken.</p>
+ draw(`${back('oef','Oefenen')}<h1>Muziek, films en series</h1><p class="muted" style="margin-top:6px">Leer Afrikaans door te luisteren, te kijken en te lezen.</p>
  <details class="card tips" style="margin-top:14px"><summary>Tips om ermee te leren</summary><ul>${m.tips.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></details>
- <div class="seg" id="mt" style="margin:16px 0">${[['muziek','Muziek'],['films','Films'],['series','Series'],['waar','Waar kijken']].map(t=>`<button class="chip ${st.tab===t[0]?'on':''}" data-mt="${t[0]}">${t[1]}</button>`).join('')}</div>${body}`);
+ <div class="seg" id="mt" style="margin:16px 0">${[['muziek','Muziek'],['films','Films'],['series','Series'],['lezen','Lezen'],['waar','Bronnen']].map(t=>`<button class="chip ${st.tab===t[0]?'on':''}" data-mt="${t[0]}">${t[1]}</button>`).join('')}</div>${body}`);
  $('#mt').onclick=e=>{const b=e.target.closest('[data-mt]');if(b){st.tab=b.dataset.mt;st.lv='';V.media();scrollTo(0,0)}};
  const lv=$('#mlv');if(lv)lv.onclick=e=>{const b=e.target.closest('[data-lv]');if(b){st.lv=b.dataset.lv;V.media()}}};
+
+/* ---------- uitspraakgids ---------- */
+V.klank=()=>{const K=X().KLANK;
+ draw(`${back('oef','Oefenen')}<h1>Uitspraakgids</h1><p class="muted" style="margin-top:6px">De klanken die anders zijn dan in het Nederlands. Tik op een woord om het te horen.</p>${voiceNote()}
+ <div class="stack" style="margin-top:16px">${K.map(k=>`<div class="card media"><div class="mh"><h2 class="af klank">${esc(k.k)}</h2><span class="tag">${esc(k.t)}</span></div><p>${esc(k.nl)}</p><div class="chips wrap" style="margin-top:12px">${k.ex.map(([a,n])=>`<button class="chip" data-sp="${esc(a)}">${I.spk}<span class="af">${esc(a)}</span><span class="nl">${esc(n)}</span></button>`).join('')}</div></div>`).join('')}</div>`)};
+
+/* ---------- spelletjes ---------- */
+function gamePool(n){const ok=c=>!c.own&&c.af.length<=14&&c.nl.length<=14&&c.af.toLowerCase()!==c.nl.toLowerCase();
+ let pool=CARDS.filter(c=>S.srs[c.id]&&ok(c));if(pool.length<n*3)pool=CARDS.filter(c=>ok(c)&&c.niveau==='Beginner');
+ const out=[],sa=new Set(),sn=new Set();for(const c of shuffle(pool.slice())){const a=c.af.toLowerCase(),b=c.nl.toLowerCase();if(sa.has(a)||sn.has(b)||sa.has(b)||sn.has(a))continue;sa.add(a);sn.add(b);out.push(c);if(out.length>=n)break}return out}
+V.spel=()=>{const g=S.games||{};
+ draw(`${back('oef','Oefenen')}<h1>Spelletjes</h1><p class="muted" style="margin-top:6px">Even ontspannen oefenen met woorden${Object.keys(S.srs).length>=18?' die je al kent':' voor beginners'}.</p>
+ <div class="list" style="margin-top:16px">${row('data-a="mem"',I.spel,'Memory','Zoek de Afrikaanse en Nederlandse paren'+(g.mem?` · record ${g.mem} beurten`:''))}${row('data-a="race"',I.bolt,'Tijdrace','Zoveel mogelijk woorden in 60 seconden'+(g.race?` · record ${g.race}`:''))}</div>`)};
+V.mem=()=>{if(!st.tiles){const P=gamePool(6);st.tiles=shuffle(P.flatMap(c=>[{id:c.id,l:'af',x:c.af},{id:c.id,l:'nl',x:c.nl}]));st.open=[];st.done=[];st.moves=0;st.lock=0}
+ if(st.done.length===st.tiles.length/2){const best=S.games.mem,rec=!best||st.moves<best;if(rec&&!st.saved){S.games.mem=st.moves;st.saved=1;saveNow()}
+  return draw(`<div class="result stack"><div class="score">${st.moves}</div><h1>${rec?'Nieuw record!':'Alle paren gevonden'}</h1><p class="muted">${st.moves} beurten${best&&!rec?` · je record is ${best}`:''}</p><div class="stack" style="margin-top:22px"><button class="btn" data-again="mem">Nog een keer</button><button class="btn ghost" data-a="spel">Terug naar spelletjes</button></div></div>`)}
+ draw(`${back('spel','Spelletjes')}<div class="row sp" style="margin-top:4px"><h1>Memory</h1><span class="muted">${st.done.length} van ${st.tiles.length/2} · ${st.moves} beurten</span></div>
+ <div class="mem" role="grid" aria-label="Memory">${st.tiles.map((t,i)=>{const done=st.done.includes(t.id),open=done||st.open.includes(i);return`<button class="mt ${open?'open':''} ${done?'done':''} ${t.l}" data-mi="${i}" ${done?'disabled':''} aria-label="${open?esc(t.x):'Verborgen kaart'}"><span>${open?esc(t.x):''}</span></button>`}).join('')}</div>
+ <p class="muted small" style="margin-top:12px;text-align:center"><span class="af">Groen</span> is Afrikaans, <span class="nl">blauw</span> is Nederlands.</p>`)};
+function memTap(i){if(st.lock||st.open.includes(i)||st.done.includes(st.tiles[i].id))return;st.open.push(i);
+ if(st.open.length===2){st.moves++;const[a,b]=st.open.map(x=>st.tiles[x]);
+  if(a.id===b.id&&a.l!==b.l){st.done.push(a.id);st.open=[];if(a.l==='af')speak(a.x);else speak(b.x)}
+  else{st.lock=1;buzz();setTimeout(()=>{st.open=[];st.lock=0;if(view==='mem')V.mem()},900)}}
+ V.mem()}
+V.race=()=>{if(st.over)return raceEnd();
+ if(!st.t0){st.t0=Date.now();st.sc=0;st.q=null;clearInterval(window.__race);window.__race=setInterval(()=>{if(view!=='race'||st.over){clearInterval(window.__race);return}const left=Math.max(0,60-Math.floor((Date.now()-st.t0)/1000));const el=$('#rt');if(el)el.textContent=left+' s';if(left<=0){st.over=1;clearInterval(window.__race);raceEnd()}},250)}
+ if(!st.q){const P=gamePool(3),c=P[0];if(!c)return draw('<p class="muted">Geen woorden gevonden.</p>');st.q={c,o:shuffle(P.map(x=>x.nl))}}
+ const left=Math.max(0,60-Math.floor((Date.now()-st.t0)/1000));
+ draw(`${back('spel','Stoppen')}<div class="row sp" style="margin-top:4px"><h1>Tijdrace</h1><span class="badge" id="rt" aria-live="off">${left} s</span></div><p class="muted">Score: <b id="rs">${st.sc}</b></p>
+ <div class="card race-q"><div class="big af">${esc(st.q.c.af)}</div></div><div class="stack">${st.q.o.map(o=>`<button class="opt" data-ro="${esc(o)}">${esc(o)}</button>`).join('')}</div>`)}
+function raceTap(o,el){if(st.over||st.wait)return;const ok=o===st.q.c.nl;
+ if(ok){st.sc++;st.q=null;return V.race()}
+ buzz();st.wait=1;el.classList.add('bad');for(const x of app.querySelectorAll('[data-ro]'))if(x.dataset.ro===st.q.c.nl)x.classList.add('ok');setTimeout(()=>{st.wait=0;st.q=null;if(view==='race'&&!st.over)V.race()},700)}
+function raceEnd(){const best=S.games.race||0,rec=st.sc>best;if(rec&&!st.saved){S.games.race=st.sc;st.saved=1;saveNow()}
+ draw(`<div class="result stack"><div class="score">${st.sc}</div><h1>${rec?'Nieuw record!':'Tijd is om'}</h1><p class="muted">${st.sc} ${st.sc===1?'woord':'woorden'} goed${!rec&&best?` · je record is ${best}`:''}</p><div class="stack" style="margin-top:22px"><button class="btn" data-again="race">Nog een keer</button><button class="btn ghost" data-a="spel">Terug naar spelletjes</button></div></div>`)}
+
+/* ---------- inzicht ---------- */
+V.inzicht=()=>{const now=Date.now(),E=Object.entries(S.srs),m=byId(),start=new Date();start.setHours(0,0,0,0);const t0=+start;
+ const mast=E.filter(([,r])=>r.box>=4).length,due=dueCount();
+ const dayAt=i=>{const d=new Date(t0);d.setDate(d.getDate()+i);return+d};
+ const wk=[...Array(7)].map((_,i)=>{const a=dayAt(i),b=dayAt(i+1);return{l:i===0?'vandaag':new Date(a).toLocaleDateString('nl-NL',{weekday:'short'}),n:E.filter(([,r])=>i===0?r.due<b:r.due>=a&&r.due<b).length}}),mx=Math.max(1,...wk.map(x=>x.n));
+ const by=(key)=>{const g={};for(const c of CARDS){if(c.own)continue;const k=c[key],o=g[k]||(g[k]={k,tot:0,st:0,ma:0,bs:0});o.tot++;const r=S.srs[c.id];if(r){o.st++;o.bs+=r.box;if(r.box>=4)o.ma++}}return Object.values(g)};
+ const lv=by('niveau').sort((a,b)=>rank[a.k]-rank[b.k]),cat=by('categorie');
+ const bar=(o)=>`<div class="ibar" role="img" aria-label="${o.st} van ${o.tot} gestart, ${o.ma} beheerst"><i class="st" style="width:${o.st/o.tot*100}%"></i><i class="ma" style="width:${o.ma/o.tot*100}%"></i></div>`;
+ const hard=cat.filter(o=>o.st>=5).map(o=>({...o,avg:o.bs/o.st})).sort((a,b)=>a.avg-b.avg).slice(0,3);
+ const nw=E.filter(([,r])=>r.f&&r.f>now-14*DAY),days=new Set(nw.map(([,r])=>fmt(new Date(r.f)))).size,rate=nw.length/14;
+ const cur=lv.find(o=>o.st<o.tot);let est='';
+ if(days>=3&&rate>0&&cur){const d=Math.ceil((cur.tot-cur.st)/rate);est=`Je start gemiddeld <b>${(Math.round(rate*10)/10).toLocaleString('nl-NL')}</b> nieuwe ${rate>=1.5||rate<0.95?'kaarten':'kaart'} per dag. In dat tempo heb je alle ${esc(cur.k)}-kaarten over ongeveer <b>${d<14?d+' dagen':d<70?Math.round(d/7)+' weken':Math.round(d/30)+' maanden'}</b> gestart.`}
+ else est='Oefen een paar dagen, dan zie je hier een schatting van je tempo.';
+ const sorted=cat.slice().sort((a,b)=>b.st/b.tot-a.st/a.tot||a.k.localeCompare(b.k));
+ draw(`${back('meer','Meer')}<h1>Inzicht</h1>
+ <div class="card stats" style="margin-top:16px"><div><div class="big">${E.length}</div><div class="muted">gestart</div></div><div><div class="big">${mast}</div><div class="muted">beheerst</div></div><div><div class="big">${due}</div><div class="muted">nu herhalen</div></div></div>
+ <p class="muted small" style="margin-top:8px">Beheerst betekent: minstens vier keer achter elkaar goed, met steeds langere tussenpozen.</p>
+ <div class="sec">Herhalingen de komende week</div><div class="card"><div class="wkbars">${wk.map(x=>`<div><b>${x.n}</b><span class="col"><i style="height:${x.n/mx*100}%"></i></span><span class="muted small">${x.l}</span></div>`).join('')}</div></div>
+ <div class="sec">Tempo</div><div class="card"><p>${est}</p></div>
+ <div class="sec">Per niveau</div><div class="card stack">${lv.map(o=>`<div><div class="row sp"><b>${esc(o.k)}</b><span class="muted small">${o.st} / ${o.tot} gestart · ${o.ma} beheerst</span></div>${bar(o)}</div>`).join('')}<p class="muted small"><span class="key st"></span>gestart <span class="key ma"></span>beheerst</p></div>
+ ${hard.length?`<div class="sec">Lastigste onderwerpen</div><div class="list">${hard.map(o=>row(`data-icat="${esc(o.k)}"`,I.bolt,esc(o.k),`${o.st} gestart · ${Math.round(o.ma/o.st*100)}% beheerst`)).join('')}</div>`:''}
+ <div class="sec">Per onderwerp</div><div class="card stack">${sorted.map(o=>`<div><div class="row sp"><span>${esc(o.k)}</span><span class="muted small">${o.st} / ${o.tot}</span></div>${bar(o)}</div>`).join('')}</div>`)};
+
+/* ---------- installeren als app ---------- */
+let INST=null;
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();INST=e;if(['home','meer'].includes(view))render()});
+addEventListener('appinstalled',()=>{INST=null;S.instHide=true;saveNow();if(['home','meer'].includes(view))render()});
+const standalone=()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch{return false}};
+const isIOS=()=>/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+function installBox(home){if(standalone()||!(INST||isIOS()))return'';if(home&&(S.instHide||Object.keys(S.days).length<2))return'';
+ return`<div class="card stack inst"${home?' style="margin-top:12px"':''}><div class="row" style="gap:12px"><span class="ico">${I.dl}</span><h2 class="grow">Zet de app op je beginscherm</h2></div><p class="muted">${INST?'Dan open je Afrikaans Master met één tik, ook zonder internet.':'Tik in Safari onderaan op de deelknop (vierkant met pijl) en kies <b>Zet op beginscherm</b>.'}</p>${INST||home?`<div class="row">${home?'<button class="btn ghost" data-insthide="1">Niet nu</button>':''}${INST?'<button class="btn" data-inst="1">Installeren</button>':''}</div>`:''}</div>`}
+async function doInstall(){const e=INST;if(!e)return;INST=null;try{await e.prompt();const c=await e.userChoice;if(c&&c.outcome==='accepted'){S.instHide=true;saveNow()}}catch{}render()}
+
+/* ---------- meldingen beheren (alleen voor beheerders) ---------- */
+async function sendReport(r){if(!(r.id>=0))return false;try{if(!await getCfg())return false;const fb=await fbInit();if(!fb.report)return false;
+ await fb.report({id:r.id,af:r.af.slice(0,200),nl:r.nl.slice(0,200),note:r.note.slice(0,500),...(cloud.user?{by:cloud.user.uid}:{})});return true}catch{return false}}
+V.beheer=()=>{if(!cloud.user||!cloud.admin)return draw(`${back('meer','Meer')}<h1>Meldingen</h1><p class="muted" style="margin-top:8px">Alleen beheerders kunnen meldingen bekijken. Log in met het beheerdersaccount.</p>`);
+ if(!st.list){draw(`${back('meer','Meer')}<h1>Meldingen</h1><p class="loading" role="status">Laden…</p>`);FB.listReports().then(l=>{st.list=l;if(view==='beheer')V.beheer()},e=>{st.list=[];st.err=String(e&&e.code||e);if(view==='beheer')V.beheer()});return}
+ const L=st.list,txt=L.map(r=>`${r.af} = ${r.nl} (kaart ${r.id}): ${r.note||'geen toelichting'}`).join('\n');
+ draw(`${back('meer','Meer')}<h1>Meldingen</h1><p class="muted" style="margin-top:6px">${L.length?L.length+' open '+(L.length===1?'melding':'meldingen')+' van gebruikers.':'Geen open meldingen.'}${st.err?' <span style="color:var(--bad)">Laden lukte niet ('+esc(st.err)+').</span>':''}</p>
+ <div class="stack" style="margin-top:14px">${L.map(r=>`<div class="card media"><div class="mh"><h2 class="af">${esc(r.af)}</h2><span class="tag">kaart ${r.id}</span></div><div class="nl">${esc(r.nl)}</div><p>${esc(r.note)||'<span class="muted">Geen toelichting</span>'}</p><p class="muted small">${r.t?new Date(r.t).toLocaleString('nl-NL',{dateStyle:'medium',timeStyle:'short'}):''}${r.by?' · ingelogde gebruiker':' · anoniem'}</p><div class="row" style="margin-top:10px"><button class="btn soft" data-rq="${esc(r.af)}" style="box-shadow:inset 0 0 0 1.5px var(--hair)">Kaart opzoeken</button><button class="btn ghost" data-rdone="${esc(r.doc)}">Afgehandeld</button></div></div>`).join('')}</div>
+ ${L.length?`<div class="stack" style="margin-top:16px"><button class="btn soft" id="rcp" style="box-shadow:inset 0 0 0 1.5px var(--hair)">Alles kopiëren</button><p class="muted" id="rcm" role="status"></p></div>`:''}`);
+ const c=$('#rcp');if(c)c.onclick=async()=>{try{await navigator.clipboard.writeText(txt);$('#rcm').textContent='Gekopieerd.'}catch{$('#rcm').textContent='Kopiëren lukte niet.'}}};
+async function reportDone(doc,btn){btn.disabled=true;try{await FB.delReport(doc);st.list=st.list.filter(r=>r.doc!==doc);V.beheer()}catch(e){btn.disabled=false;alert('Verwijderen lukte niet ('+(e&&e.code||e)+').')}}
 
 /* ---------- valse vrienden ---------- */
 V.vv=()=>{const VV=Y().VV;
@@ -447,11 +540,12 @@ function reportText(){return S.reports.map(r=>`${r.af} = ${r.nl} (kaart ${r.id})
 function sheet(html,onOpen){let el=document.getElementById('sheet');if(el)el.remove();el=document.createElement('div');el.id='sheet';el.innerHTML=`<div class="sheet-bg" data-close="1"></div><div class="sheet" role="dialog" aria-modal="true">${html}</div>`;document.body.appendChild(el);
  el.addEventListener('click',e=>{if(e.target.closest('[data-close]'))el.remove()});onOpen&&onOpen(el)}
 function report(id){const c=byId().get(id);if(!c)return;
- sheet(`<h2>Klopt deze kaart niet?</h2><p style="margin:10px 0 4px"><span class="af" style="font-size:1.15rem">${esc(c.af)}</span> <span class="nl">= ${esc(c.nl)}</span></p><p class="muted" style="margin-bottom:12px">Beschrijf kort wat er niet klopt. Je melding blijft op dit toestel; in Meer kun je alle meldingen kopiëren.</p>
+ sheet(`<h2>Klopt deze kaart niet?</h2><p style="margin:10px 0 4px"><span class="af" style="font-size:1.15rem">${esc(c.af)}</span> <span class="nl">= ${esc(c.nl)}</span></p><p class="muted" style="margin-bottom:12px">Beschrijf kort wat er niet klopt. We kijken de kaart dan na.</p>
  <textarea id="rn" maxlength="500" placeholder="Bijvoorbeeld: de voorbeeldzin is onnatuurlijk" aria-label="Toelichting"></textarea><div class="row" style="margin-top:12px"><button class="btn ghost" data-close="1">Annuleren</button><button class="btn" id="rsv">Melden</button></div>`,el=>{
   setTimeout(()=>el.querySelector('#rn').focus(),50);
-  el.querySelector('#rsv').onclick=()=>{S.reports=S.reports.filter(r=>r.id!==id);S.reports.push({id,af:c.af,nl:c.nl,note:el.querySelector('#rn').value.trim(),t:Date.now()});saveNow();
-   el.querySelector('.sheet').innerHTML='<h2>Bedankt!</h2><p class="muted" style="margin:8px 0 14px">Je melding is opgeslagen. Je vindt hem in Meer.</p><button class="btn" data-close="1">Sluiten</button>'}})}
+  el.querySelector('#rsv').onclick=async()=>{const b=el.querySelector('#rsv');b.disabled=true;b.textContent='Versturen…';const r={id,af:c.af,nl:c.nl,note:el.querySelector('#rn').value.trim(),t:Date.now()};
+   const sent=await sendReport(r);if(!sent){S.reports=S.reports.filter(x=>x.id!==id);S.reports.push(r);saveNow()}
+   el.querySelector('.sheet').innerHTML=`<h2>Bedankt!</h2><p class="muted" style="margin:8px 0 14px">${sent?'Je melding is verstuurd. We kijken de kaart na.':'Je melding is op dit toestel bewaard. Je vindt hem in Meer, waar je hem kunt kopiëren.'}</p><button class="btn" data-close="1">Sluiten</button>`}})}
 
 /* ---------- sessie: beoordelen en vegen ---------- */
 function sessGrade(ok){const c=st.q[st.i];grade(c.id,ok);if(!ok)buzz('bad');st.done++;if(!ok&&!st.retry.includes(c.id)){st.retry.push(c.id);st.q.push(c)}st.i++;st.open=false;st.tv=undefined;render()}
@@ -508,6 +602,7 @@ let CFG;
 async function getCfg(){if(CFG!==undefined)return CFG;if(TESTHOOK&&window.__cloudAdapter)return CFG={fb:{}};if(!/^https?:$/.test(location.protocol))return CFG=null;
  let c={};try{const r=await fetch('config.json',{cache:'no-store'});if(r.ok)c=await r.json()}catch{}
  let fb=c&&'firebase' in c?c.firebase:'auto';if(fb==='auto'){fb=null;try{const r=await fetch('/__/firebase/init.json',{cache:'no-store'});if(r.ok)fb=await r.json()}catch{}}
+ if(fb&&typeof c.authDomain==='string'&&/^[a-z0-9.-]+$/i.test(c.authDomain))fb={...fb,authDomain:c.authDomain};
  return CFG=fb&&fb.apiKey?{fb,appCheck:typeof c.appCheckSiteKey==='string'?c.appCheckSiteKey.trim():''}:null}
 let FB=null;
 async function fbInit(){if(FB)return FB;
@@ -521,11 +616,15 @@ async function fbInit(){if(FB)return FB;
   signOut:()=>Au.signOut(auth),onUser:cb=>Au.onAuthStateChanged(auth,cb),redirect:()=>Au.getRedirectResult(auth).catch(()=>null),
   load:async uid=>{const d=await F.getDoc(F.doc(db,'users',uid));return d.exists()?d.data():null},
   save:(uid,data)=>F.setDoc(F.doc(db,'users',uid),data),
+  report:r=>F.addDoc(F.collection(db,'reports'),{...r,t:F.serverTimestamp()}),
+  isAdmin:async uid=>{try{return(await F.getDoc(F.doc(db,'admins',uid))).exists()}catch{return false}},
+  listReports:async()=>(await F.getDocs(F.query(F.collection(db,'reports'),F.orderBy('t','desc'),F.limit(300)))).docs.map(d=>{const x=d.data();return{doc:d.id,id:x.id,af:x.af,nl:x.nl,note:x.note||'',by:x.by||'',t:x.t&&x.t.toMillis?x.t.toMillis():0}}),
+  delReport:doc=>F.deleteDoc(F.doc(db,'reports',doc)),
   remove:async uid=>{await F.deleteDoc(F.doc(db,'users',uid));const u=auth.currentUser;if(!u)return;try{await Au.deleteUser(u)}catch(e){if(/requires-recent-login/.test(e&&e.code||'')){await Au.reauthenticateWithPopup(u,new Au.GoogleAuthProvider());await Au.deleteUser(u)}else throw e}}};
  return FB}
 function cleanState(o){if(!o||typeof o!=='object'||Array.isArray(o))return null;const d=DEF(),r={};
  const obj=v=>v&&typeof v==='object'&&!Array.isArray(v),num=v=>typeof v==='number'&&isFinite(v),str=(v,m)=>typeof v==='string'&&v.length<=m;
- r.srs={};if(obj(o.srs))for(const[k,v]of Object.entries(o.srs)){if(/^-?\d{1,15}$/.test(k)&&obj(v)&&num(v.box)&&num(v.due))r.srs[k]={box:Math.max(0,Math.min(6,v.box|0)),due:v.due,...(num(v.t)?{t:v.t}:{})}}
+ r.srs={};if(obj(o.srs))for(const[k,v]of Object.entries(o.srs)){if(/^-?\d{1,15}$/.test(k)&&obj(v)&&num(v.box)&&num(v.due))r.srs[k]={box:Math.max(0,Math.min(6,v.box|0)),due:v.due,...(num(v.t)?{t:v.t}:{}),...(num(v.f)?{f:v.f}:{})}}
  r.days={};if(obj(o.days))for(const[k,v]of Object.entries(o.days))if(/^\d{4}-\d{2}-\d{2}$/.test(k)&&num(v))r.days[k]=Math.max(0,Math.min(100000,v|0));
  r.favs=Array.isArray(o.favs)?o.favs.filter(num).slice(0,10000):[];
  r.paths={};if(obj(o.paths))for(const[k,v]of Object.entries(o.paths))if(str(k,60)&&Array.isArray(v))r.paths[k]=v.filter(num).slice(0,100);
@@ -535,7 +634,8 @@ function cleanState(o){if(!o||typeof o!=='object'||Array.isArray(o))return null;
  r.reports=Array.isArray(o.reports)?o.reports.filter(x=>obj(x)&&num(x.id)).slice(0,2000).map(x=>({id:x.id,af:String(x.af||'').slice(0,120),nl:String(x.nl||'').slice(0,120),note:String(x.note||'').slice(0,500),t:num(x.t)?x.t:0})):[];
  r.streak=num(o.streak)?o.streak|0:0;r.last=str(o.last,10)&&/^\d{4}-\d{2}-\d{2}$|^$/.test(o.last)?o.last:'';
  r.theme=['auto','light','dark'].includes(o.theme)?o.theme:d.theme;r.goal=[10,15,25,40].includes(o.goal)?o.goal:d.goal;r.rate=[0.7,0.85,1].includes(o.rate)?o.rate:d.rate;
- r.startLv=['','Beginner','Intermediate','Advanced'].includes(o.startLv)?o.startLv:'';for(const k of['typed','lvDone','haptic'])r[k]=typeof o[k]==='boolean'?o[k]:d[k];
+ r.startLv=['','Beginner','Intermediate','Advanced'].includes(o.startLv)?o.startLv:'';r.games={};if(obj(o.games))for(const k of['mem','race'])if(num(o.games[k])&&o.games[k]>=0&&o.games[k]<1e4)r.games[k]=o.games[k]|0;
+ for(const k of['typed','lvDone','haptic','instHide'])r[k]=typeof o[k]==='boolean'?o[k]:d[k];
  r.lp=str(o.lp,60)?o.lp:'';for(const k of['mt','resetAt','cloud'])if(num(o[k]))r[k]=o[k];return Object.assign(d,r)}
 function mergeState(a,b){
  if(!b)return a;if((b.resetAt||0)>(a.mt||0))return Object.assign(DEF(),b);if((a.resetAt||0)>(b.mt||0))return a;
@@ -549,7 +649,8 @@ function mergeState(a,b){
  o.les={...(b.les||{})};for(const[k,v]of Object.entries(a.les||{}))o.les[k]=Math.max(o.les[k]??0,v);
  const own=new Map(),used=new Set();for(const x of[...(b.own||[]),...(a.own||[])]){const key=x.id+'|'+x.af;if(own.has(key))continue;let c={...x};if(used.has(c.id))c.id=-Date.now()-own.size-1;used.add(c.id);own.set(key,c)}o.own=[...own.values()];
  const rp=new Map();for(const r of[...(b.reports||[]),...(a.reports||[])])rp.set(r.id+'|'+r.t,r);o.reports=[...rp.values()];
- o.theme=a.theme;o.rate=a.rate;o.haptic=a.haptic;
+ const ga=a.games||{},gb=b.games||{};o.games={};if(ga.race!=null||gb.race!=null)o.games.race=Math.max(ga.race??0,gb.race??0);if(ga.mem!=null||gb.mem!=null)o.games.mem=Math.min(ga.mem??1e4,gb.mem??1e4);
+ o.theme=a.theme;o.rate=a.rate;o.haptic=a.haptic;o.instHide=a.instHide||b.instHide;
  o.mt=Math.max(a.mt||0,b.mt||0);o.cloud=1;return o}
 function applyState(n){S=n;for(let i=CARDS.length-1;i>=0;i--)if(CARDS[i].own)CARDS.splice(i,1);for(const o of S.own)CARDS.push(ownCard(o));resetCards();theme();
  try{localStorage.setItem(KEY,JSON.stringify(S))}catch{}if(['home','meer','oef'].includes(view))render()}
@@ -563,7 +664,7 @@ async function pull(){if(!cloud.user)return;cloud.status='saving';acctRefresh();
 async function startCloud(){if(cloud.started)return;cloud.started=1;
  try{const fb=await fbInit();cloud.avail=true;if(fb.redirect)await fb.redirect();
   fb.onUser(u=>{const was=cloud.user&&cloud.user.uid;cloud.user=u?{uid:u.uid,name:u.displayName||'',email:u.email||'',photo:u.photoURL||''}:null;
-   if(u&&was!==u.uid){S.cloud=1;pull()}else if(!u){S.cloud=0;cloud.status='';try{localStorage.setItem(KEY,JSON.stringify(S))}catch{}}acctRefresh()})}
+   if(u&&was!==u.uid){S.cloud=1;pull();cloud.admin=false;fb.isAdmin&&fb.isAdmin(u.uid).then(a=>{cloud.admin=!!a;acctRefresh()})}else if(!u){S.cloud=0;cloud.status='';try{localStorage.setItem(KEY,JSON.stringify(S))}catch{}}acctRefresh()})}
  catch(e){cloud.avail=false;cloud.started=0;cloud.loadErr=String(e&&e.message||e);acctRefresh()}}
 addEventListener('online',()=>{if(cloud.user&&cloud.status!=='ok')push()});
 function accountBox(){
@@ -571,7 +672,7 @@ function accountBox(){
  if(!cloud.avail)return'<div id="acct"></div>';
  const u=cloud.user,st={saving:'Bezig met opslaan…',ok:'Opgeslagen'+(cloud.at?' om '+new Date(cloud.at).toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'}):''),offline:'Offline. Wordt opgeslagen zodra je weer online bent.',error:'Opslaan lukte niet. Probeer het opnieuw.'}[cloud.status]||'';
  return`<div id="acct"><div class="sec">Account</div><div class="card stack">${u?`<div class="row"><span class="avatar">${u.photo?`<img src="${esc(u.photo)}" alt="" referrerpolicy="no-referrer">`:esc((u.name||u.email||'?')[0].toUpperCase())}</span><span class="grow"><b>${esc(u.name||'Ingelogd')}</b><span class="muted" style="display:block">${esc(u.email)}</span></span></div>
- <p class="muted" role="status">${st||'Je voortgang wordt bewaard in je account.'}</p><div class="row"><button class="btn soft" id="csync" style="box-shadow:inset 0 0 0 1.5px var(--hair)">Nu opslaan</button><button class="btn ghost" id="cout">Uitloggen</button></div><button class="linkbtn" id="cdel" style="color:var(--bad)">${I.trash}Account en cloudgegevens verwijderen</button>`
+ <p class="muted" role="status">${st||'Je voortgang wordt bewaard in je account.'}</p><div class="row"><button class="btn soft" id="csync" style="box-shadow:inset 0 0 0 1.5px var(--hair)">Nu opslaan</button><button class="btn ghost" id="cout">Uitloggen</button></div>${cloud.admin?`<button class="btn soft" data-a="beheer" style="box-shadow:inset 0 0 0 1.5px var(--hair)">${I.inbox}Meldingen beheren</button>`:''}<button class="linkbtn" id="cdel" style="color:var(--bad)">${I.trash}Account en cloudgegevens verwijderen</button>`
  :`<p>Log in met je Google-account om je voortgang te bewaren en op andere apparaten verder te gaan.</p><button class="btn" id="cin">${I.user}Inloggen met Google</button><p class="muted small">Alleen je leervoortgang wordt opgeslagen. Niemand anders kan hem lezen. <a href="privacy.html" style="color:var(--nl)">Privacyverklaring</a>.${cloud.loginErr?'<br><span style="color:var(--bad)">'+esc(cloud.loginErr)+'</span>':''}</p>`}</div></div>`}
 function acctRefresh(){if(view!=='meer')return;const el=$('#acct');if(!el)return;el.outerHTML=accountBox();bindAccount()}
 function bindAccount(){const i=$('#cin'),o=$('#cout'),y=$('#csync');
@@ -587,11 +688,12 @@ V.meer=()=>{const k=Object.values(S.srs),m=k.filter(r=>r.box>=4).length,nd=Objec
  const pathDone=Object.entries(S.paths).some(([id,a])=>{const p=PATHS().find(x=>x.id===id);return p&&a.length>=p.steps.length});
  const bd=[['Eerste stap',tot>0],['3 dagen op rij',streak()>=3],['7 dagen op rij',streak()>=7],['100 kaarten',k.length>=100],['500 kaarten',k.length>=500],['25 beheerst',m>=25],['10 dialogen',nd>=10],['Alle lessen',Object.keys(S.les).length>=N.les],['Pad voltooid',pathDone]];
  const seg=(key,opts)=>`<div class="seg">${opts.map(([v,l])=>`<button class="chip ${S[key]===v?'on':''}" data-s="${key}:${v}">${l}</button>`).join('')}</div>`;
- draw(`<h1>Meer</h1>${accountBox()}
+ draw(`<h1>Meer</h1>${installBox(false)}${accountBox()}
  <div class="card stats" style="margin-top:18px"><div><div class="big">${k.length}</div><div class="muted">gestart</div></div><div><div class="big">${m}</div><div class="muted">beheerst</div></div><div><div class="big">${S.favs.length}</div><div class="muted">favorieten</div></div></div>
+ <div class="list" style="margin-top:12px">${row('data-a="inzicht"',I.chart,'Inzicht','Per onderwerp, komende herhalingen en je tempo')}</div>
  <div class="sec">Je voortgang</div><div class="card">${calendar()}</div>
  <div class="sec">Mijlpalen</div><div class="card"><div class="chips wrap">${bd.map(b=>`<span class="chip ${b[1]?'on':'lock'}">${b[1]?I.check:I.medal}${b[0]}</span>`).join('')}</div></div>
- <div class="sec">Instellingen</div><div class="card set"><h2>Uiterlijk</h2>${seg('theme',[['auto','Automatisch'],['light','Licht'],['dark','Donker']])}<h2>Dagelijks doel</h2>${seg('goal',[[10,'10'],[15,'15'],[25,'25'],[40,'40']])}<h2>Antwoorden in de sessie</h2>${seg('typed',[[false,'Tikken'],[true,'Typen']])}<h2>Trillen bij fouten</h2>${seg('haptic',[[true,'Aan'],[false,'Uit']])}<h2>Spraaksnelheid</h2>${seg('rate',[[0.7,'Langzaam'],[0.85,'Rustig'],[1,'Normaal']])}<h2>Startniveau nieuwe kaarten</h2>${seg('startLv',[['Beginner','Beginner'],['Intermediate','Intermediate'],['Advanced','Advanced']])}<button class="btn ghost" data-a="toets" style="margin-top:12px">Niveautoets doen</button></div>
+ <div class="sec">Instellingen</div><div class="card set"><h2>Uiterlijk</h2>${seg('theme',[['auto','Automatisch'],['light','Licht'],['dark','Donker']])}<h2>Dagelijks doel</h2>${seg('goal',[[10,'10'],[15,'15'],[25,'25'],[40,'40']])}<h2>Antwoorden in de sessie</h2>${seg('typed',[[false,'Tikken'],[true,'Typen']])}<h2>Trillen bij fouten</h2>${seg('haptic',[[true,'Aan'],[false,'Uit']])}<h2>Spraaksnelheid</h2>${seg('rate',[[0.7,'Langzaam'],[0.85,'Rustig'],[1,'Normaal']])}${AFV===false?'<p class="muted small" style="margin-top:6px">Dit toestel heeft geen Afrikaanse stem; er wordt een Nederlandse stem gebruikt. <button class="linkbtn" data-a="klank" style="display:inline;padding:0;color:var(--nl)">Meer uitleg</button></p>':''}<h2>Startniveau nieuwe kaarten</h2>${seg('startLv',[['Beginner','Beginner'],['Intermediate','Intermediate'],['Advanced','Advanced']])}<button class="btn ghost" data-a="toets" style="margin-top:12px">Niveautoets doen</button></div>
  ${S.reports.length?`<div class="sec">Meldingen (${S.reports.length})</div><div class="card stack"><p class="muted">Kaarten waarvan je zei dat er iets niet klopt. Kopieer de lijst en stuur hem naar een nakijker.</p><textarea id="rpt" readonly aria-label="Meldingen">${esc(reportText())}</textarea><div class="row"><button class="btn soft" id="rpc" style="box-shadow:inset 0 0 0 1.5px var(--hair)">Kopiëren</button><button class="btn danger" id="rpx">Wissen</button></div><p class="muted" id="rpm" role="status"></p></div>`:''}
  <div class="sec">Back-up</div><div class="card stack"><p class="muted">Kopieer je voortgang, of plak een eerdere back-up om die terug te zetten.</p><textarea id="bk" aria-label="Back-up" placeholder="Plak hier je back-up"></textarea><div class="row"><button class="btn soft" id="cp" style="box-shadow:inset 0 0 0 1.5px var(--hair)">Kopiëren</button><button class="btn ghost" id="rs">Herstel</button></div><p class="muted" id="msg" role="status"></p></div>
  <div class="sec">Oude voortgang</div><div class="card stack"><p class="muted">Eerder een oudere versie van Afrikaans Master gebruikt op dit toestel? Neem je kaartvoortgang en favorieten over.</p><button class="btn soft" id="io" style="box-shadow:inset 0 0 0 1.5px var(--hair)">Voortgang overnemen</button><p class="muted" id="iom" role="status"></p></div>
@@ -619,6 +721,14 @@ document.addEventListener('click',e=>{const t=e.target;
  const rp=t.closest('[data-rep]');if(rp){e.stopPropagation();return report(+rp.dataset.rep)}
  const dl=t.closest('[data-del]');if(dl)return delOwn(+dl.dataset.del);
  if(t.closest('[data-lvskip]')){S.lvDone=true;saveNow();return V.home()}
+ if(t.closest('[data-inst]'))return doInstall();
+ if(t.closest('[data-insthide]')){S.instHide=true;saveNow();return render()}
+ const mi=t.closest('[data-mi]');if(mi&&view==='mem')return memTap(+mi.dataset.mi);
+ const ro=t.closest('[data-ro]');if(ro&&view==='race')return raceTap(ro.dataset.ro,ro);
+ const ag=t.closest('[data-again]');if(ag)return go(ag.dataset.again);
+ const ic_=t.closest('[data-icat]');if(ic_)return go('kaart',{cat:ic_.dataset.icat});
+ const rq=t.closest('[data-rq]');if(rq)return go('zoek',{q:rq.dataset.rq});
+ const rd=t.closest('[data-rdone]');if(rd&&view==='beheer')return reportDone(rd.dataset.rdone,rd);
  const s=t.closest('[data-s]');if(s){const[k,val]=s.dataset.s.split(':');S[k]=k==='goal'||k==='rate'?+val:val==='true'?true:val==='false'?false:val;if(k==='startLv'){S.lvDone=true;ORDER.reset()}saveNow();theme();if(k==='rate')speak('Goeiemôre, hoe gaan dit?');return V.meer()}
  const a=t.closest('[data-a]');if(a){const k=a.dataset.a;if(k.startsWith('mc:'))return go('mc',{kind:k.slice(3)});if(k==='back')return goBack();if(k==='stepdone')return stepDone();return go(k)}
  const ex=t.closest('[data-les],[data-ls],[data-lo],[data-pg],[data-t],[data-m],[data-tr],[data-rev],[data-fin],[data-play],[data-p],[data-step],[data-story]');if(!ex)return;const D=ex.dataset;

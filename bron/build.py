@@ -34,6 +34,16 @@ def emit(folder, name, ext, data):
         f.write(data)
     return BASE + rel
 
+# ---------- instellingen ----------
+cfg = json.load(open(src('config.json'), encoding='utf-8'))  # controleert meteen of het geldige JSON is
+assert set(cfg) <= {'firebase', 'appCheckSiteKey', 'siteUrl', 'authDomain'}, 'onbekende sleutel in config.json'
+SITE_URL = (cfg.get('siteUrl') or '').rstrip('/')
+assert not SITE_URL or re.match(r'^https://[a-z0-9.-]+$', SITE_URL), 'siteUrl moet zijn als https://www.voorbeeld.nl'
+if PREVIEW:
+    cfg = {'firebase': None, 'appCheckSiteKey': ''}
+    SITE_URL = ''
+cfg.pop('siteUrl', None)
+
 # ---------- data ----------
 d = json.load(open(src('data.json'), encoding='utf-8'))
 C = d['cards']
@@ -100,6 +110,9 @@ manifest = {
 open(os.path.join(OUT, 'manifest.webmanifest'), 'w', encoding='utf-8').write(j(manifest))
 
 # ---------- pagina's ----------
+CANON = (f'\n<link rel="canonical" href="{SITE_URL}/">\n<meta property="og:url" content="{SITE_URL}/">'
+         f'\n<meta property="og:image" content="{SITE_URL}/icons/icon-512.png">') if SITE_URL else ''
+NOINDEX = '\n<meta name="robots" content="noindex">' if PREVIEW else ''
 files_attr = j(FILES).replace('&', '&amp;').replace("'", '&#39;')
 head = f'''<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -118,10 +131,10 @@ index = f'''<!doctype html>
 {head}
 <title>Afrikaans Master – leer Afrikaans vanuit het Nederlands</title>
 <meta name="description" content="Gratis Afrikaans leren vanuit het Nederlands: woordkaarten, grammatica, dialogen, verhaaltjes, luisteroefeningen en leerpaden. Werkt ook offline.">
-<meta name="apple-mobile-web-app-title" content="Afrikaans Master">{'<meta name="robots" content="noindex">' if PREVIEW else ''}
+<meta name="apple-mobile-web-app-title" content="Afrikaans Master">{NOINDEX}
 <meta property="og:title" content="Afrikaans Master">
 <meta property="og:description" content="Leer Afrikaans vanuit het Nederlands: kaarten, grammatica, dialogen en verhaaltjes.">
-<meta property="og:type" content="website">
+<meta property="og:type" content="website">{CANON}
 <link rel="preload" href="{FILES['meta']}" as="fetch" crossorigin>
 <link rel="preload" href="{FILES['cards']}" as="fetch" crossorigin>
 <script defer src="{JS}"></script>
@@ -140,11 +153,13 @@ for page in ('privacy.html', '404.html'):
     t = read(page).replace('__BOOT__', BOOT).replace('__CSS__', CSS).replace('__DATUM__', today).replace('__BASE__', BASE)
     open(os.path.join(OUT, page), 'w', encoding='utf-8').write(t)
 
-open(os.path.join(OUT, 'robots.txt'), 'w').write('User-agent: *\n' + ('Disallow: /\n' if PREVIEW else 'Allow: /\n'))
-cfg = json.load(open(src('config.json'), encoding='utf-8'))  # controleert meteen of het geldige JSON is
-if PREVIEW:
-    cfg = {'firebase': None, 'appCheckSiteKey': ''}
-assert set(cfg) <= {'firebase', 'appCheckSiteKey'}, 'onbekende sleutel in config.json'
+robots = 'User-agent: *\n' + ('Disallow: /\n' if PREVIEW else 'Allow: /\n')
+if SITE_URL:
+    robots += f'Sitemap: {SITE_URL}/sitemap.xml\n'
+    open(os.path.join(OUT, 'sitemap.xml'), 'w', encoding='utf-8').write(
+        '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + ''.join(f'  <url><loc>{SITE_URL}/{p_}</loc></url>\n' for p_ in ('', 'privacy.html')) + '</urlset>\n')
+open(os.path.join(OUT, 'robots.txt'), 'w').write(robots)
 open(os.path.join(OUT, 'config.json'), 'w', encoding='utf-8').write(j(cfg))
 
 # ---------- headers voor andere hosts (Netlify, Cloudflare Pages) ----------

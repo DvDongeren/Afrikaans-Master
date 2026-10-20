@@ -22,7 +22,7 @@ gebruik je de Firebase-versie. (Eenmalig aanzetten: **Settings > Pages > Source:
 | Map / bestand        | Wat het is |
 |----------------------|------------|
 | `bron/`              | De broncode: app, opmaak, alle data, privacyverklaring, `build.py`. |
-| `bron/config.json`   | Instellingen voor inloggen en App Check (zie stap 6b). |
+| `bron/config.json`   | Instellingen voor inloggen, App Check en eigen domein (stap 6b en 9). |
 | `tests/`             | Automatische tests (`python3 tests/run_all.py`). |
 | `firebase.json`      | Hostinginstellingen met de beveiligingsheaders (CSP enzovoort). |
 | `firestore.rules`    | Databaseregels: iedereen kan alleen zijn eigen voortgang lezen en schrijven. |
@@ -110,6 +110,41 @@ Blaze, stel dan een budgetwaarschuwing in (Google Cloud > Billing > Budgets & al
 ## 7. Privacyverklaring invullen
 Open `bron/privacy.html` en vervang (of vraag Claude het te doen) `[JOUW NAAM]` en `[JOUW E-MAILADRES]`. Verplicht als anderen de site gebruiken (AVG).
 
+## 8. Meldingen ontvangen (beheerder worden)
+Bezoekers kunnen bij elke kaart melden dat er iets niet klopt. Die meldingen komen in de
+database terecht; alleen beheerders kunnen ze lezen.
+
+1. Open de site en log één keer in met Google (Meer > Inloggen met Google).
+2. Firebase-console > **Authentication** > **Users**: kopieer je **User UID**.
+3. **Firestore Database** > **Start collection** > Collection ID: `admins` > **Next**.
+4. Document ID: plak je UID. Voeg een veld toe, bijvoorbeeld `naam` (string) met je naam. **Save**.
+5. Herlaad de site. Onder Meer > Account staat nu **Meldingen beheren**: je ziet alle meldingen,
+   kunt de kaart opzoeken en een melding als afgehandeld wegklikken.
+
+Meldingen kunnen ook zonder account worden ingestuurd. Zet daarom App Check aan (stap 6b) om
+spam van buiten de site tegen te houden. Zonder Firebase (zoals op de voorbeeldversie) blijft
+een melding op het toestel van de gebruiker.
+
+## 9. Eigen domeinnaam
+1. Koop een domeinnaam bij een registrar naar keuze, bijvoorbeeld `afrikaansmaster.nl`.
+2. Firebase-console > **Hosting** > **Add custom domain**. Vul `www.afrikaansmaster.nl` in en
+   kies dat het kale domein (`afrikaansmaster.nl`) daarheen doorstuurt.
+3. Zet de DNS-records die Firebase toont bij je registrar. Het controleren en het
+   HTTPS-certificaat kunnen tot 24 uur duren.
+4. Voeg het domein toe aan:
+   - Authentication > Settings > **Authorized domains**;
+   - de API-sleutelbeperking (stap 6a): `https://www.afrikaansmaster.nl/*`;
+   - de reCAPTCHA-sleutel als je App Check gebruikt.
+5. Zet in `bron/config.json`:
+
+       "siteUrl": "https://www.afrikaansmaster.nl",
+       "authDomain": "www.afrikaansmaster.nl"
+
+   `siteUrl` zorgt voor een sitemap en de juiste vermelding in zoekmachines. `authDomain`
+   laat het inloggen via je eigen domein lopen, zodat het ook in Safari en Firefox goed werkt.
+   Laat beide leeg (`""`) zolang het domein nog niet werkt.
+6. Push de wijziging (of vraag Claude het te doen).
+
 ## Wat al ingebouwd is
 - **Strenge beveiligingsheaders**: een Content-Security-Policy die alleen scripts van de eigen
   site en van Google/Firebase toestaat, bescherming tegen inbedden in andere sites
@@ -148,8 +183,7 @@ en open http://localhost:8000. Inloggen werkt alleen op het echte webadres.
 - **Doorsturen werkt niet in Safari of Firefox.** Gebruik het adres op `.firebaseapp.com`, of
   zet bij een eigen domein in `bron/config.json` de volledige configuratie met
   `"authDomain": "jouw-eigen-domein.nl"` (zie hieronder). De pop-up werkt meestal overal.
-- **Eigen domein?** Koppel het via Hosting > **Add custom domain** en voeg het toe aan
-  *Authorized domains*, aan de API-sleutelbeperking en aan de reCAPTCHA-sleutel.
+- **Eigen domein?** Zie stap 9.
 
 ## Andere host dan Firebase (Netlify, Cloudflare Pages)
 Download de gebouwde site (Actions > laatste run > *Artifacts* > `website`) en upload die. Het bestand `public/_headers` bevat dezelfde

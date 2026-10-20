@@ -1,4 +1,6 @@
 {
   "firebase": "auto",
-  "appCheckSiteKey": ""
+  "appCheckSiteKey": "",
+  "siteUrl": "",
+  "authDomain": ""
 }
