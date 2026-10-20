@@ -21,7 +21,9 @@ gebruik je de Firebase-versie. (Eenmalig aanzetten: **Settings > Pages > Source:
 
 | Map / bestand        | Wat het is |
 |----------------------|------------|
-| `bron/`              | De broncode: app, opmaak, alle data, privacyverklaring, `build.py`. |
+| `bron/`              | De broncode: app (`bron/js/`), opmaak, alle data, privacyverklaring, `build.py`. |
+| `bron/tools/`        | Hulpscripts, onder meer voor de uitspraakbestanden. |
+| `docs/`              | Rapporten, zoals de taalcontrole. |
 | `bron/config.json`   | Instellingen voor inloggen, App Check en eigen domein (stap 6b en 9). |
 | `tests/`             | Automatische tests (`python3 tests/run_all.py`). |
 | `firebase.json`      | Hostinginstellingen met de beveiligingsheaders (CSP enzovoort). |
@@ -145,6 +147,24 @@ een melding op het toestel van de gebruiker.
    Laat beide leeg (`""`) zolang het domein nog niet werkt.
 6. Push de wijziging (of vraag Claude het te doen).
 
+## 10. Echte Afrikaanse uitspraak (aanbevolen)
+Veel telefoons hebben geen Afrikaanse voorleesstem en lezen dan met een Nederlandse stem voor.
+GitHub kan voor alle kaarten, zinnen en dialogen (ongeveer 8000 teksten) eenmalig geluidsbestanden
+maken met Google's Afrikaanse stem. Zolang dit niet aan staat, gebruikt de app de stem van het toestel.
+
+1. Google Cloud console (zelfde project) > **APIs & Services** > **Enable APIs** > zoek
+   **Cloud Text-to-Speech API** > **Enable**.
+2. Google vereist hiervoor een **factureringsaccount** (Billing). Je Firebase-project gaat daarmee
+   van Spark naar het Blaze-abonnement. Gebruik blijft gratis binnen de limieten: Text-to-Speech
+   geeft 4 miljoen tekens per maand gratis; alles maken kost ongeveer 125.000 tekens, daarna alleen
+   nieuwe teksten. **Stel meteen een budgetwaarschuwing in** (Billing > Budgets & alerts, bijv. € 1).
+3. Start bij **Actions** de workflow opnieuw. Bij de run staat hoeveel bestanden er gemaakt zijn.
+   Staat er een waarschuwing met "PERMISSION_DENIED"? Geef het service account `github-publiceren`
+   dan de rol die in de melding genoemd wordt (IAM > potloodje > Add another role).
+
+De bestanden worden tussen runs bewaard, dus alleen nieuwe of gewijzigde teksten worden aangevraagd.
+Per run wordt maximaal 600.000 tekens aangevraagd, ruim binnen de gratis hoeveelheid.
+
 ## Wat al ingebouwd is
 - **Strenge beveiligingsheaders**: een Content-Security-Policy die alleen scripts van de eigen
   site en van Google/Firebase toestaat, bescherming tegen inbedden in andere sites
@@ -163,7 +183,8 @@ een melding op het toestel van de gebruiker.
 
 ## Bijwerken
 Wijzig de bestanden in `bron/` en push naar `main`; de rest gaat automatisch.
-Lokaal controleren kan met `python3 bron/build.py` en `python3 tests/run_all.py`
+Bij elke run meet GitHub ook snelheid en toegankelijkheid (Lighthouse); de scores staan als
+melding bij de run. Lokaal controleren kan met `python3 bron/build.py` en `python3 tests/run_all.py`
 (eenmalig nodig: `pip install playwright` en `python3 -m playwright install chromium`).
 
 ## Lokaal testen

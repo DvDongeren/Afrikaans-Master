@@ -29,4 +29,4 @@ def start(port=8765):
     s=http.server.ThreadingHTTPServer(('127.0.0.1',port),functools.partial(H,directory=ROOT+'/public'))
     threading.Thread(target=s.serve_forever,daemon=True).start();return s
 if __name__=='__main__':
-    start(int(sys.argv[1]) if len(sys.argv)>1 else 8765);threading.Event().wait()
+    start(int(sys.argv[1]) if len(sys.argv)>1 else 8765);print('klaar: server draait',flush=True);threading.Event().wait()

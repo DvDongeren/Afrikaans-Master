@@ -8,7 +8,7 @@ Elk bestand krijgt een versiecode in de naam (bijv. app.3f9a1c2e.js). Browsers e
 service worker mogen die bestanden daardoor een jaar bewaren; na een wijziging verandert
 de naam vanzelf en haalt iedereen de nieuwe versie op.
 """
-import base64, datetime, hashlib, json, os, re, shutil, sys
+import base64, datetime, hashlib, json, os, re, shutil, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 BASE = os.environ.get('SITE_BASE', '/').rstrip('/') + '/'  # bijv. /Afrikaans-Master/ voor GitHub Pages
@@ -44,25 +44,32 @@ if PREVIEW:
     SITE_URL = ''
 cfg.pop('siteUrl', None)
 
+# ---------- uitspraakbestanden (gemaakt door tools/maak_uitspraak.py) ----------
+sys.path.insert(0, src('tools'))
+from uitspraak import ahash, teksten
+AUDIO_SRC = os.environ.get('AUDIO_DIR') or os.path.join(HERE, '..', 'audio-cache')
+
 # ---------- data ----------
 d = json.load(open(src('data.json'), encoding='utf-8'))
 C = d['cards']
 lv = ['Beginner', 'Intermediate', 'Advanced']
 cat = sorted({c['categorie'] for c in C})
-rows = []
+rows = {0: [], 1: [], 2: []}
 for c in C:
     f = [str(c['id']), str(lv.index(c['niveau'])), str(cat.index(c['categorie'])), c['nl'], c['af'], c['voorbeeld']]
     if c.get('tips'):
         f.append(c['tips'])
     assert not any(('\t' in x or '\n' in x) for x in f), c['id']
-    rows.append('\t'.join(f))
+    rows[lv.index(c['niveau'])].append('\t'.join(f))
 X = dict(d['extd'])
 FACTS = X.pop('FACTS')
 n = {'les': len(d['lesd']), 'bs': len(X['BS']), 'nie': len(X['NIE']), 'vv': len(d['vvd']['VV']), 'dlg': len(d['dlgd']),
      'st': len(d['vvd']['ST']), 'reis': len(X['REIS']), 'wa': len(X['WA']), 'menu': len(X['MENU']), 'sl': len(X['SL'])}
 FILES = {
     'meta': emit('data', 'meta', 'json', j({'lv': lv, 'cat': cat, 'n': n})),
-    'cards': emit('data', 'cards', 'txt', '\n'.join(rows)),
+    'cards0': emit('data', 'cards0', 'txt', '\n'.join(rows[0])),
+    'cards1': emit('data', 'cards1', 'txt', '\n'.join(rows[1])),
+    'cards2': emit('data', 'cards2', 'txt', '\n'.join(rows[2])),
     'facts': emit('data', 'facts', 'json', j(FACTS)),
     'paths': emit('data', 'paths', 'json', j(d['pathd'])),
     'dlg': emit('data', 'dlg', 'json', j(d['dlgd'])),
@@ -82,13 +89,23 @@ fontcss = '/* Lora (c) The Lora Project Authors, SIL Open Font License 1.1 */' +
     for w, s, p in fonts.values())
 
 # ---------- css en js ----------
-css = read('app.css')
-css = re.sub(r'/\*.*?\*/', '', css, flags=re.S)
-css = re.sub(r'\s*\n\s*', '', css)
-CSS = emit('assets', 'app', 'css', fontcss + css)
-js = read('app.js')
-js = '\n'.join(l for l in js.split('\n') if not re.match(r'\s*/\*.*\*/\s*$', l))
-JS = emit('assets', 'app', 'js', js)
+ESBUILD = shutil.which('esbuild')
+def minify(code, loader):
+    """Echt verkleinen met esbuild als dat geïnstalleerd is (zoals op GitHub); anders eenvoudig."""
+    if ESBUILD:
+        r = subprocess.run([ESBUILD, '--minify', '--loader=' + loader, '--log-level=warning'],
+                           input=code.encode('utf-8'), capture_output=True)
+        if r.returncode == 0:
+            return r.stdout.decode('utf-8')
+        sys.exit('esbuild faalde: ' + r.stderr.decode('utf-8'))
+    if loader == 'css':
+        code = re.sub(r'/\*.*?\*/', '', code, flags=re.S)
+        return re.sub(r'\s*\n\s*', '', code)
+    return '\n'.join(l for l in code.split('\n') if not re.match(r'\s*/\*.*\*/\s*$', l))
+JS_PARTS = sorted(f for f in os.listdir(src('js')) if f.endswith('.js')) if os.path.isdir(src('js')) else []
+js_src = '\n'.join(read(os.path.join('js', f)) for f in JS_PARTS) if JS_PARTS else read('app.js')
+CSS = emit('assets', 'app', 'css', minify(fontcss + read('app.css'), 'css'))
+JS = emit('assets', 'app', 'js', minify(js_src, 'js'))
 BOOT = emit('assets', 'boot', 'js', read('boot.js'))
 
 # ---------- iconen ----------
@@ -136,7 +153,7 @@ index = f'''<!doctype html>
 <meta property="og:description" content="Leer Afrikaans vanuit het Nederlands: kaarten, grammatica, dialogen en verhaaltjes.">
 <meta property="og:type" content="website">{CANON}
 <link rel="preload" href="{FILES['meta']}" as="fetch" crossorigin>
-<link rel="preload" href="{FILES['cards']}" as="fetch" crossorigin>
+<link rel="preload" href="{FILES['cards0']}" as="fetch" crossorigin>
 <script defer src="{JS}"></script>
 </head>
 <body>
@@ -160,6 +177,15 @@ if SITE_URL:
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         + ''.join(f'  <url><loc>{SITE_URL}/{p_}</loc></url>\n' for p_ in ('', 'privacy.html')) + '</urlset>\n')
 open(os.path.join(OUT, 'robots.txt'), 'w').write(robots)
+n_audio = 0
+if os.path.isdir(AUDIO_SRC):
+    os.makedirs(os.path.join(OUT, 'audio'), exist_ok=True)
+    for t in teksten(d):
+        f = ahash(t) + '.mp3'
+        if os.path.exists(os.path.join(AUDIO_SRC, f)):
+            shutil.copy(os.path.join(AUDIO_SRC, f), os.path.join(OUT, 'audio', f)); n_audio += 1
+if n_audio:
+    cfg['audio'] = True
 open(os.path.join(OUT, 'config.json'), 'w', encoding='utf-8').write(j(cfg))
 
 # ---------- headers voor andere hosts (Netlify, Cloudflare Pages) ----------
@@ -172,6 +198,7 @@ if os.path.exists(fbj) and BASE == '/':
     parts = [block('/*', find('**'))]
     parts += [block(p_, find('/@(assets|data)/**')) for p_ in ('/assets/*', '/data/*')]
     parts += [block('/icons/*', find('/icons/**'))]
+    parts += [block('/audio/*', find('/audio/**'))]
     parts += [block(p_, nc) for p_ in ('/', '/index.html', '/sw.js', '/config.json', '/manifest.webmanifest', '/privacy.html')]
     open(os.path.join(OUT, '_headers'), 'w', encoding='utf-8').write('\n'.join(parts))
 
@@ -183,4 +210,4 @@ sw = read('sw.template.js').replace('__VERSION__', version).replace('__BASE__', 
 open(os.path.join(OUT, 'sw.js'), 'w', encoding='utf-8').write(sw)
 
 total = sum(os.path.getsize(os.path.join(r, f)) for r, _, fs in os.walk(OUT) for f in fs)
-print(f'klaar: {OUT}  ({total // 1024} KB, versie {version})')
+print(f'klaar: {OUT}  ({total // 1024} KB, versie {version}, uitspraak: {n_audio} bestanden, verkleinen: {"esbuild" if ESBUILD else "eenvoudig"})')

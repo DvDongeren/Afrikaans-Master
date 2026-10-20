@@ -42,7 +42,7 @@ with sync_playwright() as p:
     ctx,pg=page(b)
     pg.click('#nav [data-v=oef]'); pg.click('[data-a=spel]'); pg.click('[data-a=mem]'); pg.wait_for_selector('.mem')
     pg.screenshot(path='x_mem.png')
-    pairs=pg.evaluate("async()=>{const F=JSON.parse(document.getElementById('app').dataset.files);const t=await (await fetch(F.cards)).text();const m={};for(const r of t.split('\\n')){const f=r.split('\\t');if(f.length>4){(m[f[4]]=m[f[4]]||[]).push(f[3]);(m[f[3]]=m[f[3]]||[]).push(f[4])}}return m}")
+    pairs=pg.evaluate("async()=>{const F=JSON.parse(document.getElementById('app').dataset.files);const t=(await Promise.all(['cards0','cards1','cards2'].map(n=>fetch(F[n]).then(r=>r.text())))).join('\\n');const m={};for(const r of t.split('\\n')){const f=r.split('\\t');if(f.length>4){(m[f[4]]=m[f[4]]||[]).push(f[3]);(m[f[3]]=m[f[3]]||[]).push(f[4])}}return m}")
     seen={}
     for _ in range(60):
         if pg.locator('.result').count(): break

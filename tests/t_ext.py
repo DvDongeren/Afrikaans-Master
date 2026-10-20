@@ -44,7 +44,7 @@ with sync_playwright() as p:
     # typen in sessie
     pg.click('#nav [data-v=meer]'); pg.click('[data-s="typed:true"]'); print('typed:',pg.evaluate("JSON.parse(localStorage.getItem('af2')).typed"))
     pg.click('#nav [data-v=home]'); pg.click('[data-a=sess]')
-    af=pg.evaluate("async(nl)=>{const F=JSON.parse(document.getElementById('app').dataset.files);return (await (await fetch(F.cards)).text()).split('\\n').map(r=>r.split('\\t')).find(f=>f[3]===nl)[4]}",pg.inner_text('.fc .big'))
+    af=pg.evaluate("async(nl)=>{const F=JSON.parse(document.getElementById('app').dataset.files);return (await Promise.all(['cards0','cards1','cards2'].map(n=>fetch(F[n]).then(r=>r.text())))).join('\\n').split('\\n').map(r=>r.split('\\t')).find(f=>f[3]===nl)[4]}",pg.inner_text('.fc .big'))
     pg.fill('#ta',af.split(' / ')[0].upper()); pg.click('#tf button[type=submit]'); print('typen goed herkend (hoofdletters):','Goed' in pg.inner_text('.fc'))
     pg.click('[data-g="1"]'); pg.fill('#ta','xyz'); pg.click('#tf button[type=submit]'); print('fout herkend:','Jij typte' in pg.inner_text('.fc')); pg.screenshot(path='e_typed.png')
     pg.click('[data-g="0"]'); pg.click('#tskip'); print('weet niet ->antwoord zichtbaar:',pg.query_selector('[data-g="1"]') is not None)

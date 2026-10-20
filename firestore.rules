@@ -44,6 +44,24 @@ service cloud.firestore {
       allow read, delete: if isAdmin();
     }
 
+    // Technische fouten uit de app (zonder persoonsgegevens): aanmaken mag, lezen alleen beheerders.
+    function validError() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['k', 'm', 's', 'v', 'ver', 'b', 't'])
+        && d.keys().hasAll(['k', 'm', 't'])
+        && d.k in ['error', 'promise']
+        && d.m is string && d.m.size() > 0 && d.m.size() <= 300
+        && (!('s' in d) || (d.s is string && d.s.size() <= 800))
+        && (!('v' in d) || (d.v is string && d.v.size() <= 20))
+        && (!('ver' in d) || (d.ver is string && d.ver.size() <= 20))
+        && (!('b' in d) || (d.b is string && d.b.size() <= 30))
+        && d.t == request.time;
+    }
+    match /errors/{errorId} {
+      allow create: if validError();
+      allow read, delete: if isAdmin();
+    }
+
     // Beheerders: maak in de Firebase-console een document admins/{jouw-uid} aan.
     // Alleen jijzelf mag controleren of je beheerder bent; niemand kan zichzelf toevoegen.
     match /admins/{userId} {

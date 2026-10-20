@@ -13,7 +13,7 @@ with sync_playwright() as p:
     for i in range(12):
         pg.wait_for_selector('.opt:not([disabled])')
         nl=pg.inner_text('.q .big')
-        good=pg.evaluate("async(nl)=>{const F=JSON.parse(document.getElementById('app').dataset.files);const r=(await (await fetch(F.cards)).text()).split('\\n').map(x=>x.split('\\t')).filter(f=>f[3]===nl);return r.map(f=>f[4])}",nl)
+        good=pg.evaluate("async(nl)=>{const F=JSON.parse(document.getElementById('app').dataset.files);const r=(await Promise.all(['cards0','cards1','cards2'].map(n=>fetch(F[n]).then(r=>r.text())))).join('\\n').split('\\n').map(x=>x.split('\\t')).filter(f=>f[3]===nl);return r.map(f=>f[4])}",nl)
         lvl=i//4
         if lvl<2:
             opts=pg.eval_on_selector_all('.opt','e=>e.map(x=>x.dataset.o)'); tgt=[o for o in opts if o in good][0]
@@ -23,7 +23,7 @@ with sync_playwright() as p:
     print('toets uitslag:',pg.inner_text('.score'),'| startLv:',pg.evaluate("JSON.parse(localStorage.getItem('af2')).startLv"))
     pg.screenshot(path='f_toets.png')
     pg.click('[data-a=sess]'); nl=pg.inner_text('.fc .big')
-    lv=pg.evaluate("async(nl)=>{const F=JSON.parse(document.getElementById('app').dataset.files);const m=await (await fetch(F.meta)).json();const f=(await (await fetch(F.cards)).text()).split('\\n').map(x=>x.split('\\t')).find(f=>f[3]===nl);return m.lv[+f[1]]}",nl)
+    lv=pg.evaluate("async(nl)=>{const F=JSON.parse(document.getElementById('app').dataset.files);const m=await (await fetch(F.meta)).json();const f=(await Promise.all(['cards0','cards1','cards2'].map(n=>fetch(F[n]).then(r=>r.text())))).join('\\n').split('\\n').map(x=>x.split('\\t')).find(f=>f[3]===nl);return m.lv[+f[1]]}",nl)
     print('eerste nieuwe kaart in sessie heeft niveau:',lv)
     # 2. sneltoetsen + meldknop in sessie
     pg.keyboard.press('Space'); print('spatie draait om:',pg.query_selector('[data-g]') is not None)
