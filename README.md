@@ -65,6 +65,7 @@ GitHub heeft een sleutel nodig waarmee het (alleen) op dit Firebase-project mag 
    - **Firebase Hosting Admin**
    - **Firebase Rules Admin**
    - **API Keys Viewer**
+   - **Service Usage Consumer** (nodig om te controleren of Firestore aanstaat)
 
    Klik **Done**.
 4. Klik op het nieuwe account > tab **Keys** > **Add key** > **Create new key** > **JSON** > **Create**.
