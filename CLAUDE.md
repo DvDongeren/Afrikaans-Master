@@ -1,0 +1,19 @@
+# Afrikaans Master
+
+Leerwebsite Afrikaans vanuit het Nederlands. Vanilla JS, geen framework, geen npm-afhankelijkheden.
+De eigenaar schrijft Nederlands; antwoord in het Nederlands.
+
+## Opbouw
+- `bron/app.js`, `bron/app.css` — de app (views in `V.*`, staat in `S`, opgeslagen in localStorage `af2`).
+- `bron/data.json` — alle kaarten, dialogen, paden, lessen, extra's.
+- `bron/build.py` — bouwt `public/` (bestanden met hash in de naam, sw.js, manifest, _headers). `public/` staat niet in git.
+- `bron/config.json` — `{"firebase": "auto" | null | {config}, "appCheckSiteKey": ""}`.
+- `firebase.json` — hosting + beveiligingsheaders (strenge CSP: geen inline scripts toevoegen!).
+- `firestore.rules` — alleen eigenaar; doc `users/{uid}` = `{data, mt, v}`.
+- `tests/` — Playwright-tests; `python3 tests/run_all.py` start zelf een server die de headers van firebase.json toepast.
+
+## Werkwijze
+1. Wijzig in `bron/`, draai `python3 bron/build.py` en `python3 tests/run_all.py`.
+2. Commit en push naar `main`. GitHub Actions bouwt, test en publiceert naar Firebase
+   (geheim `FIREBASE_SERVICE_ACCOUNT`). Faalt een test, dan wordt er niet gepubliceerd.
+3. Afrikaanse inhoud: controleer twijfelgevallen online (bijv. DSAE, WAT) voordat je iets wijzigt.

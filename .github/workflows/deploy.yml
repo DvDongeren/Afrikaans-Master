@@ -1,0 +1,63 @@
+# Bouwt de website, test hem en zet hem live op Firebase.
+# Draait bij elke wijziging op main. Faalt een test, dan blijft de oude site online.
+name: Bouwen, testen en publiceren
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Website bouwen
+        run: python3 bron/build.py
+
+      - name: JavaScript controleren
+        run: node --check bron/app.js
+
+      - name: Testbrowser installeren
+        run: |
+          pip install playwright==1.56.0
+          python3 -m playwright install --with-deps chromium
+
+      - name: Tests draaien
+        run: python3 tests/run_all.py
+
+      - name: Gebouwde site bewaren (downloadbaar bij deze run)
+        uses: actions/upload-artifact@v4
+        with:
+          name: website
+          path: public/
+          retention-days: 30
+
+      - name: Publiceren op Firebase
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          if [ -z "$SA" ]; then
+            echo "::warning::Geheim FIREBASE_SERVICE_ACCOUNT ontbreekt nog; de site is gebouwd en getest maar niet gepubliceerd. Zie LEESMIJ.md."
+            exit 0
+          fi
+          printf '%s' "$SA" > "$RUNNER_TEMP/sa.json"
+          PROJECT=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['project_id'])" "$RUNNER_TEMP/sa.json")
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json"
+          npx --yes firebase-tools@14 deploy --only hosting,firestore:rules --project "$PROJECT" --non-interactive --message "GitHub ${GITHUB_SHA::7}"
+          rm -f "$RUNNER_TEMP/sa.json"

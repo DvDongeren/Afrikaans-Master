@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Een document per gebruiker: users/{uid} = { data: tekst, mt: tijdstip, v: versie }.
+    // Alleen de eigenaar mag lezen, schrijven en verwijderen; vorm en grootte worden gecontroleerd.
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+    function validDoc() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['data', 'mt', 'v'])
+        && d.keys().hasAll(['data', 'mt', 'v'])
+        && d.data is string && d.data.size() < 900000
+        && d.mt is number
+        && d.v is int && d.v >= 1 && d.v <= 10;
+    }
+
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create, update: if isOwner(userId) && validDoc();
+      allow delete: if isOwner(userId);
+    }
+
+    // Al het andere is dicht (ook lijsten van alle gebruikers opvragen).
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
