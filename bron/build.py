@@ -59,6 +59,7 @@ FILES = {
     'les': emit('data', 'les', 'json', j(d['lesd'])),
     'ext': emit('data', 'ext', 'json', j(X)),
     'vv': emit('data', 'vv', 'json', j(d['vvd'])),
+    'media': emit('data', 'media', 'json', j(d['mediad'])),
 }
 
 # ---------- lettertype ----------

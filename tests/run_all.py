@@ -5,7 +5,7 @@ s=socket.socket()
 if s.connect_ex(('127.0.0.1',8765))!=0: serve.start(8765)
 s.close()
 ok=True
-for t in (sys.argv[1:] or 't_new t_dlg t_gram t_vv t_ext t_feat t_swipe t_cloud t_sw'.split()):
+for t in (sys.argv[1:] or 't_new t_dlg t_gram t_vv t_ext t_feat t_swipe t_cloud t_sw t_media'.split()):
     r=subprocess.run([sys.executable,t+'.py'],capture_output=True,text=True,timeout=600)
     last=(r.stdout.strip().splitlines() or [''])[-1]
     good=r.returncode==0 and last.endswith('[]') or last.endswith('[] [] []')

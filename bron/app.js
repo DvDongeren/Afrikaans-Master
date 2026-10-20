@@ -6,7 +6,7 @@ const FILES=JSON.parse(document.getElementById('app').dataset.files||'{}'),D={},
 function load(n){return PR[n]||(PR[n]=fetch(FILES[n],{credentials:'same-origin'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return n==='cards'?r.text():r.json()}).then(v=>(D[n]=v)).catch(e=>{delete PR[n];throw e}))}
 function parseCards(t,m){const R=t.split('\n'),o=[],lv=m.lv,ct=m.cat;for(const r of R){if(!r)continue;const f=r.split('\t');o.push({id:+f[0],niveau:lv[+f[1]],categorie:ct[+f[2]],nl:f[3],af:f[4],voorbeeld:f[5],tips:f[6]||''})}return o}
 let META={lv:[],cat:[],n:{}},CARDS=[],N={};
-const DLG=()=>D.dlg,PATHS=()=>D.paths,LES=()=>D.les,X=()=>D.ext,Y=()=>D.vv,FACTS=()=>D.facts;
+const DLG=()=>D.dlg,PATHS=()=>D.paths,LES=()=>D.les,X=()=>D.ext,Y=()=>D.vv,FACTS=()=>D.facts,MED=()=>D.media;
 const TESTHOOK=location.protocol==='file:'||/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
 
 /* ---------- helpers ---------- */
@@ -89,6 +89,7 @@ zin:ic('<rect x="2.5" y="5.5" width="8" height="5.5" rx="1.6"/><rect x="13.5" y=
 nie:ic('<circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/>'),
 vv:ic('<path d="M4 8h14l-3.5-3.5M20 16H6l3.5 3.5"/>'),
 story:ic('<path d="M2.5 5.5c3-1.2 6.2-1 9.5 1 3.3-2 6.5-2.2 9.5-1V19c-3-1.2-6.2-1-9.5 1-3.3-2-6.5-2.2-9.5-1z"/><path d="M12 6.5V20"/>'),
+media:ic('<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>'),
 reis:ic('<rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M9 7V5.5A1.5 1.5 0 0110.5 4h3A1.5 1.5 0 0115 5.5V7M3 12h18"/>'),
 cult:ic('<path d="M2 20h20"/><path d="M3.5 20L7 10h10l3.5 10"/><path d="M7 10l2-2h6l2 2"/>'),
 wa:ic('<rect x="6" y="2.5" width="12" height="19" rx="2.6"/><path d="M10.5 18.5h3"/>'),
@@ -110,12 +111,12 @@ let view='home',st={};
 const NAV=[['home','Home',I.home],['oef','Oefen',I.oef],['paden','Paden',I.pad],['kaart','Kaarten',I.kaart],['zoek','Zoeken',I.search],['meer','Meer',I.meer]];
 const navEl=document.getElementById('nav');
 navEl.innerHTML=NAV.map(([k,l,i])=>`<button data-v="${k}" ${k==='zoek'?'class="desk"':''}>${i}<span>${l}</span></button>`).join('');
-const PARENT={sess:'oef',quiz:'oef',dlgs:'oef',dlg:'oef',gram:'oef',les:'oef',mc:'oef',zin:'oef',reis:'oef',cult:'oef',vv:'oef',stories:'oef',story:'oef',path:'paden',luister:'oef',weak:'oef',toets:'home',own:'kaart',zoek:'zoek'};
+const PARENT={sess:'oef',quiz:'oef',dlgs:'oef',dlg:'oef',gram:'oef',les:'oef',mc:'oef',zin:'oef',reis:'oef',cult:'oef',media:'oef',vv:'oef',stories:'oef',story:'oef',path:'paden',luister:'oef',weak:'oef',toets:'home',own:'kaart',zoek:'zoek'};
 function setNav(){const cur=st&&st.ret?'paden':PARENT[view]||view;for(const b of navEl.children){const on=b.dataset.v===cur;b.classList.toggle('on',on);on?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')}}
 function go(v,s){view=v;st=s||{};render();scrollTo(0,0)}
 const V={};
 const WIDE=new Set(['home','oef','kaart','paden','zoek','vv','gram','dlgs','stories','cult','reis','path']);
-const DEPS={home:['facts','paths'],paden:['paths'],path:['paths','les','dlg'],dlgs:['dlg'],dlg:['dlg'],gram:['les'],les:['les'],mc:['ext','vv'],zin:['ext'],reis:['ext'],cult:['ext','facts'],vv:['vv'],stories:['vv'],story:['vv'],luister:['ext','dlg'],zoek:['dlg','vv','les','ext','paths'],meer:['paths']};
+const DEPS={home:['facts','paths'],paden:['paths'],path:['paths','les','dlg'],dlgs:['dlg'],dlg:['dlg'],gram:['les'],les:['les'],mc:['ext','vv'],zin:['ext'],reis:['ext'],cult:['ext','facts'],media:['media'],vv:['vv'],stories:['vv'],story:['vv'],luister:['ext','dlg'],zoek:['dlg','vv','les','ext','paths','media'],meer:['paths']};
 function render(){setNav();app.className=WIDE.has(view)?'wide':'focus';const need=(DEPS[view]||[]).filter(n=>!D[n]);
  if(need.length){const v=view,s0=st;app.innerHTML='<p class="loading" role="status">Laden…</p>';Promise.all(need.map(load)).then(()=>{if(view===v&&st===s0)render()},loadError);return}
  (V[view]||V.home)()}
@@ -166,7 +167,8 @@ V.oef=()=>{const lv=st.lv||'Alles';
  ${row('data-a="dlgs"',I.dlg,'Dialogen',N.dlg+' gesprekken, ook als rollenspel')}
  ${row('data-a="stories"',I.story,'Verhaaltjes',N.st+' verhalen met woordhulp')}
  ${row('data-a="reis"',I.reis,'Reisgids',N.reis+' handige zinnen')}
- ${row('data-a="cult"',I.cult,'Cultuur','Weetjes en lokale woorden')}</div>
+ ${row('data-a="cult"',I.cult,'Cultuur','Weetjes en lokale woorden')}
+ ${row('data-a="media"',I.media,'Muziek, films en series','Afrikaans luisteren en kijken, gratis of betaald')}</div>
 </section><section><div class="sec">In de praktijk</div><div class="list">
  ${row('data-a="mc:wa"',I.wa,'WhatsApp',N.wa+' chats: kies het beste antwoord')}
  ${row('data-a="mc:menu"',I.menu,'Restaurant',N.menu+' menu\'s om van te bestellen')}
@@ -331,6 +333,26 @@ V.cult=()=>{st.tab=st.tab||'weetjes';const x=X();let body='';
  draw(`${back('oef','Oefenen')}<h1>Cultuur</h1><div class="seg" id="ct" style="margin:16px 0">${[['weetjes','Weetjes'],['za','ZA vandaag'],['termen','Lokale woorden']].map(t=>`<button class="chip ${st.tab===t[0]?'on':''}" data-ct="${t[0]}">${t[1]}</button>`).join('')}</div>${body}`);
  $('#ct').onclick=e=>{const b=e.target.closest('[data-ct]');if(b){st.tab=b.dataset.ct;V.cult()}}};
 
+/* ---------- muziek, films en series ---------- */
+const ext=(u,l,cls='')=>`<a class="chip ${cls}" href="${esc(u)}" target="_blank" rel="noopener noreferrer">${l}<span class="sr"> (opent in nieuw venster)</span></a>`;
+const enc=encodeURIComponent,YT=q=>'https://www.youtube.com/results?search_query='+enc(q),SP=q=>'https://open.spotify.com/search/'+enc(q),JW=q=>'https://www.justwatch.com/nl/search?q='+enc(q);
+V.media=()=>{const m=MED();st.tab=st.tab||'muziek';st.lv=st.lv||'';let body='';
+ const lvl=l=>`<span class="tag ${l.startsWith('Makkelijk')?'ok':l.startsWith('Lastig')?'hard':''}">${esc(l)}</span>`;
+ const title=x=>`<div class="card media"><div class="mh"><h2 class="af">${esc(x.t)}</h2>${lvl(x.lv)}</div><div class="muted small">${esc(x.g)}${x.j?' · '+x.j:''}</div><p>${esc(x.d)}</p><div class="chips wrap mlinks">${ext(JW(x.t),'Waar te zien','on')}${ext(YT(x.t+' trailer'),'Trailer')}</div></div>`;
+ const filt=list=>{const L=st.lv?list.filter(x=>x.lv.startsWith(st.lv)):list;return`<div class="seg" id="mlv" style="margin:0 0 14px">${[['','Alle'],['Makkelijk','Makkelijk'],['Gemiddeld','Gemiddeld'],['Lastig','Kaaps']].map(([v,l])=>`<button class="chip ${st.lv===v?'on':''}" data-lv="${v}">${l}</button>`).join('')}</div><div class="stack">${L.map(title).join('')}</div>`};
+ if(st.tab==='muziek'){const G=[...new Set(m.muziek.map(x=>x.g))];
+  body=G.map(g=>`<section><div class="sec">${esc(g)}</div><div class="stack">${m.muziek.filter(x=>x.g===g).map(x=>`<div class="card media"><h2 class="af">${esc(x.n)}</h2><p>${esc(x.d)}</p>${x.s?`<p class="small"><span class="muted">Begin met:</span> <span class="af">${esc(x.s)}</span></p>`:''}<div class="chips wrap mlinks">${ext(SP(x.n),'Spotify','on')}${ext(YT(x.n+(x.s?' '+x.s:'')),'YouTube')}</div></div>`).join('')}</div></section>`).join('')}
+ else if(st.tab==='films')body=filt(m.films);
+ else if(st.tab==='series')body=filt(m.series);
+ else body=`<section><div class="sec">Gratis</div><div class="stack">${m.gratis.map(x=>`<div class="card media"><div class="mh"><h2>${esc(x.n)}</h2><span class="tag ok">Gratis</span></div><p>${esc(x.d)}</p><div class="chips mlinks">${ext(x.url,'Openen','on')}</div></div>`).join('')}</div></section>
+  <section><div class="sec">Betaald</div><div class="stack">${m.betaald.map(x=>`<div class="card media"><div class="mh"><h2>${esc(x.n)}</h2>${x.n==='JustWatch'?'<span class="tag ok">Gratis hulpmiddel</span>':'<span class="tag">Betaald</span>'}</div><p>${esc(x.d)}</p><div class="chips mlinks">${ext(x.url,'Openen','on')}</div></div>`).join('')}</div></section>
+  <p class="muted small" style="margin-top:14px">Waar een film of serie te zien is, verandert vaak. Daarom linken we naar zoekpagina's in plaats van naar vaste adressen.</p>`;
+ draw(`${back('oef','Oefenen')}<h1>Muziek, films en series</h1><p class="muted" style="margin-top:6px">Leer Afrikaans door te luisteren en te kijken.</p>
+ <details class="card tips" style="margin-top:14px"><summary>Tips om ermee te leren</summary><ul>${m.tips.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></details>
+ <div class="seg" id="mt" style="margin:16px 0">${[['muziek','Muziek'],['films','Films'],['series','Series'],['waar','Waar kijken']].map(t=>`<button class="chip ${st.tab===t[0]?'on':''}" data-mt="${t[0]}">${t[1]}</button>`).join('')}</div>${body}`);
+ $('#mt').onclick=e=>{const b=e.target.closest('[data-mt]');if(b){st.tab=b.dataset.mt;st.lv='';V.media();scrollTo(0,0)}};
+ const lv=$('#mlv');if(lv)lv.onclick=e=>{const b=e.target.closest('[data-lv]');if(b){st.lv=b.dataset.lv;V.media()}}};
+
 /* ---------- valse vrienden ---------- */
 V.vv=()=>{const VV=Y().VV;
  draw(`${back('oef','Oefenen')}<h1>Valse vrienden</h1><p class="muted" style="margin:8px 0 16px">Woorden die op Nederlands lijken, maar in het Afrikaans iets anders betekenen.</p><button class="btn" data-a="mc:vv">Oefen met 10 vragen</button>
@@ -466,6 +488,8 @@ const SIDX=L(()=>{const a=[],add=(t,title,sub,go,extra='')=>a.push({t,title,sub,
  X().SL.forEach(x=>add('Slang',x.af,x.opts[x.a],['mc',{kind:'slang'}],x.expl));
  Object.entries(X().CULT).forEach(([k,v])=>add('Cultuur',k,v,['cult',{tab:'termen'}]));
  PATHS().forEach(p=>add('Paden',p.title,p.desc,['path',{p:p.id}]));
+ const m=MED();m.muziek.forEach(x=>add('Muziek',x.n,x.g+(x.s?' · '+x.s:''),['media',{tab:'muziek'}],x.d));
+ m.films.forEach(x=>add('Films',x.t,x.g+(x.j?' · '+x.j:''),['media',{tab:'films'}],x.d));m.series.forEach(x=>add('Series',x.t,x.g,['media',{tab:'series'}],x.d));
  return a});
 V.zoek=()=>{draw(`<h1>Zoeken</h1><p class="muted" style="margin:8px 0 14px">Zoek in kaarten, dialogen, verhalen, grammatica, paden en meer.</p><input type="search" id="zq" placeholder="Bijvoorbeeld: braai, nie, lughawe" aria-label="Zoeken" value="${esc(st.q||'')}" autocomplete="off"><div id="zr" style="margin-top:6px"></div>`);
  const run=()=>{const q=norm($('#zq').value.trim());st.q=$('#zq').value;const out=$('#zr');st.res=[];
@@ -621,7 +645,7 @@ document.addEventListener('keydown',e=>{
 
 theme();mq.addEventListener?.('change',theme);
 async function boot(){try{const[m,c]=await Promise.all([load('meta'),load('cards')]);META=m;N=m.n||{};CARDS=parseCards(c,m);for(const o of S.own)CARDS.push(ownCard(o));resetCards()}catch(e){return loadError()}
- render();setTimeout(()=>['facts','paths','dlg','les','ext','vv'].forEach(n=>load(n).catch(()=>{})),400);
+ render();setTimeout(()=>['facts','paths','dlg','les','ext','vv','media'].forEach(n=>load(n).catch(()=>{})),400);
  if(S.cloud||/[?&](apiKey|state)=|#.*state=/.test(location.href))setTimeout(startCloud,500)}
 boot();
 /* offline en updates */
