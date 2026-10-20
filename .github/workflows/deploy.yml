@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   build-test-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
@@ -41,7 +41,7 @@ jobs:
         run: python3 tests/run_all.py
 
       - name: Gebouwde site bewaren (downloadbaar bij deze run)
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: website
           path: public/
