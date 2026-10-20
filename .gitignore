@@ -5,3 +5,4 @@ tests/*.png
 *.log
 audio-cache/
 .lighthouseci/
+tests/y_*.pdf
