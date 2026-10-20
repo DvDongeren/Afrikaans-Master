@@ -1,0 +1,301 @@
+﻿id;niveau;categorie;nederlands;afrikaans;voorbeeld (oud);oordeel;toelichting
+11;Beginner;Begroetingen & conversatie;Dank je wel;Dankie;Baie dankie!;in orde;
+26;Beginner;Begroetingen & conversatie;Tot morgen;Tot môre;Tot môre vroeg!;in orde;
+44;Beginner;Bijvoeglijke naamwoorden;langzaam;stadig;Praat stadig, asseblief.;in orde;
+64;Beginner;Dieren & safari;giraf;kameelperd;Die kameelperd het 'n lang nek.;in orde;
+73;Beginner;Dieren & safari;nijlpaard;seekoei;Kyk, daar is 'n seekoei.;in orde;
+97;Beginner;Eten & drinken;koffie;koffie;Ek hou van sterk koffie.;in orde;
+131;Beginner;Familie & kinderen;zoon;seun;Hy het twee seuns.;in orde;
+159;Beginner;Getallen & tijd;veertien;veertien;Dit is 'n veertien.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+184;Beginner;Dieren & safari;natvoer;natkos;Dit is 'n natkos.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+188;Beginner;Dieren & safari;schildpad;skilpad;Dit is 'n skilpad.;in orde;
+202;Beginner;Kleding & mode;pet;pet;Dit is 'n pet.;in orde;
+203;Beginner;Kleding & mode;riem;gordel;Dit is 'n gordel.;in orde;ok: gordel = riem (broekriem)
+206;Beginner;Kleding & mode;shirt / hemd;hemp;Hy dra 'n blou hemp.;in orde;
+211;Beginner;Kleding & mode;uittrekken;uittrek;Trek jou jas uit.;in orde;
+218;Beginner;Bijvoeglijke naamwoorden;grijs;grys;Dit is 'n grys.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+240;Beginner;Lichaam;kin;ken;Dit is 'n ken.;in orde;
+255;Beginner;School & onderwijs;bord;bord;Skryf dit op die bord.;in orde;
+261;Beginner;School & onderwijs;klas;klas;Ons is in dieselfde klas.;in orde;
+268;Beginner;School & onderwijs;pen;pen;Dit is 'n pen.;in orde;
+335;Beginner;Werkwoorden;kopen;koop;Ek koop brood.;in orde;
+344;Beginner;Werkwoorden;moeten;moet;Ek moet nou gaan.;in orde;
+369;Beginner;Winkelen;duur;duur;Dit is te duur.;in orde;
+371;Beginner;Winkelen;gesloten;toe / gesluit;Die winkel is toe.;in orde;
+372;Beginner;Winkelen;goedkoop;goedkoop;Dit is goedkoop.;in orde;
+376;Beginner;Winkelen;maat (kleding);grootte;Watter grootte het jy nodig?;in orde;
+380;Beginner;Winkelen;passen perfect;pas perfek;Dit pas perfek!;in orde;
+381;Beginner;Winkelen;pinpas / bankpas;bankkaart;Ek betaal met my bankkaart.;in orde;
+388;Beginner;Winkelen;winkel;winkel;Ek gaan na die winkel.;in orde;
+424;Beginner;Basis & zinnen;Veel plezier;Lekker pret / Geniet dit;Geniet dit!;gecorrigeerd;"af: ""Lekker pret / Geniet dit"" → ""Geniet dit!"" (Lekker pret is ongebruikelijk) | tips: ""Breder dan in NL: eten, weer, plan, gevoel — alles kan “lekker” zijn."" → """" (tip hoorde bij lekker)"
+463;Intermediate;Gevoelens & emoties;trots;trots;Ek is trots op jou.;in orde;
+471;Intermediate;Gevoelens & emoties;woede;woede;Dit is 'n woede.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+476;Intermediate;Eten & drinken;bier;bier;Die bier is baie lekker.;in orde;
+478;Intermediate;Eten & drinken;bobotie;bobotie;Bobotie is 'n tradisionele reg.;in orde;
+491;Intermediate;Eten & drinken;pap / mieliepap;pap;Pap met sous.;in orde;
+494;Intermediate;Eten & drinken;rooibos thee;rooibostee;Rooibostee is gesond.;in orde;
+507;Intermediate;Feesten & tradities;Youth Day;Jeugdag;Dit is 'n jeugdag.;in orde;
+508;Intermediate;Feesten & tradities;barbecue (feest);braai;Kom na ons braai!;in orde;
+547;Intermediate;Feesten & tradities;uitnodiging;uitnodiging;Dankie vir die uitnodiging.;in orde;
+557;Intermediate;Feesten & tradities;wens doen;wens maak;Maak 'n wens!;in orde;
+561;Intermediate;Geld & bankieren;bank;bank;Ek gaan na die bank.;in orde;
+582;Intermediate;Geld & bankieren;lening;lening;Ek het 'n lening geneem.;in orde;
+616;Intermediate;Gevoelens & emoties;ik mis je;ek mis jou;Ek mis jou baie.;in orde;
+628;Intermediate;Gezondheid & medisch;oog / ogen;oog / oë;Haar oë is blou.;gecorrigeerd;"tips: ""ö = oe met trema."" → ""ë = e met deelteken: oë spreek je uit als twee lettergrepen."" (tip was onjuist)"
+647;Intermediate;Sport & hobbies;koken;kook;Ek kook graag.;in orde;
+648;Intermediate;Sport & hobbies;muziek luisteren;musiek luister;Ek luister na musiek.;in orde;
+660;Intermediate;Sport & hobbies;wandelen;stap / wandel;Ons gaan stap in die berge.;in orde;
+672;Intermediate;Huis & wonen;koelkast;yskas;Sit die melk in die yskas.;in orde;
+679;Intermediate;Huis & wonen;televisie;televisie / TV;Ek soek my televisie.;in orde;
+681;Intermediate;Huis & wonen;woonkamer;sitkamer;Ons sit in die sitkamer.;in orde;
+685;Intermediate;Huis & wonen;douche;stort;Ek neem 'n stort.;gecorrigeerd;"voorbeeld: ""Ek neem 'n stort."" → ""Ek gaan gou stort."" (natuurlijker: stort is ook een werkwoord)"
+700;Intermediate;Huis & wonen;wasbak;wasbak;Ek soek my wasbak.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+725;Intermediate;Werk & kantoor;klanttevredenheid;kliëntetevredenheid;Ons praat oor die kliëntetevredenheid.;in orde;
+739;Intermediate;Werk & kantoor;resultaten;resultate;Stuur die resultate asseblief.;in orde;
+756;Intermediate;Eten & drinken;afdroger;droogdoek;Ek eet graag droogdoek.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+759;Intermediate;Eten & drinken;diepvries;vrieskas;Ek eet graag vrieskas.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+782;Intermediate;Eten & drinken;ui;ui;Ek eet graag ui.;in orde;
+785;Intermediate;Liefde & relaties;aanzoek doen;aansoek doen / ten huwelik vra;Aansoek doen.;gecorrigeerd;"af: ""aansoek doen / ten huwelik vra"" → ""ten huwelik vra"" (aansoek doen betekent solliciteren/aanvragen) | voorbeeld: """" → ""Hy het haar ten huwelik gevra."" (natuurlijke zin)"
+789;Intermediate;Liefde & relaties;bloemen sturen;blomme stuur;Blomme stuur.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+801;Intermediate;Liefde & relaties;echtscheiding;egskeiding;Dit is 'n egskeiding.;in orde;
+849;Intermediate;Liefde & relaties;vlinders in de buik;skoenlappers in die maag;Skoenlappers in die maag.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+856;Intermediate;Gezondheid & medisch;afspraak maken;afspraak maak;Ek moet 'n afspraak maak.;in orde;
+875;Intermediate;Gezondheid & medisch;fysiotherapeut;fisioterapeut;Die dokter kyk na my fisioterapeut.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+897;Intermediate;Gezondheid & medisch;pleister;pleister;Ek het seer by my pleister.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+935;Intermediate;Kleding & mode;mode;mode;Dit is 'n mode.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+937;Intermediate;Kleding & mode;muts;muts;Dit is 'n muts.;in orde;
+960;Intermediate;Media & entertainment;couplet;vers;Dit is 'n vers.;in orde;
+963;Intermediate;Media & entertainment;drums;tromme;Dit is 'n tromme.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+981;Intermediate;Media & entertainment;luidsprekerbox;luidspreker;Dit is 'n luidspreker.;in orde;
+994;Intermediate;Media & entertainment;podium;verhoog;Dit is 'n verhoog.;in orde;
+1023;Intermediate;Natuur & weer;boom;boom;Die boom is hoog.;in orde;
+1037;Intermediate;Natuur & weer;ster;ster;Ek sien 'n ster buite.;in orde;
+1045;Intermediate;Reis & vervoer;dichtbij;naby;Dit is naby die winkel.;in orde;
+1118;Intermediate;Liefde & relaties;zoenen;soen;Hy het haar gesoen.;in orde;
+1123;Intermediate;Sport & hobbies;baan;baan;Dit is 'n baan.;in orde;
+1125;Intermediate;Sport & hobbies;bankzitter;bankwarmer;Dit is 'n bankwarmer.;twijfel;twijfel: bankwarmer (bankzitter) niet bevestigd
+1128;Intermediate;Sport & hobbies;blessurevrij;beseringsvry;Dit is 'n beseringsvry.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+1132;Intermediate;Sport & hobbies;cooling-down;afkoeling;Dit is 'n afkoeling.;in orde;
+1137;Intermediate;Sport & hobbies;fluiten;fluit;Die skeidsregter fluit.;in orde;
+1140;Intermediate;Sport & hobbies;golf;gholf;Dit is 'n gholf.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+1163;Intermediate;Sport & hobbies;scheidsrechterfluit;fluitjie;Dit is 'n fluitjie.;in orde;
+1188;Intermediate;Sport & hobbies;wereldkampioenschap;wêreldbeker;Dit is 'n wêreldbeker.;in orde;
+1195;Intermediate;Technologie & online;app downloaden;app aflaai;App aflaai.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+1205;Intermediate;Technologie & online;laptop;skootrekenaar / laptop;Dit is 'n skootrekenaar.;in orde;
+1227;Intermediate;Getallen & tijd;elke week;elke week;Elke week.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+1240;Intermediate;Reis & vervoer;fiets;fiets;Ons neem die fiets môre.;in orde;
+1243;Intermediate;Reis & vervoer;ongeluk;ongeluk;Daar was 'n ongeluk op die pad.;in orde;
+1245;Intermediate;Reis & vervoer;rijbewijs;bestuurderslisensie;Het jy 'n bestuurderslisensie?;in orde;ok, maar rybewys is gangbaarder dan bestuurderslisensie
+1246;Intermediate;Reis & vervoer;snelweg;snelweg / deurgangsweg;Ons neem die snelweg môre.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin | twijfel: deurgangsweg naast snelweg
+1256;Intermediate;Natuur & weer;warm;warm;Dit is baie warm vandag.;in orde;
+1295;Intermediate;Werkwoorden;geloven;glo;Ek glo jou.;in orde;
+1296;Intermediate;Werkwoorden;herinneren;onthou;Ek onthou jou.;in orde;
+1312;Intermediate;Huis & wonen;bezichtiging;besigtiging;Ons het môre 'n besigtiging.;in orde;
+1326;Intermediate;Huis & wonen;gemeubileerd;gemeubileer;Die woonstel is gemeubileer.;in orde;
+1337;Intermediate;Huis & wonen;makelaar;eiendomsagent;Maak die eiendomsagent skoon.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+1431;Advanced;Grammatica;vergelijking (even ... als);so ... soos;Sy is so slim soos hy.;in orde;
+1445;Advanced;Uitspraken & idiomen;Iets onder de knie hebben;Iets onder die knie hê;Ek het dit nou onder die knie.;in orde;
+1452;Advanced;Uitspraken & idiomen;Beter ten halve gekeerd dan ten hele gedwaald;Beter halfpad omdraai as heeltemal verdwaal;Beter halfpad omdraai as heeltemal verdwaal.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+1465;Advanced;Uitspraken & idiomen;Op het nippertje;Op die nippertjie;Ons het op die nippertjie gemaak.;gecorrigeerd;"voorbeeld: ""Ons het op die nippertjie gemaak."" → ""Ons het die trein op die nippertjie gehaal."" (zin was onvolledig)"
+1475;Advanced;Media & entertainment;breaking news / spoednieuws;breeknuus;Dit is 'n breeknuus.;in orde;
+1490;Advanced;Media & entertainment;streaming;stroming;Dit is 'n stroming.;gecorrigeerd;"af: ""stroming"" → ""stroom"" (streaming = stroom(diens); stroming = stroming/beweging) | voorbeeldzin weggehaald: onnatuurlijke sjabloonzin"
+1500;Advanced;Natuur & weer;buffel;buffel;Kyk, daar is 'n buffel.;in orde;
+1537;Advanced;Politiek & recht;werkloosheid;werkloosheid;Dit is 'n werkloosheid.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+1546;Advanced;Politiek & recht;politie;polisie;Dit is 'n polisie.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+1552;Advanced;Politiek & recht;straf;straf;Dit is 'n straf.;in orde;
+1555;Advanced;Politiek & recht;vrijheid;vryheid;Dit is 'n vryheid.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+1560;Advanced;Uitspraken & idiomen;Bedankt maat! / Thanks bro!;Shot bru!;Shot bru, dankie vir die hulp!;in orde;
+1620;Advanced;Uitspraken & idiomen;Nee maar! / Wat zeg je? (verbazing);Hawu! / Hau!;Hawu, is dit waar?;in orde;
+1655;Advanced;Valse vrienden;hard (NL: hard);hard;Maar ook 'hardloop' = hardlopen.;in orde;
+1669;Advanced;Valse vrienden;eventueel;moontlik / dalk;Gebruik NOOIT 'eventueel' zoals in het Nederlands.;in orde;
+1671;Advanced;Valse vrienden;zonet (net geleden);netnou;Hy was netnou nog hier.;in orde;
+1676;Advanced;Valse vrienden;robot;verkeerslig;Ja, echt: robot = verkeerslicht.;gecorrigeerd;"nl: ""robot"" → ""verkeerslicht"" (nl en tip omgedraaid) | tips: ""Verkeerslicht in ZA-Engels én vaak in AF-gesprekken."" → ""In Zuid-Afrika zeg je meestal 'robot'."" (tip verduidelijkt)"
+1679;Advanced;Vocabulaire;doel;doel;Wat is jou doel?;in orde;
+1685;Advanced;Vocabulaire;kans;kans;Gee my 'n kans.;in orde;
+1686;Advanced;Vocabulaire;mening;mening;Wat is jou mening?;in orde;
+1691;Advanced;Vocabulaire;ontwikkeling;ontwikkeling;Dit is 'n ontwikkeling.;in orde;
+1695;Advanced;Vocabulaire;probleem;probleem;Dit is 'n probleem.;in orde;
+1737;Advanced;Zuid-Afrika & cultuur;ja (bevestigend, informeel);ja-nee / jy weet;Ja-nee, dis reg.;in orde;
+1742;Advanced;Zuid-Afrika & cultuur;pickup truck / bestelwagen;bakkie;Hy ry 'n bakkie.;in orde;
+1746;Advanced;Zuid-Afrika & cultuur;verkeerslicht;robot;Stop by die robot.;in orde;
+1753;Advanced;Werk & kantoor;Derhalve / Daarom;Derhalwe / Daarom;Stuur die derhalwe asseblief.;in orde;
+1760;Advanced;Werk & kantoor;In afwachting van uw reactie;In afwagting van u reaksie;In afwagting van u reaksie.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+1763;Advanced;Werk & kantoor;Overeenkomstig;Ooreenkomstig;Ons praat oor die ooreenkomstig.;in orde;
+1776;Advanced;Basis & zinnen;Ik zou willen dat...;Ek wens dat... / Ek sou graag wil hê dat...;Ek wens dat ek kon help.;in orde;
+1783;Advanced;Basis & zinnen;Het zou beter zijn als...;Dit sou beter wees as...;Dit sou beter wees as...;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+1812;Beginner;Eten & drinken;yoghurt;jogurt;Jogurt met vrugte.;in orde;
+1827;Beginner;Eten & drinken;citroen;suurlemoen;Suurlemoen in die water.;in orde;
+1835;Beginner;Reis & vervoer;afslag;afrit;Neem die volgende afrit.;in orde;
+1870;Intermediate;Gevoelens & emoties;verward;verward;Ek is verward deur die instruksies.;in orde;
+1879;Intermediate;Reis & vervoer;vertrekhal;vertrekterrein;Gaan na die vertrekterrein.;in orde;
+1881;Intermediate;Reis & vervoer;zitplaats;sitplek;My sitplek is by die venster.;in orde;
+1918;Intermediate;Nood & veiligheid;Bel de politie;Bel die polisie;Bel die polisie, asseblief!;in orde;
+1963;Beginner;Eten & drinken;de ontbijtpauze;die ontbyt-pouse;Ons het 'n kort ontbyt-pouse.;in orde;
+1969;Beginner;Eten & drinken;fooien geven;'n fooitjie gee;Ons gee 'n fooitjie.;gecorrigeerd;"tips: ""’n = onbepaald lidwoord (zoals NL “een”), vaak ingekort uitgespeld."" → ""’n = een (onbepaald lidwoord); je zegt een korte 'uh'."" (tip verduidelijkt)"
+2044;Advanced;Natuur & weer;de natuur;die natuur;Beskerm die natuur.;in orde;
+2055;Intermediate;Technologie & online;de privacy;privaatheid;Beskerm jou privaatheid.;in orde;
+2085;Intermediate;Reis & vervoer;de foto trekken;'n foto neem;Kan jy 'n foto van ons neem?;gecorrigeerd;"tips: ""’n = onbepaald lidwoord (zoals NL “een”), vaak ingekort uitgespeld."" → ""’n = een (onbepaald lidwoord); je zegt een korte 'uh'."" (tip verduidelijkt)"
+2112;Intermediate;Uitspraken & idiomen;Hoe laat begint het?;Hoe laat begin dit?;Hoe laat begin dit?;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+2116;Intermediate;Uitspraken & idiomen;Maak je geen zorgen.;Moenie worry nie. / Moenie jou kwel nie.;Moenie worry nie.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+2130;Beginner;Huis & wonen;de tuin;die tuin;Die kinders speel in die tuin.;in orde;
+2134;Beginner;Huis & wonen;de garage;die motorhuis;Die motor is in die motorhuis.;in orde;
+2214;Beginner;Beurtkrag & nuts;kaars;kers;Sit die kerse aan.;in orde;
+2245;Beginner;Reis & vervoer;stoplicht;robot;Stop by die robot.;in orde;
+2303;Beginner;Natuur & weer;boer;boer;Die boer werk hard.;in orde;
+2334;Beginner;Zuid-Afrika & cultuur;provincie;provinsie;Suid-Afrika het nege provinsies.;in orde;
+2346;Beginner;Familie & kinderen;speelgoed;speelgoed;Die speelgoed is op die vloer.;in orde;
+2358;Beginner;Familie & kinderen;verjaardagfeestje;verjaarsdagparty;Die verjaarsdagparty is Saterdag.;in orde;
+2368;Beginner;Huis & wonen;kwast;kwas;Gebruik 'n skoon kwas.;in orde;
+2461;Beginner;Basis & zinnen;Hoeveel kost dat?;Hoeveel kos dit?;Hoeveel kos dit?;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+2485;Intermediate;Natuur & weer;opklaren;opklaar;Dit sal later opklaar.;in orde;
+2496;Beginner;Werk & kantoor;printerpapier;drukkerpapier;Die drukkerpapier is op.;in orde;
+2514;Intermediate;Reis & vervoer;overstappen;oorslaan / aansluiting;Ek moet in Johannesburg oorslaan.;in orde;
+2531;Beginner;Reis & vervoer;handdoeken;handdoeke;Ons het ekstra handdoeke nodig.;in orde;
+2559;Intermediate;Eten & drinken;prijsvast menu;vaste spyskaart;Het julle 'n vaste spyskaart?;in orde;
+2598;Beginner;Getallen & tijd;de hele dag;die hele dag;Dit het die hele dag gereën.;in orde;
+2674;Intermediate;School & onderwijs;samenvatting;opsomming;Skryf 'n opsomming.;in orde;
+2694;Intermediate;Begroetingen & conversatie;verkeerd verbonden;verkeerd gekoppel;Jammer, verkeerd gekoppel.;in orde;
+2708;Beginner;Huis & wonen;strijken;stryk;Ek haat stryk.;in orde;
+2713;Beginner;Huis & wonen;dweil;dweil;Die dweil is nat.;in orde;
+2718;Beginner;Huis & wonen;magnetron;mikrogolf;Verhit dit in die mikrogolf.;in orde;
+2733;Beginner;Sport & hobbies;zwembad;swembad;Die swembad is oop.;in orde;
+2765;Beginner;Reis & vervoer;tegenover;oorkant;Die winkel is oorkant die bank.;in orde;
+2781;Intermediate;Reis & vervoer;routebeschrijving;roete-aanwysings;Stuur vir my roete-aanwysings.;in orde;
+2830;Beginner;Huis & wonen;het licht;die lig;Die lig is aan.;in orde;
+2833;Beginner;Huis & wonen;de koelkast;die yskas;Sit dit in die yskas.;in orde;
+2840;Beginner;Huis & wonen;de emmer;die emmer;Vul die emmer met water.;in orde;
+2849;Beginner;Huis & wonen;de spiegel;die spieël;Kyk in die spieël.;in orde;
+2853;Beginner;Huis & wonen;de muur;die muur;Hang dit teen die muur.;in orde;
+2866;Beginner;Eten & drinken;het ontbijt;die ontbyt;Wat eet jy vir ontbyt?;in orde;
+2880;Beginner;Eten & drinken;het vlees;die vleis;Ek eet min vleis.;in orde;
+2888;Beginner;Eten & drinken;de aardappel;die aartappel;Kook die aartappels.;in orde;
+2896;Beginner;Eten & drinken;het zout;die sout;Te veel sout.;in orde;
+2899;Beginner;Eten & drinken;de honing;die heuning;Heuning op die brood.;in orde;
+2905;Beginner;Eten & drinken;het sap;die sap;Lemoensap, asseblief.;in orde;
+2911;Beginner;Eten & drinken;de tomaat;die tamatie;Tamaties in die slaai.;in orde;
+2925;Beginner;Eten & drinken;bestellen (eten);bestel;Kan ek bestel?;in orde;
+2927;Intermediate;Eten & drinken;fooien;fooitjie;Los 'n fooitjie.;in orde;
+2931;Beginner;Werk & kantoor;de baan;die pos;Sy het 'n nuwe pos.;in orde;
+2941;Beginner;Werk & kantoor;opslaan;stoor;Stoor die lêer.;in orde;
+2948;Advanced;Werk & kantoor;ontslagen worden;afgedank word;Hy is afgedank.;in orde;
+3016;Beginner;Natuur & weer;het bos;die bos;Wandeling in die bos.;in orde;
+3050;Beginner;Getallen & tijd;het weekend;die naweek;Lekker naweek!;in orde;
+3093;Beginner;School & onderwijs;de les;die les;Die les begin om nege.;in orde;
+3150;Beginner;Familie & kinderen;de oom;die oom;Oom Piet kom kuier.;in orde;
+3165;Beginner;Basis & zinnen;ik heb;ek het;Ek het 'n vraag.;in orde;
+3188;Beginner;Grammatica;alleen;net / alleen;Net een, asseblief.;in orde;
+3201;Intermediate;Zuid-Afrika & cultuur;boet;boet;Dankie, boet.;in orde;
+3211;Intermediate;Zuid-Afrika & cultuur;Jozi;Jozi;Ek bly in Jozi.;in orde;
+3229;Beginner;Werkwoorden;lijken;lyk;Dit lyk goed.;in orde;
+3241;Beginner;Werkwoorden;ontspannen;ontspan;Ontspan 'n bietjie.;in orde;
+3258;Beginner;Bijvoeglijke naamwoorden;dik;dik;'n Dik boek.;in orde;
+3330;Beginner;Situaties;waar kan ik parkeren?;waar kan ek parkeer?;Waar kan ek parkeer?;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3363;Intermediate;Vocabulaire;de vrijheid;die vryheid;Vryheid van spraak.;in orde;
+3372;Intermediate;Vocabulaire;de uitdaging;die uitdaging;'n Groot uitdaging.;in orde;
+3374;Intermediate;Vocabulaire;de mislukking;die mislukking;Leer van mislukking.;in orde;
+3380;Beginner;Vocabulaire;het plan;die plan;Wat is die plan?;in orde;
+3382;Intermediate;Vocabulaire;het resultaat;die resultaat;Wag vir die resultaat.;in orde;
+3387;Beginner;Vocabulaire;de waarheid;die waarheid;Sê die waarheid.;in orde;
+3401;Beginner;Vocabulaire;de grap;die grap;Dis 'n grap.;in orde;
+3403;Intermediate;Vocabulaire;de discussie;die bespreking;'n Lewendige bespreking.;in orde;
+3407;Advanced;Vocabulaire;de uitzondering;die uitsondering;Daar is uitsonderings.;in orde;
+3421;Intermediate;Technologie & online;bladwijzer;boekmerk;Stoor as boekmerk.;in orde;
+3443;Advanced;Technologie & online;de resolutie;die resolusie;Hoër resolusie.;in orde;
+3445;Beginner;Technologie & online;downloaden voltooid;aflaai voltooi;Aflaai is voltooi.;in orde;
+3455;Beginner;Basis & zinnen;jij slaapt;jy slaap;Jy slaap.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3461;Beginner;Basis & zinnen;wij leren;ons leer;Ons leer.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3469;Beginner;Basis & zinnen;ik help;ek help;Ek help.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3508;Beginner;Basis & zinnen;mag ik iets vragen?;kan ek iets vra?;Kan ek iets vra?;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3512;Beginner;Basis & zinnen;vertel me alles;vertel my alles;Vertel my alles.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3560;Beginner;Basis & zinnen;ik strijk;ek stryk;Ek stryk.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3570;Beginner;Basis & zinnen;ik schilder;ek verf;Ek verf.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3609;Beginner;Basis & zinnen;klim omhoog;klim op;Klim op.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3611;Beginner;Basis & zinnen;daal af;daal af;Daal af.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3645;Beginner;Basis & zinnen;ik knik;ek knik;Ek knik.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3652;Beginner;Zuid-Afrika & cultuur;is dit oukei?;is dit oukei?;Is dit oukei met jou?;in orde;
+3715;Beginner;Begroetingen & conversatie;wat betekent;wat beteken;Wat beteken dit?;in orde;
+3716;Beginner;Begroetingen & conversatie;hoe zeg je;hoe sê jy;Hoe sê jy dit in Afrikaans?;in orde;
+3727;Beginner;Reis & vervoer;is ontbijt inbegrepen;is ontbyt ingesluit;Is ontbyt ingesluit?;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3765;Intermediate;Winkelen;gratis verzending;gratis aflewering;Gratis aflewering.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3767;Intermediate;Winkelen;twee jaar garantie;twee jaar waarborg;Twee jaar waarborg.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3778;Beginner;Basis & zinnen;toegang;toegang;Geen toegang.;in orde;
+3812;Beginner;Begroetingen & conversatie;dag;dag;Dag!;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3827;Beginner;Lichaam;het oor;die oor;Die oor.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3843;Beginner;Lichaam;de hand;die hand;Die hand.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3853;Beginner;Lichaam;de enkel;die enkel;Die enkel.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3862;Beginner;Bijvoeglijke naamwoorden;goudkleurig;goud;Die kleur is goud.;in orde;
+3863;Beginner;Bijvoeglijke naamwoorden;zilverkleurig;silwer;Die kleur is silwer.;in orde;
+3883;Beginner;Getallen & tijd;19;negentien;Dit is 'n negentien.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+3902;Beginner;Getallen & tijd;augustus;Augustus;Dit is 'n augustus.;in orde;
+3928;Beginner;Kleding & mode;de badjas;die badjas;Die badjas.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3943;Beginner;Natuur & weer;het schaap;die skaap;Die skaap.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+3965;Beginner;Natuur & weer;de beer;die beer;Die beer.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4004;Beginner;Reis & vervoer;de kerk;die kerk;Die kerk.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4021;Beginner;School & onderwijs;de gum;die uitveër;Die uitveër.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4039;Beginner;Werkwoorden;ontvangen;ontvang;Dit is 'n ontvang.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+4059;Beginner;Bijvoeglijke naamwoorden;ijverig;ywerig;Dit is 'n ywerig.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+4062;Beginner;Grammatica;ergens;êrens;Ek het dit êrens gesien.;in orde;
+4078;Beginner;Huis & wonen;opvouwen;opvou;Ek soek my opvou.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+4084;Intermediate;Eten & drinken;pompoen;pampoen;Ek eet graag pampoen.;in orde;
+4089;Intermediate;Eten & drinken;peterselie;pietersielie;Ek eet graag pietersielie.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+4103;Intermediate;Werk & kantoor;de offerte;die kwotasie;Die kwotasie.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4113;Intermediate;Zuid-Afrika & cultuur;sosatie;sosatie;Dit is 'n sosatie.;in orde;
+4115;Intermediate;Zuid-Afrika & cultuur;protea;protea;Dit is 'n protea.;in orde;
+4125;Beginner;Situaties;welke wil je?;watter een wil jy?;Watter een wil jy?;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4134;Intermediate;Technologie & online;liken;hou van;Hou van.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4145;Intermediate;Natuur & weer;het moeras;die moeras;Die moeras.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4163;Beginner;Grammatica;als;as;As dit reën, bly ek tuis.;in orde;
+4178;Beginner;Getallen & tijd;om elf uur;om elfuur;Om elfuur.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4185;Beginner;Getallen & tijd;gisterenavond;gisteraand;Dit is 'n gisteraand.;gecorrigeerd;voorbeeldzin weggehaald: onnatuurlijke sjabloonzin
+4186;Beginner;Getallen & tijd;morgenvroeg;môre vroeg;Môre vroeg.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4203;Beginner;Begroetingen & conversatie;excuseer me;verskoon my;Verskoon my.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4209;Beginner;Begroetingen & conversatie;in orde;in orde;In orde.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4255;Beginner;Gevoelens & emoties;ik hou van pen;ek hou van pen;Ek hou van pen.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4262;Beginner;Gevoelens & emoties;ik hou van telefoon;ek hou van foon;Ek hou van foon.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4267;Beginner;Gevoelens & emoties;ik hou van jas;ek hou van jas;Ek hou van jas.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4276;Beginner;Gevoelens & emoties;ik hou van bloem;ek hou van blom;Ek hou van blom.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4284;Beginner;Gevoelens & emoties;ik hou van vrouw;ek hou van vrou;Ek hou van vrou.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4303;Beginner;Eten & drinken;ik eet thee;ek eet tee;Ek eet tee.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4316;Beginner;Eten & drinken;ik eet huis;ek eet huis;Ek eet huis.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4335;Beginner;Eten & drinken;ik eet tas;ek eet sak;Ek eet sak.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4341;Beginner;Eten & drinken;ik eet hond;ek eet hond;Ek eet hond.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4352;Beginner;Eten & drinken;ik eet man;ek eet man;Ek eet man.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4372;Beginner;Eten & drinken;ik drink thee;ek drink tee;Ek drink tee.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4378;Beginner;Eten & drinken;ik drink soep;ek drink sop;Ek drink sop.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4386;Beginner;Eten & drinken;ik drink auto;ek drink motor;Ek drink motor.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4392;Beginner;Eten & drinken;ik drink krant;ek drink koerant;Ek drink koerant.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4395;Beginner;Eten & drinken;ik drink stoel;ek drink stoel;Ek drink stoel.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4433;Beginner;Eten & drinken;ik drink berg;ek drink berg;Ek drink berg.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4447;Beginner;Winkelen;ik koop soep;ek koop sop;Ek koop sop.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4452;Beginner;Winkelen;ik koop zout;ek koop sout;Ek koop sout.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4474;Beginner;Winkelen;ik koop jas;ek koop jas;Ek koop jas.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4523;Beginner;Basis & zinnen;ik zie huis;ek sien huis;Ek sien huis.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4525;Beginner;Basis & zinnen;ik zie fiets;ek sien fiets;Ek sien fiets.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4531;Beginner;Basis & zinnen;ik zie pen;ek sien pen;Ek sien pen.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4544;Beginner;Basis & zinnen;ik zie hoed;ek sien hoed;Ek sien hoed.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4551;Beginner;Basis & zinnen;ik zie boom;ek sien boom;Ek sien boom.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4563;Beginner;Basis & zinnen;ik zie leraar;ek sien onderwyser;Ek sien onderwyser.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4572;Beginner;Basis & zinnen;ik zie rivier;ek sien rivier;Ek sien rivier.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4592;Beginner;Situaties;ik zoek huis;ek soek huis;Ek soek huis.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4608;Beginner;Situaties;ik zoek computer;ek soek rekenaar;Ek soek rekenaar.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4643;Beginner;Situaties;Waar is de appel?;Waar is die appel?;Waar is die appel?;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4649;Beginner;Situaties;Waar is de kaas?;Waar is die kaas?;Waar is die kaas?;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4691;Beginner;Situaties;Waar is de zon?;Waar is die son?;Waar is die son?;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4702;Beginner;Situaties;Waar is de dokter?;Waar is die dokter?;Waar is die dokter?;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4712;Beginner;Basis & zinnen;dit is appel;dit is appel;Dit is appel.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4732;Beginner;Basis & zinnen;dit is fiets;dit is fiets;Dit is fiets.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4789;Beginner;Basis & zinnen;een vis;'n vis;'n vis.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4797;Beginner;Basis & zinnen;een zout;'n sout;'n sout.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4827;Beginner;Basis & zinnen;een boom;'n boom;'n boom.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4841;Beginner;Basis & zinnen;een winkel;'n winkel;'n winkel.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4886;Beginner;Basis & zinnen;mijn geld;my geld;My geld.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4892;Beginner;Basis & zinnen;mijn shirt;my hemp;My hemp.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4903;Beginner;Basis & zinnen;mijn wind;my wind;My wind.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4908;Beginner;Basis & zinnen;mijn leraar;my onderwyser;My onderwyser.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4915;Beginner;Basis & zinnen;mijn strand;my strand;My strand.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4920;Beginner;Basis & zinnen;jouw brood;jou brood;Jou brood.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4934;Beginner;Basis & zinnen;jouw suiker;jou suiker;Jou suiker.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4935;Beginner;Basis & zinnen;jouw zout;jou sout;Jou sout.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4978;Beginner;Basis & zinnen;jouw dokter;jou dokter;Jou dokter.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4980;Beginner;Basis & zinnen;jouw school;jou skool;Jou skool.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"
+4982;Beginner;Basis & zinnen;jouw station;jou stasie;Jou stasie.;in orde;"voorbeeld herhaalde alleen het woord; niet meer getoond"

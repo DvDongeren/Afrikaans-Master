@@ -12,7 +12,7 @@
 --ok:#63d79d;--bad:#ff7f6b;--btn:#e7ede8;--btni:#0b110e;--sh:0 1px 2px rgba(0,0,0,.35)}
 *{box-sizing:border-box;margin:0}
 html{-webkit-text-size-adjust:100%}
-body{font:16px/1.5 var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;min-height:100vh}
+body{font:1rem/1.5 var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;min-height:100vh}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer;border:0;background:none;text-align:inherit}
 a{color:inherit}
@@ -334,3 +334,35 @@ body.page{padding-left:0}
 #mt{overflow-x:auto;scrollbar-width:none}
 #mt::-webkit-scrollbar{display:none}
 #mt .chip{flex:1 0 auto;padding:8px 11px}
+.nearw{color:var(--gold);text-decoration:underline dotted;text-underline-offset:4px}
+
+/* tekstgrootte en leesbaarheid */
+html[data-fs="l"]{font-size:112.5%}
+html[data-fs="xl"]{font-size:125%}
+html[data-read="1"]{--serif:var(--sans)}
+html[data-read="1"] body{line-height:1.7;letter-spacing:.012em;word-spacing:.06em}
+html[data-read="1"] .af,html[data-read="1"] h1,html[data-read="1"] .big{font-style:normal;letter-spacing:.01em}
+/* spiekbrief */
+.check{display:flex;align-items:center;gap:10px;font-weight:500}
+.check input{width:20px;height:20px;accent-color:var(--af)}
+.sheetpr{margin-top:22px}
+.prt{font-size:1.05rem;margin-bottom:10px}
+.prtab{width:100%;border-collapse:collapse;background:var(--surface);border-radius:var(--rs);overflow:hidden}
+.prtab th{text-align:left;font-size:.8rem;color:var(--muted);font-weight:600;padding:10px 12px;border-bottom:1px solid var(--hair)}
+.prtab td{padding:8px 12px;border-bottom:1px solid var(--hair);vertical-align:top;width:50%}
+.prtab tr:last-child td{border-bottom:0}
+.prtab .af{font-family:var(--serif);font-weight:600;color:var(--af)}
+.prtab .pex{font-family:var(--serif);font-style:italic;color:var(--muted);font-size:.88rem;margin-top:2px}
+@media print{
+ @page{margin:14mm}
+ html,body{background:#fff!important;color:#000!important;padding:0!important}
+ nav,.noprint,#toast,#sheet{display:none!important}
+ #app{max-width:none!important;padding:0!important;margin:0!important}
+ .sheetpr{margin:0}
+ .prtab{background:none;font-size:10.5pt}
+ .prtab th,.prtab td{border-bottom:.5pt solid #bbb;padding:4pt 6pt}
+ .prtab tr{break-inside:avoid}
+ .prtab .af{color:#0d4f33}
+ .prtab .pex,.prt .muted{color:#444}
+}
+.hero .brand{white-space:nowrap}
