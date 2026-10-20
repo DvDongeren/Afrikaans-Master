@@ -1,5 +1,5 @@
 """Lokale testserver die de headers uit firebase.json toepast (zoals Firebase Hosting)."""
-import http.server, json, os, re, sys, functools, threading
+import http.server, json, os, re, sys, functools, threading, gzip, io
 ROOT=os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),'..'))
 def rx(glob):
     g=re.escape(glob)
@@ -7,6 +7,17 @@ def rx(glob):
     g=g.replace(r'\*\*','.*').replace(r'\*','[^/]*')
     return re.compile('^'+g+'$')
 class H(http.server.SimpleHTTPRequestHandler):
+    # gzip zoals Firebase Hosting doet, zodat metingen realistisch zijn
+    def send_head(self):
+        path=self.translate_path(self.path)
+        if os.path.isdir(path) and self.path.split('?')[0].endswith('/'): path=os.path.join(path,'index.html')
+        if (os.path.isfile(path) and 'gzip' in self.headers.get('Accept-Encoding','')
+                and re.search(r'\.(html|js|css|json|txt|svg|webmanifest)$',path)):
+            raw=open(path,'rb').read(); body=gzip.compress(raw,6)
+            self.send_response(200); self.send_header('Content-Type',self.guess_type(path)); self.send_header('Content-Encoding','gzip')
+            self.send_header('Content-Length',str(len(body))); self.send_header('Vary','Accept-Encoding'); self.end_headers()
+            return io.BytesIO(body)
+        return super().send_head()
     def do_GET(self):
         if self.path.startswith('/__/firebase/init.json'):
             # nabootsing van Firebase Hosting zonder gekoppeld project

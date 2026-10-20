@@ -57,7 +57,7 @@ const LVN=[0,1,2],GOT=new Set();let ALLP=null;
 function addLevel(i){if(GOT.has(i))return;GOT.add(i);const own=CARDS.filter(c=>c.own);CARDS=CARDS.filter(c=>!c.own).concat(parseCards(D['cards'+i],META)).concat(own);resetCards()}
 const allCards=()=>ALLP||(ALLP=Promise.all(LVN.map(i=>load('cards'+i).then(()=>addLevel(i)))).then(()=>{if(['home','meer'].includes(view))render()}).catch(e=>{ALLP=null;throw e}));
 const NEEDALL=v=>!['home','paden','dlgs','dlg','gram','les','media','klank','cult','reis','vv','stories','story','beheer'].includes(v);
-async function boot(){try{const m=await load('meta');META=m;N=m.n||{};const first=[...new Set([0,rank[S.startLv]||0])];
+async function boot(){try{let m=null;try{m=JSON.parse(app.dataset.meta||'null')}catch{}if(!m)m=await load('meta');META=m;N=m.n||{};const first=[...new Set([0,rank[S.startLv]||0])];
  await Promise.all(first.map(i=>load('cards'+i)));first.forEach(addLevel);for(const o of S.own)CARDS.push(ownCard(o));resetCards();
  if(NEEDALL(view))await allCards()}catch(e){return loadError()}
  render();allCards().catch(()=>{});loadConf().then(c=>{AUDIO.on=!!(c&&c.audio)});setTimeout(()=>['facts','paths','dlg','les','ext','vv','media'].forEach(n=>load(n).catch(()=>{})),400);

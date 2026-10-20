@@ -104,9 +104,33 @@ def minify(code, loader):
     return '\n'.join(l for l in code.split('\n') if not re.match(r'\s*/\*.*\*/\s*$', l))
 JS_PARTS = sorted(f for f in os.listdir(src('js')) if f.endswith('.js')) if os.path.isdir(src('js')) else []
 js_src = '\n'.join(read(os.path.join('js', f)) for f in JS_PARTS) if JS_PARTS else read('app.js')
-CSS = emit('assets', 'app', 'css', minify(fontcss + read('app.css'), 'css'))
+CSS_TEXT = minify(fontcss + read('app.css'), 'css')
+CSS = emit('assets', 'app', 'css', CSS_TEXT)
 JS = emit('assets', 'app', 'js', minify(js_src, 'js'))
 BOOT = emit('assets', 'boot', 'js', read('boot.js'))
+BOOT_INLINE = minify(read('boot.js'), 'js').strip()
+assert '</' not in BOOT_INLINE and '</' not in CSS_TEXT
+
+# Het kleine startscript staat in de pagina zelf (geen extra wachttijd). De CSP staat het toe via
+# zijn hash; die wordt hier in firebase.json bijgewerkt zodat ze altijd overeenkomt.
+BOOT_HASH = "'sha256-" + base64.b64encode(hashlib.sha256(BOOT_INLINE.encode('utf-8')).digest()).decode() + "'"
+fbj_path = os.path.join(HERE, '..', 'firebase.json')
+if os.path.exists(fbj_path):
+    raw = open(fbj_path, encoding='utf-8').read()
+    fbj = json.loads(raw)
+    for h in fbj['hosting']['headers']:
+        for kv in h['headers']:
+            if kv['key'] == 'Content-Security-Policy':
+                parts = [x.strip() for x in kv['value'].split(';')]
+                for i, part in enumerate(parts):
+                    if part.startswith('script-src'):
+                        toks = [t for t in part.split() if not t.startswith("'sha256-")]
+                        toks.insert(2, BOOT_HASH)
+                        parts[i] = ' '.join(toks)
+                kv['value'] = '; '.join(parts)
+    new = json.dumps(fbj, indent=2) + '\n'
+    if new != raw:
+        open(fbj_path, 'w', encoding='utf-8').write(new)
 
 # ---------- iconen ----------
 for fn in os.listdir(src('icons')):
@@ -130,6 +154,7 @@ open(os.path.join(OUT, 'manifest.webmanifest'), 'w', encoding='utf-8').write(j(m
 CANON = (f'\n<link rel="canonical" href="{SITE_URL}/">\n<meta property="og:url" content="{SITE_URL}/">'
          f'\n<meta property="og:image" content="{SITE_URL}/icons/icon-512.png">') if SITE_URL else ''
 NOINDEX = '\n<meta name="robots" content="noindex">' if PREVIEW else ''
+meta_attr = j({'lv': lv, 'cat': cat, 'n': n}).replace('&', '&amp;').replace("'", '&#39;')
 files_attr = j(FILES).replace('&', '&amp;').replace("'", '&#39;')
 head = f'''<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -139,9 +164,9 @@ head = f'''<meta charset="utf-8">
 <link rel="icon" type="image/svg+xml" href="{BASE}icons/favicon.svg">
 <link rel="apple-touch-icon" href="{BASE}icons/apple-180.png">
 <link rel="manifest" href="{BASE}manifest.webmanifest">
-<script src="{BOOT}"></script>
+<script>{BOOT_INLINE}</script>
 <link rel="preload" href="{fonts['lora-600'][2]}" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="{CSS}">'''
+<style>{CSS_TEXT}</style>'''
 index = f'''<!doctype html>
 <html lang="nl">
 <head>
@@ -152,12 +177,11 @@ index = f'''<!doctype html>
 <meta property="og:title" content="Afrikaans Master">
 <meta property="og:description" content="Leer Afrikaans vanuit het Nederlands: kaarten, grammatica, dialogen en verhaaltjes.">
 <meta property="og:type" content="website">{CANON}
-<link rel="preload" href="{FILES['meta']}" as="fetch" crossorigin>
 <link rel="preload" href="{FILES['cards0']}" as="fetch" crossorigin>
 <script defer src="{JS}"></script>
 </head>
 <body>
-<main id="app" aria-live="polite" data-files='{files_attr}'><div class="boot"><div><b>Afrikaans Master</b><p class="muted">Laden…</p></div></div></main>
+<main id="app" aria-live="polite" data-files='{files_attr}' data-meta='{meta_attr}'><div class="boot"><div><b>Afrikaans Master</b><p class="muted">Laden…</p></div></div></main>
 <nav aria-label="Hoofdmenu"><div id="nav"></div></nav>
 <noscript><p style="padding:24px;text-align:center">Deze app heeft JavaScript nodig.</p></noscript>
 </body>
