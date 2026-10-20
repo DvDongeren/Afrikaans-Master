@@ -35,6 +35,7 @@ jobs:
 
       # Uitspraakbestanden: eerdere bestanden hergebruiken, alleen nieuwe teksten aanvragen.
       - name: Uitspraak uit cache halen
+        id: restore
         uses: actions/cache/restore@v4
         with:
           path: audio-cache
@@ -59,7 +60,7 @@ jobs:
         run: echo "key=audio-${{ hashFiles('bron/data.json', 'bron/tools/uitspraak.py') }}-$(ls audio-cache | wc -l)" >> "$GITHUB_OUTPUT"
 
       - uses: actions/cache/save@v4
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && !endsWith(steps.audiokey.outputs.key, '-0') && steps.restore.outputs.cache-matched-key != steps.audiokey.outputs.key
         continue-on-error: true
         with:
           path: audio-cache

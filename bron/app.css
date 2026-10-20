@@ -394,4 +394,3 @@ nav{view-transition-name:hoofdmenu}
 .ti.h-af,.topic.h-af .ti{background:var(--afs);color:var(--af)}
 .ti.h-nl,.topic.h-nl .ti{background:color-mix(in srgb,var(--nl) 14%,transparent);color:var(--nl)}
 .ti.h-gold,.topic.h-gold .ti{background:var(--golds);color:var(--goldi)}
-@media(min-width:980px){.wide .topics{flex-wrap:wrap;overflow:visible}}
