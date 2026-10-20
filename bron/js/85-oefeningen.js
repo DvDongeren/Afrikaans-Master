@@ -77,7 +77,7 @@ V.toets=()=>{
 const okWord2=c=>c.nl.toLowerCase()!==c.af.toLowerCase()&&c.af.length<=30;
 
 /* ---------- eigen kaarten ---------- */
-const resetCards=()=>{[byId,IDX,TOK,BYCAT,ORDER].forEach(f=>f.reset());CG.reset()};
+const resetCards=()=>{[byId,IDX,TOK,BYCAT,ORDER,GAPS].forEach(f=>f.reset());CG.reset()};
 V.own=()=>{draw(`${back('back','Kaarten')}<h1>Eigen kaart</h1><p class="muted" style="margin:8px 0 16px">Voeg een woord of zin toe. Hij komt in je dagelijkse sessie als eerstvolgende nieuwe kaart.</p>
  <form id="of" class="stack"><label class="lbl" for="onl">Nederlands</label><input type="text" id="onl" required maxlength="120" autocomplete="off" placeholder="bijvoorbeeld: stoplicht">
  <label class="lbl" for="oaf">Afrikaans</label><input type="text" id="oaf" required maxlength="120" autocomplete="off" autocapitalize="off" placeholder="bijvoorbeeld: robot">

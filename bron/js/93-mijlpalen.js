@@ -7,7 +7,7 @@ const MS1={'dagen op rij':'dag op rij',dagen:'dag',weekenden:'weekend',antwoorde
 const msU=(f,n)=>n===1?(MS1[f.u]||f.u):f.u;
 /* Alle cijfers waar mijlpalen op letten, in één keer berekend. */
 function msStats(){const E=Object.entries(S.srs),dk=Object.keys(S.days).filter(k=>S.days[k]>0).sort(),all=GOT.size>=3;
- let best=0,run=0,prev=0;for(const k of dk){const t=Date.parse(k+'T12:00:00');run=prev&&Math.round((t-prev)/DAY)===1?run+1:1;if(run>best)best=run;prev=t}
+ const best=longestStreak();
  const wk=new Set();for(const k of dk){const d=new Date(k+'T12:00:00');if(d.getDay()===6){const z=fmt(new Date(+d+DAY));if(S.days[z]>0)wk.add(k)}}
  const m=byId(),lv={Intermediate:0,Advanced:0},cats=new Set(),catTot={},catSt={};let st=0,ma=0,top=0;
  for(const[k,r]of E){if(+k<0)continue;const c=m.get(+k);if(!c)continue;st++;if(r.box>=4){ma++;if(c.niveau in lv)lv[c.niveau]++}if(r.box>=6)top++;cats.add(c.categorie);catSt[c.categorie]=(catSt[c.categorie]||0)+1}
@@ -50,12 +50,17 @@ function msList(s=msStats()){return MSF.filter(f=>msOk(f,s)).map(f=>{const steps
 /* Nieuwe mijlpalen opslaan en vieren. De eerste keer (bestaande gebruikers) gebeurt dat stil. */
 let msQ=[];
 function checkMs(){if(!S.ms)S.ms={};const s=msStats(),now=Date.now(),fresh=[];
- for(const f of MSF){if(!msOk(f,s))continue;const v=f.v(s)||0;msSteps(f,s).forEach((x,i)=>{const k=f.id+':'+i;if(!S.ms[k]&&v>=x[0]){S.ms[k]=now;fresh.push({f,name:x[1],i})}})}
- if(!S.ms._){S.ms._=now;save();return}
- if(fresh.length){save();msQ.push(...fresh);msToast()}}
-function msToast(){if(!msQ.length||document.getElementById('mstoast'))return;const a=msQ.splice(0,msQ.length),x=a[a.length-1];
+ for(const f of MSF){if(!msOk(f,s))continue;const v=f.v(s)||0;msSteps(f,s).forEach((x,i)=>{const k=f.id+':'+i;if(!S.ms[k]&&v>=x[0]){S.ms[k]=now;fresh.push({ic:f.ic,i,head:'Mijlpaal behaald!',text:f.t+': '+x[1]})}})}
+ const xp=xpInfo();
+ if(!S.ms._){S.ms._=now;S.lvl=xp.L;delete S.frzNew;save();return}
+ const extra=[];if(xp.L>(S.lvl||0)){if(S.lvl)extra.push({ic:'star',i:Math.min(Math.floor(xp.L/4),8),head:'Niveau '+xp.L+' bereikt!',text:'Je bent nu '+xp.title+'.',big:1});S.lvl=xp.L;save()}
+ if(S.frzNew){delete S.frzNew;extra.push({ic:'shield',i:4,head:'Rustdag verdiend!',text:'Mis je een dag, dan blijft je reeks toch staan.',big:1});save()}
+ if(fresh.length){save();msQ.push(...fresh)}if(extra.length)msQ.push(...extra);msToast()}
+/* Eerst niveau en rustdag apart tonen, daarna de mijlpalen samen. */
+function msToast(){if(!msQ.length||document.getElementById('mstoast'))return;const bi=msQ.findIndex(x=>x.big);let a,x;
+ if(bi>=0){x=msQ.splice(bi,1)[0];a=[x]}else{a=msQ.splice(0,msQ.length);x=a.reduce((p,q)=>q.i>p.i?q:p)}
  const t=document.createElement('div');t.id='mstoast';t.setAttribute('role','status');
- t.innerHTML=`<span class="msmedal t${Math.min(x.i,8)}">${I[x.f.ic]||I.medal}</span><span class="grow"><b>${a.length>1?a.length+' nieuwe mijlpalen!':'Mijlpaal behaald!'}</b><span>${esc(x.f.t)}: ${esc(x.name)}${a.length>1?' en meer':''}</span></span><button class="chip on" data-a="mijlpalen">Bekijk</button>`;
+ t.innerHTML=`<span class="msmedal t${Math.min(x.i,8)}">${I[x.ic]||I.medal}</span><span class="grow"><b>${a.length>1?a.length+' nieuwe mijlpalen!':esc(x.head)}</b><span>${esc(x.text)}${a.length>1?' en meer':''}</span></span><button class="chip on" data-a="mijlpalen">Bekijk</button>`;
  document.body.appendChild(t);if(!navigator.userActivation||navigator.userActivation.hasBeenActive)buzz('ok');setTimeout(()=>t.classList.add('out'),5200);setTimeout(()=>{t.remove();msToast()},5600)}
 const medals=(r)=>`<span class="msdots" aria-hidden="true">${r.steps.map((x,i)=>`<i class="${r.got[i]?'on t'+Math.min(i,8):''}"></i>`).join('')}</span>`;
 function msBar(r){if(!r.next)return`<p class="muted small">Alles behaald in deze reeks.</p>`;const left=r.next.at-r.v;
@@ -66,8 +71,13 @@ V.mijlpalen=()=>{checkMs();const s=msStats(),L=msList(s),got=L.reduce((a,r)=>a+r
  const near=L.filter(r=>r.next&&r.v>0).sort((a,b)=>b.next.pct-a.next.pct).slice(0,3);
  const recent=Object.entries(S.ms).filter(([k])=>k!=='_').sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k,t])=>{const[id,i]=k.split(':'),r=L.find(x=>x.f.id===id);return r&&r.steps[+i]?{r,i:+i,t}:null}).filter(Boolean);
  const card=r=>`<div class="card ms"><div class="row sp"><span class="row" style="gap:10px"><span class="msmedal ${r.n?'t'+Math.min(r.n-1,8):'off'}">${I[r.f.ic]||I.medal}</span><span><h2>${esc(r.f.t)}</h2><span class="muted small">${r.n?esc(r.steps[r.n-1][1])+' · '+MSKL[Math.min(r.n-1,8)]:(r.f.sub?esc(r.f.sub):'Nog niet behaald')}</span></span></span><span class="muted small">${r.n}/${r.steps.length}</span></div>${medals(r)}${msBar(r)}</div>`;
- draw(`${back('meer','Meer')}<h1>Mijlpalen</h1>
- <div class="card stats"><div><div class="big">${got}</div><div class="muted">behaald</div></div><div><div class="big">${tot}</div><div class="muted">in totaal</div></div><div><div class="big">${s.best}</div><div class="muted">langste reeks</div></div></div>
+ const x=xpInfo(),f=S.frz||0;
+ draw(`${back('meer','Meer')}<div class="row sp"><h1>Mijlpalen</h1><button class="btn soft sm" data-a="deel">${I.share}Delen</button></div>
+ <div class="card lvcard"><div class="row" style="gap:12px"><span class="lvnum">${x.L}</span><span class="grow"><h2>Niveau ${x.L} · ${esc(x.title)}</h2><span class="muted small">${fmtN(x.xp)} punten · nog ${fmtN(x.to-x.xp)} tot niveau ${x.L+1}</span></span></div>
+ <div class="ibar" role="img" aria-label="${fmtN(x.xp-x.from)} van ${fmtN(x.to-x.from)} punten"><i class="ma" style="width:${Math.round((x.xp-x.from)/(x.to-x.from)*100)}%"></i></div>
+ <details class="xpd"><summary>Zo verdien je punten</summary><ul>${x.parts.map(p=>`<li><span>${p[0]}</span><span class="muted">${p[2]} per stuk · ${fmtN(p[1]*p[2])}</span></li>`).join('')}</ul></details></div>
+ <div class="card frzcard"><div class="row" style="gap:12px"><span class="msmedal ${f?'t4':'off'}">${I.shield}</span><span class="grow"><h2>${f?f+' '+(f===1?'rustdag':'rustdagen')+' klaar':'Nog geen rustdag'}</h2><span class="muted small">Elke 7 dagen op rij verdien je een rustdag (maximaal 2). Mis je een dag, dan blijft je reeks staan.${(S.frzD||[]).length?' Al '+S.frzD.length+' keer gebruikt.':''}</span></span></div></div>
+ <div class="card stats" style="margin-top:12px"><div><div class="big">${got}</div><div class="muted">behaald</div></div><div><div class="big">${tot}</div><div class="muted">in totaal</div></div><div><div class="big">${s.best}</div><div class="muted">langste reeks</div></div></div>
  <div class="ibar" style="margin-top:10px" role="img" aria-label="${got} van ${tot} mijlpalen"><i class="ma" style="width:${tot?Math.round(got/tot*100):0}%"></i></div>
  ${near.length?`<div class="sec">Bijna binnen</div><div class="stack">${near.map(card).join('')}</div>`:''}
  ${recent.length?`<div class="sec">Laatst behaald</div><div class="card"><div class="chips wrap">${recent.map(x=>`<span class="chip on"><span class="msmini t${Math.min(x.i,8)}"></span>${esc(x.r.steps[x.i][1])}</span>`).join('')}</div></div>`:''}

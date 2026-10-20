@@ -6,7 +6,7 @@ V.home=()=>{const h=new Date().getHours(),hi=h<12?['Goeiemôre','Goedemorgen']:h
  let cont='';if(S.lp){const lp=PATHS().find(p=>p.id===S.lp),dn=lp&&(S.paths[lp.id]||[]),nxi=lp?lp.steps.findIndex((_,i)=>!dn.includes(i)):-1;
   if(nxi>=0)cont=`<div class="sec">Ga verder met je pad</div><div class="list">${row(`data-p="${lp.id}"`,I.pad,esc(lp.title),'Volgende: '+esc(lp.steps[nxi].title))}</div>`}
  const s=streak();
- draw(`<div class="home-grid"><div class="col"><header class="hero"><div class="row sp"><span class="brand">Afrikaans Master</span><span class="row" style="gap:8px">${s?`<span class="badge">${I.flame}${s} ${s===1?'dag':'dagen'} op rij</span>`:`<span class="muted small">Begin vandaag je reeks</span>`}<button class="x" data-a="zoek" aria-label="Zoeken">${I.search}</button></span></div>
+ draw(`<div class="home-grid"><div class="col"><header class="hero"><div class="row sp"><span class="brand">Afrikaans Master</span><span class="row" style="gap:8px"><button class="badge lvb" data-a="mijlpalen" aria-label="Niveau ${xpInfo().L}, naar mijlpalen">Niv. ${xpInfo().L}</button>${s?`<span class="badge" title="${s} ${s===1?'dag':'dagen'} op rij">${I.flame}${s}${S.frz?`<span class="frzb" title="${S.frz} ${S.frz===1?'rustdag':'rustdagen'}">${I.shield}${S.frz}</span>`:''}</span>`:''}<button class="x" data-a="zoek" aria-label="Zoeken">${I.search}</button></span></div>
  <div class="hero-row"><div><div class="hello">${hi[0]}</div><div class="nl">${hi[1]}</div></div><svg class="illu" viewBox="0 0 120 84" aria-hidden="true"><circle cx="86" cy="26" r="13" class="sun"/><path d="M6 64 L30 40 Q32 38 35 38 L84 38 Q87 38 89 40 L114 64" class="mtn"/><path d="M16 72h88M30 79h60" class="sea"/></svg></div></header>
  ${cta()}
  <div class="quick" style="margin-top:12px"><button data-a="quiz">${I.quiz}Quiz</button><button data-a="dlgs">${I.dlg}Dialogen</button><button data-a="stories">${I.story}Verhalen</button></div>
@@ -24,6 +24,7 @@ V.oef=()=>{const lv=st.lv||'Alles';
  draw(`<div class="row sp"><h1>Oefenen</h1><button class="x" data-a="zoek" aria-label="Zoeken">${I.search}</button></div><div style="margin-top:18px">${cta()}</div>
  <div class="secs"><section><div class="sec">Slim oefenen</div><div class="list">
  ${row('data-a="weak"',I.bolt,'Moeilijke kaarten',weakList().length?weakList().length+' kaarten die je vaak fout hebt':'Nog geen moeilijke kaarten')}
+ ${row('data-a="gat"',I.zin,'Gatentekst','Vul het ontbrekende woord in een echte zin in')}
  ${row('data-a="spel"',I.spel,'Spelletjes','Memory en tijdrace')}
  ${row('data-a="luister"',I.ear,'Luisteren',canSpeak()?'Hoor een zin en typ wat je hoort':'Niet beschikbaar op dit toestel')}</div>
 </section><section><div class="sec">Taal en grammatica</div><div class="list">

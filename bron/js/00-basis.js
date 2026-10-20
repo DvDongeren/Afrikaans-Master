@@ -35,7 +35,7 @@ function wordOfDay(){const P=CARDS.filter(c=>c.niveau==='Beginner'&&!c.own).sort
 
 /* ---------- opslag: gebundeld schrijven, altijd wegschrijven bij verlaten ---------- */
 const KEY='af2';
-const DEF=()=>({srs:{},favs:[],streak:0,last:'',days:{},theme:'auto',goal:15,paths:{},dlg:{},les:{},lp:'',typed:false,stories:{},own:[],reports:[],rate:1,startLv:'',lvDone:false,haptic:true,games:{},instHide:false,fs:'n',read:false,ms:{}});
+const DEF=()=>({srs:{},favs:[],streak:0,last:'',days:{},theme:'auto',goal:15,paths:{},dlg:{},les:{},lp:'',typed:false,stories:{},own:[],reports:[],rate:1,startLv:'',lvDone:false,haptic:true,games:{},instHide:false,fs:'n',read:false,ms:{},frz:0,frzD:[],lvl:0});
 let S=DEF();try{Object.assign(S,JSON.parse(localStorage.getItem(KEY))||{})}catch{}
 const ownCard=o=>({id:o.id,niveau:'Beginner',categorie:'Eigen kaarten',nl:o.nl,af:o.af,voorbeeld:o.vb||'',tips:'',own:1});
 let saveT=0;
@@ -47,8 +47,17 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 
 /* ---------- leerlogica ---------- */
 const todayN=()=>S.days[fmt(new Date())]||0;
-const streak=()=>{const t=fmt(new Date()),y=fmt(new Date(Date.now()-DAY));return(S.last===t||S.last===y)?S.streak:0};
-function count(){const t=fmt(new Date());S.days[t]=(S.days[t]||0)+1;if(S.last!==t){S.streak=S.last===fmt(new Date(Date.now()-DAY))?S.streak+1:1;S.last=t}save()}
+/* Reeks met rustdagen: elke 7 dagen op rij levert een rustdag op (maximaal 2). Een gemiste dag kost een rustdag in plaats van je reeks. */
+const dayAt=k=>Date.parse(k+'T12:00:00');
+const missed=()=>S.last?Math.round((dayAt(fmt(new Date()))-dayAt(S.last))/DAY)-1:Infinity;
+const streak=()=>{const m=missed();return m<=0||m<=(S.frz||0)?S.streak:0};
+function count(){const t=fmt(new Date());S.days[t]=(S.days[t]||0)+1;
+ if(S.last!==t){const m=missed();
+  if(m===0)S.streak++;
+  else if(m>0&&m<=(S.frz||0)){S.frz-=m;for(let i=1;i<=m;i++)S.frzD.push(fmt(new Date(dayAt(S.last)+i*DAY)));S.frzD=S.frzD.slice(-400);S.streak++}
+  else S.streak=1;
+  S.last=t;if(S.streak%7===0&&(S.frz||0)<2){S.frz=(S.frz||0)+1;S.frzNew=1}}
+ save()}
 function grade(id,ok){const r=S.srs[id]||{box:0};r.box=ok?Math.min(r.box+1,6):0;r.due=Date.now()+(ok?BOX[r.box]*DAY:6e5);r.t=Date.now();if(!r.f)r.f=r.t;S.srs[id]=r;count()}
 const isDue=id=>{const r=S.srs[id];return!!r&&r.due<=Date.now()};
 function dueCount(){const now=Date.now();let n=0;for(const k in S.srs)if(S.srs[k].due<=now)n++;return n}
@@ -125,4 +134,6 @@ bolt:ic('<path d="M13 2.5L4.5 14h7l-1 7.5L19 10h-7z"/>'),
 plus:ic('<path d="M12 5v14M5 12h14"/>'),
 flag:ic('<path d="M5 21V4h11l-2 4 2 4H5"/>'),
 trash:ic('<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>'),
-medal:ic('<circle cx="12" cy="14.5" r="5.5"/><path d="M8.5 9.8L6 3h4l2 4.5L14 3h4l-2.5 6.8"/>')};
+medal:ic('<circle cx="12" cy="14.5" r="5.5"/><path d="M8.5 9.8L6 3h4l2 4.5L14 3h4l-2.5 6.8"/>'),
+shield:ic('<path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6z"/><path d="M9 12l2 2 4-4"/>'),
+share:ic('<path d="M12 15V3M7.5 7.5L12 3l4.5 4.5"/><path d="M5 12v7.5h14V12"/>')};

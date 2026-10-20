@@ -25,14 +25,14 @@ const endDrag=()=>{if(!drag)return;const{dx,el}=drag;drag=null;el.style.transiti
 document.addEventListener('pointerup',endDrag);document.addEventListener('pointercancel',endDrag);
 
 /* ---------- voortgangskalender ---------- */
-function longestStreak(){const ds=Object.keys(S.days).filter(k=>S.days[k]>0).sort();let best=0,cur=0,prev=null;
+function longestStreak(){const ds=[...new Set([...Object.keys(S.days).filter(k=>S.days[k]>0),...(S.frzD||[])])].sort();let best=0,cur=0,prev=null;
  for(const k of ds){const t=new Date(k+'T12:00:00').getTime();cur=prev!==null&&Math.round((t-prev)/DAY)===1?cur+1:1;best=Math.max(best,cur);prev=t}return best}
 function calendar(){const W=26,g=S.goal,today=new Date();today.setHours(12,0,0,0);const dow=(today.getDay()+6)%7,start=new Date(today.getTime()-(dow+7*(W-1))*DAY);
  const md=['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'],wd=['ma','di','wo','do','vr','za','zo'];let cells='',active=0,total=0,months='';
  for(const k in S.days){if(S.days[k]>0){active++;total+=S.days[k]}}
  for(let w=0;w<W;w++){const first=new Date(start.getTime()+w*7*DAY);months+=`<span>${first.getDate()<=7?md[first.getMonth()]:''}</span>`;
   for(let d=0;d<7;d++){const dt=new Date(start.getTime()+(w*7+d)*DAY);if(dt>today){cells+='<i class="fut"></i>';continue}
-   const n=S.days[fmt(dt)]||0,l=!n?0:n<g/2?1:n<g?2:3;cells+=`<i class="l${l}" title="${wd[d]} ${dt.getDate()} ${md[dt.getMonth()]}: ${n} ${n===1?'kaart':'kaarten'}"></i>`}}
+   const n=S.days[fmt(dt)]||0,l=!n?0:n<g/2?1:n<g?2:3,fz=!n&&(S.frzD||[]).includes(fmt(dt));cells+=`<i class="${fz?'frz':'l'+l}" title="${wd[d]} ${dt.getDate()} ${md[dt.getMonth()]}: ${fz?'rustdag gebruikt':n+' '+(n===1?'kaart':'kaarten')}"></i>`}}
  return`<div class="cal-stats"><div><div class="big">${streak()}</div><div class="muted">dagen op rij</div></div><div><div class="big">${longestStreak()}</div><div class="muted">langste reeks</div></div><div><div class="big">${active}</div><div class="muted">actieve dagen</div></div></div>
  <div class="cal" id="cal"><div class="cal-m" style="grid-template-columns:repeat(${W},var(--c))">${months}</div><div class="cal-g" style="grid-template-columns:repeat(${W},var(--c))" role="img" aria-label="Kalender van de laatste ${W} weken: ${active} actieve dagen">${cells}</div></div>
  <div class="cal-leg muted"><span>Minder</span><i class="l0"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><span>Doel gehaald</span></div>`}

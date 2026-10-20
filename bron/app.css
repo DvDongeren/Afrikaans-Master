@@ -416,3 +416,24 @@ nav{view-transition-name:hoofdmenu}
 #mstoast.out{opacity:0;transform:translateY(10px);transition:.35s}
 @keyframes mspop{from{opacity:0;transform:translateY(16px) scale(.92)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){#mstoast{animation:none}#mstoast.out{transition:none}}
+/* niveau, rustdagen, delen, gatentekst */
+.btn.sm{padding:8px 14px;font-size:.9rem;min-height:0;width:auto}
+.btn.sm svg{width:17px;height:17px}
+button.badge.lvb{background:var(--afs);color:var(--af);border:0;cursor:pointer}
+.frzb{display:inline-flex;align-items:center;gap:2px;margin-left:6px;padding-left:6px;border-left:1.5px solid currentColor;opacity:.9}
+.frzb svg{width:14px;height:14px}
+.lvcard{margin-top:14px}
+.lvcard h2{margin:0;font-size:1.05rem}
+.lvnum{display:grid;place-items:center;flex:none;width:52px;height:52px;border-radius:16px;background:linear-gradient(140deg,var(--gold),#c98a12);color:#14201a;font:700 1.45rem var(--serif)}
+.xpd{margin-top:10px}
+.xpd summary{cursor:pointer;color:var(--muted);font-size:.9rem}
+.xpd ul{list-style:none;padding:0;margin:8px 0 0}
+.xpd li{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-top:1px solid var(--hair);font-size:.92rem}
+.frzcard{margin-top:12px}
+.frzcard h2{margin:0;font-size:1rem}
+.cal-g i.frz{background:#6fa8dc}
+.sharecv{display:block;width:100%;max-width:420px;height:auto;margin:14px auto 0;border-radius:18px;box-shadow:0 10px 28px rgba(0,0,0,.18)}
+.gapq{line-height:1.5}
+.gap{display:inline-block;min-width:3.2em;padding:0 .25em;border-bottom:3px solid var(--gold);text-align:center;color:var(--af)}
+.gap.ok{border-color:var(--ok);color:var(--ok)}
+.gap.bad{border-color:var(--bad)}
