@@ -63,4 +63,14 @@ with sync_playwright() as p:
     pg.click('#nav [data-v=meer]'); pg.wait_for_selector('[data-a=beheer]'); pg.click('[data-a=beheer]'); pg.click('[data-bt=fout]'); pg.wait_for_selector('[data-edone]')
     print('in beheer:',pg.locator('[data-edone]').count()); pg.click('[data-edone]'); pg.wait_for_timeout(300); print('na opgelost:',len(LOG))
     ctx.close()
+    # --- geschrapte kaarten verdwijnen uit de voortgang ---
+    now=int(time.time()*1000)
+    ctx,pg=page(b,state={'srs':{'1':{'box':2,'due':now-1000,'t':now},'999999':{'box':2,'due':now-1000,'t':now},'-5':{'box':1,'due':now,'t':now}},'favs':[1,999999],'lvDone':True}); open_(pg)
+    for _ in range(40):
+        s=pg.evaluate("JSON.parse(localStorage.getItem('af2')||'{}')")
+        if '999999' not in s.get('srs',{'999999':1}): break
+        pg.wait_for_timeout(200)
+    print('opgeschoond:',sorted(s['srs']),s['favs'])
+    assert sorted(s['srs'])==['-5','1'] and s['favs']==[1], s
+    ctx.close()
     print('FOUTEN',errs)
