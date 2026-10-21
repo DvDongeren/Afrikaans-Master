@@ -596,3 +596,8 @@ label.btn{cursor:pointer}
 #selz svg{width:16px;height:16px;flex:none}#selz span{overflow:hidden;text-overflow:ellipsis}
 .bstat .col{height:70px}.bstat b{display:none}
 .fxs textarea{min-height:64px}
+/* plaatjes in donkere modus: vullingen iets voller, zodat de tekeningen niet flets worden */
+[data-theme=dark] .pic .a{fill:color-mix(in srgb,#2e9a55 42%,var(--surface))}[data-theme=dark] .pic .g{fill:color-mix(in srgb,#f2c230 42%,var(--surface))}
+[data-theme=dark] .pic .n{fill:color-mix(in srgb,#5f8fd8 40%,var(--surface))}[data-theme=dark] .pic .w{fill:color-mix(in srgb,#fff 14%,var(--surface))}
+[data-theme=dark] .pic .r{fill:color-mix(in srgb,#e2513f 48%,var(--surface))}[data-theme=dark] .pic .o{fill:color-mix(in srgb,#f08a24 48%,var(--surface))}
+[data-theme=dark] .pic .p{fill:color-mix(in srgb,#f08fb8 50%,var(--surface))}[data-theme=dark] .pic .b{fill:color-mix(in srgb,#b0773f 50%,var(--surface))}[data-theme=dark] .pic .u{fill:color-mix(in srgb,#9b6bf1 48%,var(--surface))}

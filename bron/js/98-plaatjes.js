@@ -51,7 +51,7 @@ V.plaat=()=>{const P=PICS();if(!st.q){const pool=picItems(st.th);if(!pool.length
   :`<div class="card q pq"><div class="row" style="justify-content:center;gap:10px"><div class="big af">${esc(x[0])}</div>${spk(x[0],'sm')}</div><div class="lbl" style="margin-top:6px">Kies het goede plaatje</div></div>`;
  const cls=y=>done?(y[0]===x[0]?'ok':y[0]===st.pick?'bad':''):'';
  const op=mode==='beeld'?`<div class="stack" id="op" style="margin-top:14px">${opts.map(y=>`<button class="opt af-opt ${cls(y)}" data-po="${esc(y[0])}" ${done?'disabled':''}>${esc(y[0])}</button>`).join('')}</div>`
-  :`<div class="popts" id="op">${opts.map(y=>`<button class="popt ${cls(y)}" data-po="${esc(y[0])}" ${done?'disabled':''} aria-label="${done?esc(y[0]+' = '+y[1]):'Plaatje '+(opts.indexOf(y)+1)}">${pic(y[3])}${done?`<span class="af small">${esc(y[0])}</span>`:''}</button>`).join('')}</div>`;
+  :`<div class="popts" id="op">${opts.map(y=>`<button class="popt ${cls(y)}" data-po="${esc(y[0])}" ${done?'disabled':''} aria-label="${done?esc(y[0]+' = '+y[1]):'Plaatje van: '+esc(y[1])}">${pic(y[3])}${done?`<span class="af small">${esc(y[0])}</span>`:''}</button>`).join('')}</div>`;
  draw(`${topbar(st.i,n,'beeld')}${th?`<div class="lbl" style="margin:0 4px 8px">${esc(th.nl)} · ${esc(th.af)}</div>`:''}${q}${op}
  ${done?`<div class="card pfb ${st.ans?'good':'wrong'}" role="status"><b>${st.ans?'Goed!':'Net niet.'}</b> <span class="af">${esc(x[0])}</span> = ${esc(x[1])}</div><button class="btn" id="pnx" style="margin-top:12px">${st.i+1<n?'Volgende':'Bekijk je score'}</button>`:''}`);
  if(done){$('#pnx').onclick=()=>{st.ans=null;st.pick=null;st.i++;render()};$('#pnx').focus({preventScroll:true});return}
