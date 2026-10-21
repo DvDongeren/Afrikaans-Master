@@ -38,7 +38,7 @@ function wordOfDay(){const d=Math.floor(Date.now()/DAY);if(WOD&&WOD.d===d&&WOD.n
 
 /* ---------- opslag: gebundeld schrijven, altijd wegschrijven bij verlaten ---------- */
 const KEY='af2';
-const DEF=()=>({srs:{},favs:[],streak:0,last:'',days:{},theme:'auto',goal:15,paths:{},dlg:{},les:{},lp:'',typed:false,stories:{},own:[],reports:[],rate:1,startLv:'',lvDone:false,haptic:true,games:{},instHide:false,fs:'n',read:false,ms:{},frz:0,frzD:[],lvl:0});
+const DEF=()=>({srs:{},favs:[],streak:0,last:'',days:{},theme:'auto',goal:15,paths:{},dlg:{},les:{},lp:'',typed:false,stories:{},own:[],reports:[],rate:1,startLv:'',lvDone:false,haptic:true,games:{},instHide:false,fs:'n',read:false,ms:{},frz:0,frzD:[],lvl:0,notes:{}});
 let S=DEF();try{Object.assign(S,JSON.parse(localStorage.getItem(KEY))||{})}catch{}
 const ownCard=o=>({id:o.id,niveau:'Beginner',categorie:'Eigen kaarten',nl:o.nl,af:o.af,voorbeeld:o.vb||'',tips:'',own:1});
 let saveT=0;
@@ -140,4 +140,5 @@ trash:ic('<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>'),
 medal:ic('<circle cx="12" cy="14.5" r="5.5"/><path d="M8.5 9.8L6 3h4l2 4.5L14 3h4l-2.5 6.8"/>'),
 shield:ic('<path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6z"/><path d="M9 12l2 2 4-4"/>'),
 radar:ic('<circle cx="12" cy="12" r="9"/><path d="M12 12l6.4-6.4"/><path d="M12 6.5A5.5 5.5 0 006.5 12"/><path d="M12 9.5A2.5 2.5 0 009.5 12"/><circle cx="15.6" cy="15.2" r="1"/>'),
+bulb:ic('<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 00-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0012 3z"/>'),
 share:ic('<path d="M12 15V3M7.5 7.5L12 3l4.5 4.5"/><path d="M5 12v7.5h14V12"/>')};

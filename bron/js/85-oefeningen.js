@@ -15,7 +15,7 @@ const CG=L(()=>{const m=new Map(),bad=new Set();for(const c of CARDS){const k=c.
 const wordRe=/('n(?!\p{L})|\p{L}+(?:['’-]\p{L}+)*)/gu;
 function gloss(w,x){const k=w.toLowerCase();return k==="'n"?'een':x.g[k]||Y().G0[k]||CG().get(k)||null}
 V.story=()=>{const x=Y().ST.find(z=>z.id===st.id);if(!x)return go('stories');
- const html=x.s.map(p=>`<p>${p[0].split(wordRe).map((t,j)=>j%2?`<span class="w" data-w="${esc(t)}">${esc(t)}</span>`:esc(t)).join('')}${spk(p[0],'sm')}${st.tr?`<span class="nl">${esc(p[1])}</span>`:''}</p>`).join('');
+ const html=x.s.map((p,i)=>`<p data-i="${i}">${p[0].split(wordRe).map((t,j)=>j%2?`<span class="w" data-w="${esc(t)}">${esc(t)}</span>`:esc(t)).join('')}${spk(p[0],'sm')}${st.tr?`<span class="nl">${esc(p[1])}</span>`:''}</p>`).join('');
  draw(`<div class="row sp">${back('back','Verhaaltjes')}<button class="chip ${st.tr?'on':''}" id="tt" style="margin-top:-14px">Vertaling</button></div><h1>${esc(x.t)}</h1><p class="muted" style="margin:8px 0 16px">${x.niv} · tik op een woord voor de vertaling</p>
  <div class="card reader">${html}</div>
  <div class="row" style="margin:16px 0 120px"><button class="btn soft" id="pl">${I.spk}Voorlezen</button><button class="btn" id="fin">${S.stories[x.id]?'Opnieuw gelezen':'Klaar met lezen'}</button></div><div id="wp" role="status"></div>`);
@@ -23,8 +23,8 @@ V.story=()=>{const x=Y().ST.find(z=>z.id===st.id);if(!x)return go('stories');
  $('#pl').onclick=()=>speakAll(x.s.map(p=>p[0]));
  $('#fin').onclick=()=>{if(!S.stories[x.id]){S.stories[x.id]=1;count()}saveNow();go('stories')}};
 function storyWord(w){const x=Y().ST.find(z=>z.id===st.id);for(const z of app.querySelectorAll('.w.on'))z.classList.remove('on');w.classList.add('on');
- const t=w.dataset.w,g=gloss(t,x),p=$('#wp');p.style.display='block';
- p.innerHTML=`<div class="row sp"><div class="grow"><div class="af" style="font-size:1.25rem">${esc(t)}</div><div>${g?esc(g):'<span class="muted">Geen vertaling bekend. Zet "Vertaling" aan.</span>'}</div></div>${spk(t)}</div>`}
+ const t=w.dataset.w,g=gloss(t,x),p=$('#wp'),pi=w.closest('[data-i]'),vb=pi&&x.s[+pi.dataset.i]?x.s[+pi.dataset.i][0]:'';p.style.display='block';
+ p.innerHTML=`<div class="row sp"><div class="grow"><div class="af" style="font-size:1.25rem">${esc(t)}</div><div>${g?esc(g):'<span class="muted">Geen vertaling bekend. Zet "Vertaling" aan.</span>'}</div></div>${spk(t)}</div>${storyActions(t,g,vb)}`;bindStoryActions(p,t,g,vb)}
 
 /* ---------- oude voortgang ---------- */
 async function importOld(){await load('ext');let srs,favs;try{srs=JSON.parse(localStorage.getItem('af_srs')||'null');favs=JSON.parse(localStorage.getItem('af_favs')||'null')}catch{}
@@ -78,13 +78,14 @@ const okWord2=c=>c.nl.toLowerCase()!==c.af.toLowerCase()&&c.af.length<=30;
 
 /* ---------- eigen kaarten ---------- */
 const resetCards=()=>{[byId,IDX,TOK,BYCAT,ORDER,GAPS].forEach(f=>f.reset());CG.reset()};
-V.own=()=>{draw(`${back('back','Kaarten')}<h1>Eigen kaart</h1><p class="muted" style="margin:8px 0 16px">Voeg een woord of zin toe. Hij komt in je dagelijkse sessie als eerstvolgende nieuwe kaart.</p>
- <form id="of" class="stack"><label class="lbl" for="onl">Nederlands</label><input type="text" id="onl" required maxlength="120" autocomplete="off" placeholder="bijvoorbeeld: stoplicht">
- <label class="lbl" for="oaf">Afrikaans</label><input type="text" id="oaf" required maxlength="120" autocomplete="off" autocapitalize="off" placeholder="bijvoorbeeld: robot">
- <label class="lbl" for="ovb">Voorbeeldzin (mag leeg)</label><input type="text" id="ovb" maxlength="300" autocomplete="off" placeholder="bijvoorbeeld: Draai links by die robot.">
+V.own=()=>{draw(`${back('back',st.from?'Verhaal':'Kaarten')}<h1>Eigen kaart</h1><p class="muted" style="margin:8px 0 16px">Voeg een woord of zin toe. Hij komt in je dagelijkse sessie als eerstvolgende nieuwe kaart.</p>
+ <form id="of" class="stack"><label class="lbl" for="onl">Nederlands</label><input type="text" id="onl" required maxlength="120" autocomplete="off" placeholder="bijvoorbeeld: stoplicht" value="${esc(st.nl||'')}">
+ <label class="lbl" for="oaf">Afrikaans</label><input type="text" id="oaf" required maxlength="120" autocomplete="off" autocapitalize="off" placeholder="bijvoorbeeld: robot" value="${esc(st.af||'')}">
+ <label class="lbl" for="ovb">Voorbeeldzin (mag leeg)</label><input type="text" id="ovb" maxlength="300" autocomplete="off" placeholder="bijvoorbeeld: Draai links by die robot." value="${esc(st.vb||'')}">
  <button class="btn" type="submit">Opslaan</button><p class="muted" id="om" role="status"></p></form>`);
  $('#of').onsubmit=e=>{e.preventDefault();const nl=$('#onl').value.trim(),af=$('#oaf').value.trim(),vb=$('#ovb').value.trim();if(!nl||!af){$('#om').textContent='Vul Nederlands en Afrikaans in.';return}
   let id=-Date.now();for(const o of S.own)if(o.id===id)id--;const o={id,nl,af,vb};S.own.push(o);CARDS.push(ownCard(o));resetCards();saveNow();
-  $('#om').textContent='Opgeslagen: '+af+'.';$('#onl').value='';$('#oaf').value='';$('#ovb').value='';$('#onl').focus()}};
+  $('#om').textContent='Opgeslagen: '+af+'.';st.af=st.nl=st.vb='';$('#onl').value='';$('#oaf').value='';$('#ovb').value='';$('#onl').focus()}
+ if(st.af)requestAnimationFrame(()=>{const n=$('#onl');n&&n.focus()})};
 function delOwn(id){const c=byId().get(id);if(!c||!confirm('Eigen kaart "'+c.af+'" verwijderen?'))return;S.own=S.own.filter(o=>o.id!==id);delete S.srs[id];S.favs=S.favs.filter(x=>x!==id);
  const i=CARDS.findIndex(x=>x.id===id);if(i>=0)CARDS.splice(i,1);resetCards();saveNow();V.kaart()}

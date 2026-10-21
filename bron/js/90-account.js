@@ -48,6 +48,7 @@ function cleanState(o){if(!o||typeof o!=='object'||Array.isArray(o))return null;
  r.frz=num(o.frz)?Math.max(0,Math.min(2,o.frz|0)):0;r.frzD=Array.isArray(o.frzD)?o.frzD.filter(x=>typeof x==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(x)).slice(-400):[];r.lvl=num(o.lvl)?Math.max(0,Math.min(999,o.lvl|0)):0;
  r.ms={};if(obj(o.ms))for(const[k,v]of Object.entries(o.ms).slice(0,1000))if(/^(_|[a-zA-Z0-9]{1,20}:\d{1,2})$/.test(k)&&num(v))r.ms[k]=v;
  for(const k of['typed','lvDone','haptic','instHide','read'])r[k]=typeof o[k]==='boolean'?o[k]:d[k];
+ r.notes={};if(obj(o.notes))for(const[k,v]of Object.entries(o.notes).slice(0,5000))if(/^-?\d{1,15}$/.test(k)&&str(v,200)&&v.trim())r.notes[k]=v;
  r.lp=str(o.lp,60)?o.lp:'';for(const k of['mt','resetAt','cloud'])if(num(o[k]))r[k]=o[k];return Object.assign(d,r)}
 function mergeState(a,b){
  if(!b)return a;if((b.resetAt||0)>(a.mt||0))return Object.assign(DEF(),b);if((a.resetAt||0)>(b.mt||0))return a;
@@ -62,7 +63,7 @@ function mergeState(a,b){
  const own=new Map(),used=new Set();for(const x of[...(b.own||[]),...(a.own||[])]){const key=x.id+'|'+x.af;if(own.has(key))continue;let c={...x};if(used.has(c.id))c.id=-Date.now()-own.size-1;used.add(c.id);own.set(key,c)}o.own=[...own.values()];
  const rp=new Map();for(const r of[...(b.reports||[]),...(a.reports||[])])rp.set(r.id+'|'+r.t,r);o.reports=[...rp.values()];
  const ga=a.games||{},gb=b.games||{};o.games={};if(ga.race!=null||gb.race!=null)o.games.race=Math.max(ga.race??0,gb.race??0);if(ga.mem!=null||gb.mem!=null)o.games.mem=Math.min(ga.mem??1e4,gb.mem??1e4);
- o.frzD=[...new Set([...(a.frzD||[]),...(b.frzD||[])])].sort().slice(-400);o.lvl=Math.max(a.lvl||0,b.lvl||0);
+ o.frzD=[...new Set([...(a.frzD||[]),...(b.frzD||[])])].sort().slice(-400);o.lvl=Math.max(a.lvl||0,b.lvl||0);o.notes={...(b.notes||{}),...(a.notes||{})};
  o.ms={...(b.ms||{})};for(const[k,v]of Object.entries(a.ms||{}))o.ms[k]=o.ms[k]?Math.min(o.ms[k],v):v;
  o.theme=a.theme;o.rate=a.rate;o.haptic=a.haptic;o.fs=a.fs||'n';o.read=!!a.read;o.instHide=a.instHide||b.instHide;
  o.mt=Math.max(a.mt||0,b.mt||0);o.cloud=1;return o}

@@ -12,6 +12,7 @@ document.addEventListener('click',e=>{const t=e.target;
   const g=t.closest('[data-g]');if(g&&!st.swiped)return sessGrade(g.dataset.g==='1')}
  const zr=t.closest('[data-zr]');if(zr&&view==='zoek'){const r=st.res[+zr.dataset.zr];return go(r.go[0],Object.assign({},r.go[1]))}
  if(t.closest('[data-zk]'))return go('kaart',{q:st.q});
+ const ez=t.closest('[data-ezel]');if(ez){e.stopPropagation();return ezelEdit(+ez.dataset.ezel)}
  const rp=t.closest('[data-rep]');if(rp){e.stopPropagation();return report(+rp.dataset.rep)}
  const dl=t.closest('[data-del]');if(dl)return delOwn(+dl.dataset.del);
  if(t.closest('[data-lvskip]')){S.lvDone=true;saveNow();return V.home()}
