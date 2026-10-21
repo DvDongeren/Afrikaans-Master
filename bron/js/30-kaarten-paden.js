@@ -22,7 +22,7 @@ V.kaart=()=>{st.q=st.q||'';st.lv=st.lv||'Alles';
 
 /* ---------- paden ---------- */
 /* Een pad kan een eigen icoon hebben (veld 'ic' in de data), in dezelfde lijnstijl als de rest. */
-const pIcon=p=>p&&p.ic&&I[p.ic]?`<span class="pico">${I[p.ic]}</span>`:'';
+const pIcon=p=>p&&p.ic&&I[p.ic]?`<span class="ico">${I[p.ic]}</span>`:'';
 const markStep=(p,i)=>{const a=S.paths[p]=S.paths[p]||[];if(!a.includes(i))a.push(i);saveNow()};
 function goBack(){if(st.ret)return go('path',{p:st.ret.p});if(view==='own')return go('kaart',S.own.length?{cat:'Eigen kaarten'}:{});go(['quiz','mc','zin','reis','cult','vv','stories','gram','dlgs','luister','weak'].includes(view)?'oef':view==='story'?'stories':view==='dlg'?'dlgs':view==='les'?'gram':'home')}
 function stepDone(){markStep(st.ret.p,st.ret.i);go('path',{p:st.ret.p})}
@@ -30,9 +30,10 @@ V.paden=()=>{const P=PATHS(),g=st.g||'Alles',tot=P.reduce((a,p)=>a+p.steps.lengt
  draw(`<h1>Paden</h1><p class="muted" style="margin-top:8px">Routes met uitleg, kaarten, dialogen en quizzen. ${dn} van ${tot} stappen gedaan.</p>
  <div class="chips" id="pg" style="margin-top:16px">${['Alles','Weekroute','Grammatica','Situatie','Thema','Slim'].map(x=>`<button class="chip ${g===x?'on':''}" data-pg="${x}">${x}</button>`).join('')}</div>
  <div class="list grid2" style="margin-top:14px">${P.filter(p=>g==='Alles'||p.g===g).map(p=>{const n=(S.paths[p.id]||[]).length,t=p.steps.length;
-  return`<button class="li" data-p="${p.id}" style="display:block"><div class="row sp"><h2>${pIcon(p)}${esc(p.title)}</h2><span class="muted" style="font-variant-numeric:tabular-nums">${n}/${t}</span></div><div class="muted" style="margin:2px 0 10px">${esc(p.desc)}</div><div class="bar"><i style="width:${n/t*100}%"></i></div></button>`}).join('')}</div>`)};
+  const body=`<div class="row sp"><h2>${esc(p.title)}</h2><span class="muted" style="font-variant-numeric:tabular-nums">${n}/${t}</span></div><div class="muted" style="margin:2px 0 10px">${esc(p.desc)}</div><div class="bar"><i style="width:${n/t*100}%"></i></div>`;
+  return`<button class="li" data-p="${p.id}" style="display:block">${p.ic?`<div class="row pic" style="gap:12px;align-items:flex-start">${pIcon(p)}<div class="grow">${body}</div></div>`:body}</button>`}).join('')}</div>`)};
 V.path=()=>{const p=PATHS().find(x=>x.id===st.p);if(!p)return go('paden');const dn=S.paths[p.id]||[],nx=p.steps.findIndex((_,i)=>!dn.includes(i)),lab={les:'Les',info:'Uitleg',category:'Kaarten',dialogue:'Dialoog',quiz:'Quiz'};
- draw(`${back('paden','Alle paden')}<h1>${pIcon(p)}${esc(p.title)}</h1><p class="muted" style="margin:8px 0 14px">${esc(p.desc)}</p><div class="bar"><i style="width:${dn.length/p.steps.length*100}%"></i></div>
+ draw(`${back('paden','Alle paden')}${p.ic?`<div class="row" style="gap:12px">${pIcon(p)}<h1>${esc(p.title)}</h1></div>`:`<h1>${esc(p.title)}</h1>`}<p class="muted" style="margin:8px 0 14px">${esc(p.desc)}</p><div class="bar"><i style="width:${dn.length/p.steps.length*100}%"></i></div>
  <div class="steps" style="margin-top:14px">${p.steps.map((x,i)=>{const ok=dn.includes(i);
   const sub=x.type==='info'?esc(x.text):lab[x.type]+(x.type==='quiz'?' · '+(x.count||10)+' vragen':x.type==='category'?' · '+esc(x.cat):x.type==='dialogue'?' · '+esc(x.dialogueTitle):x.type==='les'?' · uitleg en oefeningen':'');
   return`<button class="step ${i===nx?'next':''}" data-step="${i}"><span class="dot ${ok?'ok':''}">${ok?I.check:i+1}</span><span class="stx"><h2>${esc(x.title)}${i===nx?'<span class="pill">Volgende</span>':''}</h2><span class="muted">${sub}</span></span></button>`}).join('')}</div>`)};
