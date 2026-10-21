@@ -6,7 +6,7 @@ const NAV=[['home','Home',I.home],['oef','Oefen',I.oef],['paden','Paden',I.pad],
 const navEl=document.getElementById('nav');
 navEl.innerHTML=NAV.map(([k,l,i])=>`<button data-v="${k}" ${k==='zoek'?'class="desk"':''}>${i}<span>${l}</span></button>`).join('');
 const PARENT={sess:'oef',quiz:'oef',dlgs:'oef',dlg:'oef',gram:'oef',les:'oef',mc:'oef',zin:'oef',reis:'oef',cult:'oef',media:'oef',klank:'oef',vertaal:'oef',print:'kaart',spel:'oef',mem:'oef',race:'oef',inzicht:'meer',beheer:'meer',mijlpalen:'meer',deel:'meer',gat:'oef',vv:'oef',stories:'oef',story:'oef',path:'paden',luister:'oef',weak:'oef',toets:'home',own:'kaart',zoek:'zoek'};
-function setNav(){const cur=st&&st.ret?'paden':PARENT[view]||view;for(const b of navEl.children){const on=b.dataset.v===cur;b.classList.toggle('on',on);on?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')}}
+function setNav(){if(typeof syncUI==='function')syncUI();const cur=st&&st.ret?'paden':PARENT[view]||view;for(const b of navEl.children){const on=b.dataset.v===cur;b.classList.toggle('on',on);on?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')}}
 const motionOk=()=>!navigator.webdriver&&!(matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
 function go(v,s){const run=()=>{view=v;st=s||{};render();scrollTo(0,0)};if(document.startViewTransition&&motionOk()&&v!==view)document.startViewTransition(run);else run()}
 const V={};

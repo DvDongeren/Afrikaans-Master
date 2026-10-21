@@ -8,7 +8,7 @@ V.home=()=>{const h=new Date().getHours(),hi=h<12?['Goeiemôre','Goedemorgen']:h
  const s=streak();
  draw(`<div class="home-grid"><div class="col"><header class="hero"><div class="row sp"><span class="brand">Afrikaans Master</span><span class="row" style="gap:8px"><button class="badge lvb" data-a="mijlpalen" aria-label="Niveau ${xpInfo().L}, naar mijlpalen">Niv. ${xpInfo().L}</button>${s?`<span class="badge" title="${s} ${s===1?'dag':'dagen'} op rij">${I.flame}${s}${S.frz?`<span class="frzb" title="${S.frz} ${S.frz===1?'rustdag':'rustdagen'}">${I.shield}${S.frz}</span>`:''}</span>`:''}<button class="x" data-a="zoek" aria-label="Zoeken">${I.search}</button></span></div>
  <div class="hero-row"><div><div class="hello">${hi[0]}</div><div class="nl">${hi[1]}</div></div><svg class="illu" viewBox="0 0 120 84" aria-hidden="true"><circle cx="86" cy="26" r="13" class="sun"/><path d="M6 64 L30 40 Q32 38 35 38 L84 38 Q87 38 89 40 L114 64" class="mtn"/><path d="M16 72h88M30 79h60" class="sea"/></svg></div></header>
- ${cta()}
+ ${resumeBox()}${cta()}
  <div class="quick" style="margin-top:12px"><button data-a="quiz">${I.quiz}Quiz</button><button data-a="dlgs">${I.dlg}Dialogen</button><button data-a="stories">${I.story}Verhalen</button></div>
  ${!S.lvDone&&Object.keys(S.srs).length<30?`<div class="card stack" style="margin-top:12px"><h2>Wat is je niveau?</h2><p class="muted">Doe de niveautoets van 12 vragen. Daarna start je sessie op jouw niveau.</p><div class="row"><button class="btn ghost" data-lvskip="1">Niet nu</button><button class="btn" data-a="toets">Start toets</button></div></div>`:''}
  ${installBox(true)}
@@ -17,7 +17,7 @@ V.home=()=>{const h=new Date().getHours(),hi=h<12?['Goeiemôre','Goedemorgen']:h
  <div class="card entry"><div class="row sp"><div class="grow"><div class="af">${esc(wc.af)}</div><div class="nl">${esc(wc.nl)}</div></div>${spk(wc.af)}</div>${wc.voorbeeld?`<p class="ex">${esc(wc.voorbeeld)}</p>${exnl(wc)}`:''}</div>
  <div class="sec">Weetje van de dag</div>
  <button class="card fact" data-a="cult" style="width:100%;text-align:left"><div class="lbl">${esc(fact.s)}</div><p>${esc(fact.t)}</p></button>
- <p class="muted" style="text-align:center;margin-top:22px">${Object.keys(S.srs).length} van ${CARDS.length} kaarten gestart</p></div></div>`)};
+ <p class="muted" style="text-align:center;margin-top:22px">${Object.keys(S.srs).length} van ${CARDS.length} kaarten gestart</p></div></div>`);bindResume()};
 
 /* ---------- oefenen ---------- */
 V.oef=()=>{const lv=st.lv||'Alles';
@@ -52,7 +52,7 @@ V.oef=()=>{const lv=st.lv||'Alles';
 /* ---------- dagelijkse sessie ---------- */
 V.sess=()=>{
  if(!st.q||st.i===undefined){st.q=st.q||sessionQueue(S.goal);st.i=0;st.open=false;st.done=0;st.retry=[];st.rv={}}
- const c=st.q[st.i];
+ const c=st.q[st.i];if(c)remember('sess');else forget('sess');
  if(c&&st.rv[st.i]===undefined){const r=S.srs[c.id];st.rv[st.i]=!S.typed&&!!r&&r.box>=2&&Math.random()<.35}
  const rv=c&&st.rv[st.i];
  if(!c){draw(`<div class="result stack"><div class="score">${st.done}</div><h1>Sessie klaar</h1><p class="muted">Vandaag: ${todayN()} van ${S.goal} kaarten.</p><div class="stack" style="margin-top:22px">${st.ret?'<button class="btn" data-a="stepdone">Verder met het pad</button>':'<button class="btn" data-a="home">Terug naar home</button>'}</div></div>`);return}
@@ -69,7 +69,7 @@ V.sess=()=>{
 /* ---------- quiz ---------- */
 V.quiz=()=>{
  if(!st.q){const pool=st.pool||(st.lv&&st.lv!=='Alles'?CARDS.filter(c=>c.niveau===st.lv):CARDS);st.q=shuffle(pool).slice(0,st.n||10);st.i=0;st.score=0;st.ans=null;st.wr=[]}
- const c=st.q[st.i];
+ const c=st.q[st.i];if(c)remember('quiz');else forget('quiz');
  if(!c){const wr=st.wr.length?`<div class="sec" style="text-align:left">Om te herhalen</div><div class="list" style="text-align:left">${st.wr.map(c=>`<div class="li"><span class="grow"><span class="af" style="font-size:1.15rem;display:block">${esc(c.af)}</span><span class="nl">${esc(c.nl)}</span></span>${spk(c.af,'sm')}</div>`).join('')}</div>`:'';
   result(st.score,st.q.length,praise(st.score,st.q.length),st.ret?'<button class="btn" data-a="stepdone">Verder met het pad</button>':'<button class="btn" data-a="oef">Opnieuw oefenen</button><button class="btn ghost" data-a="home">Home</button>',wr);return}
  if(!st.cur||st.cur.id!==c.id){const rev=st.audio?false:Math.random()<.5,k=rev?'nl':'af',q=rev?'af':'nl';

@@ -452,3 +452,20 @@ button.badge.lvb{background:var(--afs);color:var(--af);border:0;cursor:pointer}
 .exnl{margin:3px 0 0;font-size:.9rem;color:var(--muted)}
 .entry .exnl{margin-top:4px}
 .pexnl{font-style:normal;color:#666}
+/* gemak: verder waar je was, synchronisatie, back-up */
+.resume h2{margin:0;font-size:1.05rem}
+.resume .ico{display:grid;place-items:center;flex:none;width:40px;height:40px;border-radius:12px;background:var(--afs);color:var(--af)}
+.resume .ico svg{width:20px;height:20px}
+.resume .ibar{margin-top:12px}
+.syncdot{position:absolute;top:7px;left:calc(50% + 7px);width:9px;height:9px;border-radius:50%;box-shadow:0 0 0 2px var(--surface)}
+.syncdot[data-s=ok]{background:var(--ok)}
+.syncdot[data-s=busy]{background:var(--gold);animation:syncp 1.2s ease-in-out infinite}
+.syncdot[data-s=off]{background:var(--gold)}
+.syncdot[data-s=err]{background:var(--bad)}
+@keyframes syncp{50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.syncdot[data-s=busy]{animation:none}}
+#offbar{position:sticky;top:0;z-index:30;padding:8px 16px;text-align:center;font-size:.85rem;font-weight:600;background:var(--gold);color:#14201a}
+label.btn{cursor:pointer}
+.bkx summary{cursor:pointer;color:var(--muted);font-size:.9rem;margin-top:4px}
+.bkx textarea{margin-top:10px}
+.bkx .row{margin-top:10px}

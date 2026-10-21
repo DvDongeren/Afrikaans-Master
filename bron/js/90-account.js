@@ -69,7 +69,7 @@ function mergeState(a,b){
 function applyState(n){S=n;for(let i=CARDS.length-1;i>=0;i--)if(CARDS[i].own)CARDS.splice(i,1);for(const o of S.own)CARDS.push(ownCard(o));resetCards();theme();
  try{localStorage.setItem(KEY,JSON.stringify(S))}catch{}if(['home','meer','oef'].includes(view))render()}
 let pushT=0;
-function schedulePush(){clearTimeout(pushT);pushT=setTimeout(push,2500)}
+function schedulePush(){clearTimeout(pushT);if(cloud.status!=='saving'){cloud.status='pending';syncUI()}pushT=setTimeout(push,2500)}
 async function push(){if(!cloud.user)return;clearTimeout(pushT);cloud.status='saving';acctRefresh();
  try{const data=JSON.stringify(S);if(data.length>850000)throw Object.assign(new Error('te groot'),{code:'too-large'});await FB.save(cloud.user.uid,{data,mt:Math.round(S.mt||Date.now()),v:1});cloud.status='ok';cloud.at=Date.now()}catch(e){cloud.status=navigator.onLine===false?'offline':'error';cloud.err=String(e&&e.code||e&&e.message||e)}acctRefresh()}
 async function pull(){if(!cloud.user)return;cloud.status='saving';acctRefresh();
@@ -84,11 +84,11 @@ addEventListener('online',()=>{if(cloud.user&&cloud.status!=='ok')push()});
 function accountBox(){
  if(cloud.avail===undefined){getCfg().then(c=>{if(cloud.avail===undefined){cloud.avail=!!c;acctRefresh()}});return'<div id="acct"></div>'}
  if(!cloud.avail)return'<div id="acct"></div>';
- const u=cloud.user,st={saving:'Bezig met opslaan…',ok:'Opgeslagen'+(cloud.at?' om '+new Date(cloud.at).toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'}):''),offline:'Offline. Wordt opgeslagen zodra je weer online bent.',error:'Opslaan lukte niet. Probeer het opnieuw.'}[cloud.status]||'';
+ const u=cloud.user,st={pending:'Wijzigingen worden zo opgeslagen…',saving:'Bezig met opslaan…',ok:'Opgeslagen'+(cloud.at?' om '+new Date(cloud.at).toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'}):''),offline:'Offline. Wordt opgeslagen zodra je weer online bent.',error:'Opslaan lukte niet. Probeer het opnieuw.'}[cloud.status]||'';
  return`<div id="acct"><div class="sec">Account</div><div class="card stack">${u?`<div class="row"><span class="avatar">${u.photo?`<img src="${esc(u.photo)}" alt="" referrerpolicy="no-referrer">`:esc((u.name||u.email||'?')[0].toUpperCase())}</span><span class="grow"><b>${esc(u.name||'Ingelogd')}</b><span class="muted" style="display:block">${esc(u.email)}</span></span></div>
  <p class="muted" role="status">${st||'Je voortgang wordt bewaard in je account.'}</p><div class="row"><button class="btn soft" id="csync" style="box-shadow:inset 0 0 0 1.5px var(--hair)">Nu opslaan</button><button class="btn ghost" id="cout">Uitloggen</button></div>${cloud.admin?`<button class="btn soft" data-a="beheer" style="box-shadow:inset 0 0 0 1.5px var(--hair)">${I.inbox}Meldingen beheren</button>`:''}<button class="linkbtn" id="cdel" style="color:var(--bad)">${I.trash}Account en cloudgegevens verwijderen</button>`
  :`<p>Log in met je Google-account om je voortgang te bewaren en op andere apparaten verder te gaan.</p><button class="btn" id="cin">${I.user}Inloggen met Google</button><p class="muted small">Alleen je leervoortgang wordt opgeslagen. Niemand anders kan hem lezen. <a href="privacy.html" style="color:var(--nl)">Privacyverklaring</a>.${cloud.loginErr?'<br><span style="color:var(--bad)">'+esc(cloud.loginErr)+'</span>':''}</p>`}</div></div>`}
-function acctRefresh(){if(view!=='meer')return;const el=$('#acct');if(!el)return;el.outerHTML=accountBox();bindAccount()}
+function acctRefresh(){syncUI();if(view!=='meer')return;const el=$('#acct');if(!el)return;el.outerHTML=accountBox();bindAccount()}
 function bindAccount(){const i=$('#cin'),o=$('#cout'),y=$('#csync');
  if(i)i.onclick=async()=>{cloud.loginErr='';i.disabled=true;try{await startCloud();await FB.signIn()}catch(e){cloud.loginErr='Inloggen lukte niet ('+(e&&e.code||e&&e.message||'onbekende fout')+').';i.disabled=false;acctRefresh()}};
  if(o)o.onclick=async()=>{await push();try{await FB.signOut()}catch{}cloud.user=null;S.cloud=0;saveNow();V.meer()};

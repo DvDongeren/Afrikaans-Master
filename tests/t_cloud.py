@@ -43,6 +43,7 @@ with sync_playwright() as p:
     # offline: opslaan mislukt, daarna herstel
     FAIL['on']=True; pg.click('#nav [data-v=home]'); pg.click('.cta'); pg.click('#fc'); pg.click('[data-g="1"]'); pg.evaluate("Object.defineProperty(navigator,'onLine',{value:false,configurable:true})")
     pg.click('#nav [data-v=meer]'); pg.wait_for_timeout(3200); print('offline status:',pg.inner_text('#acct [role=status]'))
+    dot=pg.evaluate("(document.querySelector('#nav .syncdot')||{}).dataset"); print('statusstip:',dot); assert dot and dot.get('s')=='off'
     FAIL['on']=False; pg.evaluate("Object.defineProperty(navigator,'onLine',{value:true,configurable:true});dispatchEvent(new Event('online'))"); pg.wait_for_timeout(500)
     print('na online:',pg.inner_text('#acct [role=status]'))
     # uitloggen: lokale voortgang blijft

@@ -12,7 +12,7 @@ with sync_playwright() as p:
     print('quiz klaar:',pg.inner_text('h1'))
     pg.click('#nav [data-v=kaart]'); pg.fill('#s','dank'); pg.wait_for_timeout(300)
     print('zoek-resultaat:',pg.inner_text('#ls .muted'))
-    pg.click('[data-f]'); pg.click('#nav [data-v=meer]'); pg.click('#cp'); pg.click('[data-s="theme:dark"]'); pg.wait_for_timeout(200)
+    pg.click('[data-f]'); pg.click('#nav [data-v=meer]'); pg.click('.bkx summary'); pg.click('#cp'); pg.click('[data-s="theme:dark"]'); pg.wait_for_timeout(200)
     print('thema',pg.evaluate("document.documentElement.dataset.theme"),'| gestart:',pg.inner_text('.card .big'))
     pg.click('#nav [data-v=home]'); pg.screenshot(path='n_dark.png')
     print('fouten',errs); b.close()
