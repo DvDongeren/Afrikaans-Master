@@ -1753,8 +1753,8 @@
    "niveau": "Beginner",
    "categorie": "Dieren & safari",
    "nl": "cavia",
-   "af": "keusevarkie / cavia",
-   "voorbeeld": "Dit is 'n keusevarkie.",
+   "af": "marmotjie / cavia",
+   "voorbeeld": "Dit is 'n marmotjie.",
    "tips": "",
    "vbnl": "Het is een cavia."
   },
@@ -3910,7 +3910,7 @@
    "id": 392,
    "niveau": "Beginner",
    "categorie": "Basis & zinnen",
-   "nl": "Eet smakelijk",
+   "nl": "Eet smakelijk (informeel)",
    "af": "Lekker eet / Geniet jou kos",
    "voorbeeld": "",
    "tips": "Breder dan in NL: eten, weer, plan, gevoel — alles kan “lekker” zijn."
@@ -4296,7 +4296,7 @@
    "niveau": "Beginner",
    "categorie": "Basis & zinnen",
    "nl": "Welterusten",
-   "af": "Lekker slaap / Goeienag",
+   "af": "Slaap lekker / Goeienag",
    "voorbeeld": "",
    "tips": "Breder dan in NL: eten, weer, plan, gevoel — alles kan “lekker” zijn."
   },
@@ -4913,7 +4913,7 @@
    "nl": "rooibos thee",
    "af": "rooibostee",
    "voorbeeld": "Rooibostee is gesond.",
-   "tips": "Zuid-Afrikaanse thee, caffeine-arm.",
+   "tips": "Zuid-Afrikaanse thee, cafeïnevrij.",
    "vbnl": "Rooibosthee is gezond."
   },
   {
@@ -7489,7 +7489,7 @@
    "id": 756,
    "niveau": "Intermediate",
    "categorie": "Eten & drinken",
-   "nl": "afdroger",
+   "nl": "theedoek",
    "af": "droogdoek",
    "voorbeeld": "Gee my asseblief die droogdoek.",
    "tips": "",
@@ -10323,8 +10323,8 @@
    "niveau": "Intermediate",
    "categorie": "Natuur & weer",
    "nl": "zonsopgang",
-   "af": "sonopkoms",
-   "voorbeeld": "Die sonopkoms is pragtig vandag.",
+   "af": "sonsopkoms",
+   "voorbeeld": "Die sonsopkoms is pragtig vandag.",
    "tips": "",
    "vbnl": "De zonsopgang is prachtig vandaag."
   },
@@ -10552,7 +10552,7 @@
    "id": 1065,
    "niveau": "Intermediate",
    "categorie": "Reis & vervoer",
-   "nl": "gate / vertrekhek (luchthaven)",
+   "nl": "gate (luchthaven)",
    "af": "hek",
    "voorbeeld": "Die hek se nommer is A12.",
    "tips": "In ZA ook vaak 'gate' genoemd.",
@@ -11105,7 +11105,7 @@
    "id": 1121,
    "niveau": "Intermediate",
    "categorie": "Sport & hobby's",
-   "nl": "aanvoerderband",
+   "nl": "aanvoerdersband",
    "af": "kapteinsband",
    "voorbeeld": "Die kaptein dra die kapteinsband.",
    "tips": "",
@@ -11237,7 +11237,7 @@
    "categorie": "Sport & hobby's",
    "nl": "doelpunt",
    "af": "doel",
-   "voorbeeld": "Hy het twee doelpunte geskop.",
+   "voorbeeld": "Hy het twee doele geskop.",
    "tips": "",
    "vbnl": "Hij heeft twee doelpunten gemaakt."
   },
@@ -11521,7 +11521,7 @@
    "id": 1163,
    "niveau": "Intermediate",
    "categorie": "Sport & hobby's",
-   "nl": "scheidsrechterfluit",
+   "nl": "fluitje (van de scheidsrechter)",
    "af": "fluitjie",
    "voorbeeld": "Die skeidsregter blaas op sy fluitjie.",
    "tips": "Verkleinwoord: -tjie/-jie klinkt vriendelijk of “klein”",
@@ -12613,7 +12613,7 @@
    "id": 1273,
    "niveau": "Intermediate",
    "categorie": "Werk & kantoor",
-   "nl": "werk (noun)",
+   "nl": "werk (zelfstandig naamwoord)",
    "af": "werk",
    "voorbeeld": "Ek soek werk.",
    "tips": "",
@@ -13290,8 +13290,8 @@
    "niveau": "Intermediate",
    "categorie": "Huis & wonen",
    "nl": "oplevering",
-   "af": "oplevering",
-   "voorbeeld": "Die oplevering van die huis is volgende week.",
+   "af": "oorhandiging",
+   "voorbeeld": "Die oorhandiging van die huis is volgende week.",
    "tips": "",
    "vbnl": "De oplevering van het huis is volgende week."
   },
@@ -13908,7 +13908,7 @@
    "niveau": "Advanced",
    "categorie": "Formeel & zakelijk",
    "nl": "Ik zie uw reactie graag tegemoet",
-   "af": "Ek sien u reaksie graag tegemoet",
+   "af": "Ek sien uit na u reaksie",
    "voorbeeld": "",
    "tips": ""
   },
@@ -14194,7 +14194,7 @@
    "categorie": "Grammatica",
    "nl": "wederkerend (zich)",
    "af": "hom / haar / jou / ons",
-   "voorbeeld": "Hy was hom. (Hij wast zich).",
+   "voorbeeld": "Hy was hom.",
    "tips": "",
    "vbnl": "Hij wast zich."
   },
@@ -14321,8 +14321,8 @@
    "niveau": "Advanced",
    "categorie": "Uitspraken & idiomen",
    "nl": "Over koetjes en kalfjes praten",
-   "af": "Oor koetjies en kalfies praat",
-   "voorbeeld": "Ons praat net oor koetjies en kalfies.",
+   "af": "Oor koeitjies en kalfies gesels",
+   "voorbeeld": "Ons gesels net oor koeitjies en kalfies.",
    "tips": "",
    "vbnl": "We praten gewoon over koetjes en kalfjes."
   },
@@ -14369,7 +14369,7 @@
    "niveau": "Advanced",
    "categorie": "Uitspraken & idiomen",
    "nl": "Beter ten halve gekeerd dan ten hele gedwaald",
-   "af": "Beter halfpad omdraai as heeltemal verdwaal",
+   "af": "Beter ten halwe gekeer as ten hele gedwaal",
    "voorbeeld": "",
    "tips": ""
   },
@@ -15146,7 +15146,7 @@
    "categorie": "Politiek & recht",
    "nl": "stemrecht",
    "af": "stemreg",
-   "voorbeeld": "Almal oor agttien het stemreg.",
+   "voorbeeld": "Almal oor agtien het stemreg.",
    "tips": "",
    "vbnl": "Iedereen boven de achttien heeft stemrecht."
   },
@@ -16075,7 +16075,7 @@
    "niveau": "Advanced",
    "categorie": "Uitspraken & idiomen",
    "nl": "Spreken is zilver, zwijgen is goud",
-   "af": "Praat is silwer, stilte is goud",
+   "af": "Spreek is silwer, swye is goud",
    "voorbeeld": "",
    "tips": "Figuurlijk — niet letterlijk vertalen."
   },
@@ -16240,7 +16240,7 @@
    "id": 1644,
    "niveau": "Advanced",
    "categorie": "Uitspraken & idiomen",
-   "nl": "Ze zit pijlstijf rechtop",
+   "nl": "Ze zit kaarsrecht",
    "af": "Sy is so regop soos 'n kers",
    "voorbeeld": "Sy sit so regop soos 'n kers.",
    "tips": "Figuurlijk — niet letterlijk vertalen.",
@@ -17130,7 +17130,7 @@
    "id": 1742,
    "niveau": "Advanced",
    "categorie": "Zuid-Afrika & cultuur",
-   "nl": "pickup truck / bestelwagen",
+   "nl": "pick-up / bestelwagen",
    "af": "bakkie",
    "voorbeeld": "Hy ry 'n bakkie.",
    "tips": "Pick-up truck, géén ontbijtkommetje.",
@@ -18485,7 +18485,7 @@
   },
   {
    "id": 1882,
-   "nl": "raamzitplaats",
+   "nl": "plaats bij het raam",
    "af": "venstersitplek",
    "niveau": "Intermediate",
    "categorie": "Reis & vervoer",
@@ -20841,7 +20841,7 @@
    "niveau": "Intermediate",
    "categorie": "Uitspraken & idiomen",
    "nl": "Tot zover alles goed.",
-   "af": "Tot so ver alles goed.",
+   "af": "Tot sover alles goed.",
    "voorbeeld": "",
    "tips": ""
   },
@@ -21285,7 +21285,7 @@
    "id": 2179,
    "niveau": "Intermediate",
    "categorie": "Dieren & safari",
-   "nl": "binoculars",
+   "nl": "verrekijker",
    "af": "verkyker",
    "voorbeeld": "Gee my die verkyker.",
    "tips": "",
@@ -21535,7 +21535,7 @@
    "id": 2209,
    "niveau": "Beginner",
    "categorie": "Natuur & weer",
-   "nl": "badenpak",
+   "nl": "zwembroek / badpak",
    "af": "swembroek / badpak",
    "voorbeeld": "Ek het my swembroek vergeet.",
    "tips": "",
@@ -22683,7 +22683,7 @@
    "id": 2358,
    "niveau": "Beginner",
    "categorie": "Familie & kinderen",
-   "nl": "verjaardagfeestje",
+   "nl": "verjaardagsfeestje",
    "af": "verjaarsdagparty",
    "voorbeeld": "Die verjaarsdagparty is Saterdag.",
    "tips": "",
@@ -23104,8 +23104,8 @@
    "niveau": "Intermediate",
    "categorie": "Media & entertainment",
    "nl": "spoiler",
-   "af": "bederver",
-   "voorbeeld": "Gee nie bederwers nie!",
+   "af": "bederwer",
+   "voorbeeld": "Moenie bederwers gee nie!",
    "tips": "",
    "vbnl": "Geen spoilers!"
   },
@@ -23273,7 +23273,7 @@
    "id": 2432,
    "niveau": "Intermediate",
    "categorie": "Nood & veiligheid",
-   "nl": "evacuieren",
+   "nl": "evacueren",
    "af": "ontruim",
    "voorbeeld": "Ontruim die gebou.",
    "tips": "",
@@ -23677,7 +23677,7 @@
    "niveau": "Beginner",
    "categorie": "Reis & vervoer",
    "nl": "inchecken",
-   "af": "inboek / incheck",
+   "af": "inboek / aanmeld",
    "voorbeeld": "Ons moet eers inboek.",
    "tips": "",
    "vbnl": "We moeten eerst inchecken."
@@ -23696,7 +23696,7 @@
    "id": 2512,
    "niveau": "Beginner",
    "categorie": "Reis & vervoer",
-   "nl": "gate / gate number",
+   "nl": "gate",
    "af": "hek",
    "voorbeeld": "Hek 12 is dié kant.",
    "tips": "In vliegvelden: hek = gate.",
@@ -23786,7 +23786,7 @@
    "id": 2524,
    "niveau": "Beginner",
    "categorie": "Reis & vervoer",
-   "nl": "tweeparsoonsbed",
+   "nl": "tweepersoonsbed",
    "af": "dubbelbed",
    "voorbeeld": "Ons wil 'n dubbelbed hê.",
    "tips": "",
@@ -23856,7 +23856,7 @@
    "id": 2533,
    "niveau": "Intermediate",
    "categorie": "Reis & vervoer",
-   "nl": "checkout tijd",
+   "nl": "uitchecktijd",
    "af": "uitboektyd",
    "voorbeeld": "Wat is die uitboektyd?",
    "tips": "",
@@ -23866,7 +23866,7 @@
    "id": 2534,
    "niveau": "Intermediate",
    "categorie": "Reis & vervoer",
-   "nl": "late checkout",
+   "nl": "laat uitchecken",
    "af": "laat uitboek",
    "voorbeeld": "Kan ons laat uitboek?",
    "tips": "",
@@ -24006,7 +24006,7 @@
    "id": 2559,
    "niveau": "Intermediate",
    "categorie": "Eten & drinken",
-   "nl": "prijsvast menu",
+   "nl": "vast menu",
    "af": "vaste spyskaart",
    "voorbeeld": "Het julle 'n vaste spyskaart?",
    "tips": "",
@@ -24839,7 +24839,7 @@
    "nl": "beltegoed",
    "af": "lugtyd",
    "voorbeeld": "My lugtyd is op.",
-   "tips": "Luchtijd/prepaid beltegoed.",
+   "tips": "Letterlijk 'luchttijd': prepaid beltegoed.",
    "vbnl": "Mijn beltegoed is op."
   },
   {
@@ -30823,7 +30823,7 @@
    "niveau": "Beginner",
    "categorie": "Situaties",
    "nl": "fijn je te ontmoeten",
-   "af": "aangenaam om jou te ontmoet",
+   "af": "aangename kennis / bly te kenne",
    "voorbeeld": "",
    "tips": ""
   },
@@ -32244,7 +32244,7 @@
    "niveau": "Beginner",
    "categorie": "Basis & zinnen",
    "nl": "ik wens",
-   "af": "ek wens jou sukses toe",
+   "af": "ek wens",
    "voorbeeld": "",
    "tips": ""
   },
@@ -32253,7 +32253,7 @@
    "niveau": "Beginner",
    "categorie": "Basis & zinnen",
    "nl": "ik wens je succes",
-   "af": "ek wens jou sterkte",
+   "af": "ek wens jou sukses toe",
    "voorbeeld": "",
    "tips": ""
   },
@@ -36215,7 +36215,7 @@
    "niveau": "Beginner",
    "categorie": "Huis & wonen",
    "nl": "de waterkoker",
-   "af": "die waterkoker",
+   "af": "die elektriese ketel",
    "voorbeeld": "",
    "tips": ""
   },
@@ -36610,7 +36610,7 @@
    "id": 3969,
    "niveau": "Beginner",
    "categorie": "Natuur & weer",
-   "nl": "de cheetah",
+   "nl": "de jachtluipaard",
    "af": "die jagluiperd",
    "voorbeeld": "",
    "tips": ""
@@ -37468,8 +37468,8 @@
    "niveau": "Beginner",
    "categorie": "Grammatica",
    "nl": "nergens",
-   "af": "nerens",
-   "voorbeeld": "Ek kan dit nerens vind.",
+   "af": "nêrens",
+   "voorbeeld": "Ek kan dit nêrens kry nie.",
    "tips": "",
    "vbnl": "Ik kan het nergens vinden."
   },
@@ -37863,7 +37863,7 @@
    "id": 4101,
    "niveau": "Intermediate",
    "categorie": "Werk & kantoor",
-   "nl": "het notule",
+   "nl": "de notulen",
    "af": "die notule",
    "voorbeeld": "",
    "tips": ""
@@ -38034,7 +38034,7 @@
    "id": 4119,
    "niveau": "Intermediate",
    "categorie": "Zuid-Afrika & cultuur",
-   "nl": "charcoal",
+   "nl": "houtskool",
    "af": "houtskool",
    "voorbeeld": "Ons braai op houtskool.",
    "tips": "Houtskool voor braai.",
@@ -39063,8 +39063,8 @@
    "id": 4230,
    "niveau": "Beginner",
    "categorie": "Gevoelens & emoties",
-   "nl": "ik hou van broden",
-   "af": "ek hou van brode",
+   "nl": "ik hou van brood",
+   "af": "ek hou van brood",
    "voorbeeld": "",
    "tips": ""
   },
@@ -48181,7 +48181,7 @@
      "Bier"
     ],
     "a": 1,
-    "expl": "Kosnaam voor boerewors — “boerie roll” op de braai."
+    "expl": "Koosnaam voor boerewors — “boerie roll” op de braai."
    },
    {
     "af": "Lekker ou",
@@ -48445,7 +48445,7 @@
      "Frisdrank"
     ],
     "a": 1,
-    "expl": "Caféïnevrije thee uit de Cederberg — nationaal icoon."
+    "expl": "Cafeïnevrije thee uit de Cederberg — nationaal icoon."
    },
    {
     "af": "Mozzie",
@@ -49414,7 +49414,7 @@
      {
       "t": "Raai maar.",
       "ok": false,
-      "exp": "Onbehulpzaam.",
+      "exp": "Niet behulpzaam.",
       "nl": "Raad maar."
      },
      {
@@ -49606,7 +49606,7 @@
     ],
     "follow": {
      "from": "them",
-     "t": "Perfect.",
+     "t": "Perfek.",
      "nl": "Perfect."
     }
    },
@@ -49666,7 +49666,7 @@
      {
       "t": "Koffie is gif.",
       "ok": false,
-      "exp": "Onbehulpzaam.",
+      "exp": "Niet behulpzaam.",
       "nl": "Koffie is giftig."
      },
      {
@@ -49814,7 +49814,7 @@
       "nl": "Maat is een construct."
      },
      {
-      "t": "Gee my al die maten.",
+      "t": "Gee my al die groottes.",
       "ok": false,
       "exp": "Onrealistisch.",
       "nl": "Geef me alle maten."
@@ -49852,7 +49852,7 @@
      {
       "t": "Afslag is verdag.",
       "ok": false,
-      "exp": "Paranoid.",
+      "exp": "Paranoïde.",
       "nl": "Korting is verdacht."
      }
     ],
@@ -50026,7 +50026,7 @@
      {
       "t": "Loop in sirkels.",
       "ok": false,
-      "exp": "Onbehulpzaam.",
+      "exp": "Niet behulpzaam.",
       "nl": "Loop in cirkels."
      },
      {
@@ -50098,7 +50098,7 @@
      {
       "t": "Raai 'n nommer.",
       "ok": false,
-      "exp": "Onbehulpzaam.",
+      "exp": "Niet behulpzaam.",
       "nl": "Raad een nummer."
      },
      {
@@ -51400,7 +51400,7 @@
       "R25"
      ]
     ],
-    "q": "Je wilt een visbroodje. Wat bestel je?",
+    "q": "Je wilt een broodje vis. Wat bestel je?",
     "opts": [
      "Visbroodjie, asseblief",
      "Calamari dankie",
