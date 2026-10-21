@@ -139,4 +139,5 @@ flag:ic('<path d="M5 21V4h11l-2 4 2 4H5"/>'),
 trash:ic('<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>'),
 medal:ic('<circle cx="12" cy="14.5" r="5.5"/><path d="M8.5 9.8L6 3h4l2 4.5L14 3h4l-2.5 6.8"/>'),
 shield:ic('<path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6z"/><path d="M9 12l2 2 4-4"/>'),
+radar:ic('<circle cx="12" cy="12" r="9"/><path d="M12 12l6.4-6.4"/><path d="M12 3a9 9 0 016.4 2.6L12 12z" fill="currentColor" fill-opacity=".18" stroke="none"/><circle cx="12" cy="12" r="1.1" fill="currentColor"/><circle cx="8" cy="15.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.6" r="1.1" fill="currentColor" stroke="none"/>'),
 share:ic('<path d="M12 15V3M7.5 7.5L12 3l4.5 4.5"/><path d="M5 12v7.5h14V12"/>')};

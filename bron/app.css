@@ -469,3 +469,7 @@ label.btn{cursor:pointer}
 .bkx summary{cursor:pointer;color:var(--muted);font-size:.9rem;margin-top:4px}
 .bkx textarea{margin-top:10px}
 .bkx .row{margin-top:10px}
+
+/* padicoon voor de titel, in de lijnstijl van de andere iconen */
+.pico{display:inline-grid;place-items:center;width:1.5em;height:1.5em;border-radius:.45em;background:var(--afs);color:var(--af);margin-right:.45em;vertical-align:-.32em}
+.pico svg{width:1em;height:1em}

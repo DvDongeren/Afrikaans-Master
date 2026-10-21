@@ -55342,7 +55342,8 @@
  "pathd": [
   {
    "id": "review_radar",
-   "title": "📡 Review-radar",
+   "title": "Review-radar",
+   "ic": "radar",
    "desc": "Kaarten die je >7 dagen niet zag — automatisch gevuld",
    "steps": [
     {
@@ -55367,7 +55368,8 @@
   },
   {
    "id": "audio_focus",
-   "title": "🎧 Audio-first",
+   "title": "Audio-first",
+   "ic": "ear",
    "desc": "Luisteren & typen — NL pas later zichtbaar",
    "steps": [
     {

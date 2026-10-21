@@ -4,7 +4,7 @@
 V.home=()=>{const h=new Date().getHours(),hi=h<12?['Goeiemôre','Goedemorgen']:h<18?['Goeiemiddag','Goedemiddag']:['Goeienaand','Goedenavond'];
  const wc=wordOfDay(),F=FACTS(),fact=F[Math.floor(Date.now()/DAY)%F.length];
  let cont='';if(S.lp){const lp=PATHS().find(p=>p.id===S.lp),dn=lp&&(S.paths[lp.id]||[]),nxi=lp?lp.steps.findIndex((_,i)=>!dn.includes(i)):-1;
-  if(nxi>=0)cont=`<div class="sec">Ga verder met je pad</div><div class="list">${row(`data-p="${lp.id}"`,I.pad,esc(lp.title),'Volgende: '+esc(lp.steps[nxi].title))}</div>`}
+  if(nxi>=0)cont=`<div class="sec">Ga verder met je pad</div><div class="list">${row(`data-p="${lp.id}"`,lp.ic&&I[lp.ic]||I.pad,esc(lp.title),'Volgende: '+esc(lp.steps[nxi].title))}</div>`}
  const s=streak(),xp=xpInfo(),nst=Object.keys(S.srs).length;
  draw(`<div class="home-grid"><div class="col"><header class="hero"><div class="row sp"><span class="brand">Afrikaans Master</span><span class="row" style="gap:8px"><button class="badge lvb" data-a="mijlpalen" aria-label="Niveau ${xp.L}, naar mijlpalen">Niv. ${xp.L}</button>${s?`<span class="badge" title="${s} ${s===1?'dag':'dagen'} op rij">${I.flame}${s}${S.frz?`<span class="frzb" title="${S.frz} ${S.frz===1?'rustdag':'rustdagen'}">${I.shield}${S.frz}</span>`:''}</span>`:''}<button class="x" data-a="zoek" aria-label="Zoeken">${I.search}</button></span></div>
  <div class="hero-row"><div><div class="hello">${hi[0]}</div><div class="nl">${hi[1]}</div></div><svg class="illu" viewBox="0 0 120 84" aria-hidden="true"><circle cx="86" cy="26" r="13" class="sun"/><path d="M6 64 L30 40 Q32 38 35 38 L84 38 Q87 38 89 40 L114 64" class="mtn"/><path d="M16 72h88M30 79h60" class="sea"/></svg></div></header>
