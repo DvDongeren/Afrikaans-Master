@@ -3,11 +3,11 @@
 /* ---------- grammatica ---------- */
 V.gram=()=>{const A=LES(),dn=A.filter(l=>S.les[l.id]!==undefined).length;
  draw(`${back('oef','Oefenen')}<h1>Grammatica</h1><p class="muted" style="margin:8px 0 16px">${dn} van ${A.length} gedaan. Voor een vaste volgorde: het pad "Grammatica A–Z".</p>
- <div class="list">${A.map(l=>row(`data-les="${l.id}"`,null,esc(l.t),S.les[l.id]!==undefined?'Beste score: '+S.les[l.id]+' / '+l.q.length:l.q.length+' oefenvragen',S.les[l.id]!==undefined?mark(1):undefined)).join('')}</div>`)};
-V.les=()=>{const l=LES().find(x=>x.id===st.l);if(!l)return go('gram');
- if(st.n===undefined){draw(`${back('back','Terug')}<h1>${esc(l.t)}</h1><div class="card" style="margin-top:16px;line-height:1.6">${esc(l.rule)}</div>
-  <div class="sec">Voorbeelden</div><div class="list">${l.ex.map(e=>`<div class="li"><span class="grow"><span class="af" style="font-size:1.12rem;display:block">${esc(e[0])}</span><span class="nl">${esc(e[1])}</span></span>${spk(e[0],'sm')}</div>`).join('')}</div>
-  <button class="btn" data-ls="1" style="margin-top:20px">Oefenen (${l.q.length} vragen)</button>`);return}
+ <div class="list grid2">${A.map(l=>row(`data-les="${l.id}"`,null,esc(l.t),S.les[l.id]!==undefined?'Beste score: '+S.les[l.id]+' / '+l.q.length:l.q.length+' oefenvragen',S.les[l.id]!==undefined?mark(1):undefined)).join('')}</div>`)};
+V.les=()=>{const l=LES().find(x=>x.id===st.l);if(!l)return go('gram');app.className=layout();
+ if(st.n===undefined){draw(`${back('back','Terug')}<h1>${esc(l.t)}</h1><div class="lsplit"><div class="card rule">${esc(l.rule)}</div>
+  <div class="lex"><div class="sec">Voorbeelden</div><div class="list">${l.ex.map(e=>`<div class="li"><span class="grow"><span class="af" style="font-size:1.12rem;display:block">${esc(e[0])}</span><span class="nl">${esc(e[1])}</span></span>${spk(e[0],'sm')}</div>`).join('')}</div></div>
+  <button class="btn" data-ls="1">Oefenen (${l.q.length} vragen)</button></div>`);return}
  const q=l.q[st.n];
  if(!q){S.les[l.id]=Math.max(S.les[l.id]||0,st.sc);saveNow();result(st.sc,l.q.length,st.sc===l.q.length?'Foutloos!':'Lees de uitleg nog eens en probeer opnieuw.',(st.ret?'<button class="btn" data-a="stepdone">Verder met het pad</button>':'<button class="btn" data-a="gram">Terug naar lessen</button>')+'<button class="btn ghost" data-ls="1">Opnieuw oefenen</button>');return}
  if(!st.o||st.oi!==st.n){st.o=shuffle(q[1].map((_,i)=>i));st.oi=st.n}
@@ -63,12 +63,12 @@ V.zin=()=>{const BS=X().BS;
 
 /* ---------- reisgids en cultuur ---------- */
 V.reis=()=>{const R=X().REIS;
- draw(`${back('oef','Oefenen')}<h1>Reisgids</h1><p class="muted" style="margin:8px 0 16px">Handige zinnen voor onderweg, met uitspraak.</p><input type="search" id="rq" placeholder="Zoek een zin" aria-label="Zoeken" value="${esc(st.q||'')}"><div class="list" id="rl" style="margin-top:12px"></div>`);
+ draw(`${back('oef','Oefenen')}<h1>Reisgids</h1><p class="muted" style="margin:8px 0 16px">Handige zinnen voor onderweg, met uitspraak.</p><input type="search" id="rq" placeholder="Zoek een zin" aria-label="Zoeken" value="${esc(st.q||'')}"><div class="list grid2" id="rl" style="margin-top:12px"></div>`);
  const d=()=>{const q=norm($('#rq').value.trim());const h=R.filter(r=>!q||norm(r.nl+' '+r.af).includes(q)).map(r=>`<div class="li"><span class="grow"><span class="af" style="font-size:1.12rem;display:block">${esc(r.af)}</span><span class="nl">${esc(r.nl)}</span></span>${spk(r.af,'sm')}</div>`).join('');$('#rl').innerHTML=h||'<div class="li muted">Niets gevonden.</div>'};
  d();$('#rq').oninput=d};
 V.cult=()=>{st.tab=st.tab||'weetjes';const x=X();let body='';
- if(st.tab==='weetjes')body=`<div class="stack">${FACTS().map(f=>`<div class="card"><div class="lbl">${esc(f.s)}</div><p style="margin-top:6px">${esc(f.t)}</p>${f.url?`<a href="${esc(f.url)}" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;color:var(--nl);font-weight:600">Lees meer</a>`:''}</div>`).join('')}</div>`;
- else if(st.tab==='za')body=`<div class="stack">${x.ZA.map(z=>`<div class="card"><p class="af" style="font-size:1.08rem;font-weight:500;line-height:1.5">${esc(z.fact)}</p><div class="chips wrap" style="margin-top:12px">${z.words.map(w=>`<button class="chip" data-sp="${esc(w.af)}">${I.spk}<span class="af">${esc(w.af)}</span><span class="nl">${esc(w.nl)}</span></button>`).join('')}</div></div>`).join('')}</div>`;
- else body=`<div class="list">${Object.entries(x.CULT).sort((a,b)=>a[0].localeCompare(b[0])).map(([k,v])=>`<div class="li" style="align-items:flex-start"><span class="grow"><span class="af" style="font-size:1.15rem;display:block">${esc(k)}</span><span class="muted">${esc(v)}</span></span>${spk(k,'sm')}</div>`).join('')}</div>`;
+ if(st.tab==='weetjes')body=`<div class="stack cols">${FACTS().map(f=>`<div class="card"><div class="lbl">${esc(f.s)}</div><p style="margin-top:6px">${esc(f.t)}</p>${f.url?`<a href="${esc(f.url)}" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;color:var(--nl);font-weight:600">Lees meer</a>`:''}</div>`).join('')}</div>`;
+ else if(st.tab==='za')body=`<div class="stack cols">${x.ZA.map(z=>`<div class="card"><p class="af" style="font-size:1.08rem;font-weight:500;line-height:1.5">${esc(z.fact)}</p><div class="chips wrap" style="margin-top:12px">${z.words.map(w=>`<button class="chip" data-sp="${esc(w.af)}">${I.spk}<span class="af">${esc(w.af)}</span><span class="nl">${esc(w.nl)}</span></button>`).join('')}</div></div>`).join('')}</div>`;
+ else body=`<div class="list grid2">${Object.entries(x.CULT).sort((a,b)=>a[0].localeCompare(b[0])).map(([k,v])=>`<div class="li" style="align-items:flex-start"><span class="grow"><span class="af" style="font-size:1.15rem;display:block">${esc(k)}</span><span class="muted">${esc(v)}</span></span>${spk(k,'sm')}</div>`).join('')}</div>`;
  draw(`${back('oef','Oefenen')}<h1>Cultuur</h1><div class="seg" id="ct" style="margin:16px 0">${[['weetjes','Weetjes'],['za','ZA vandaag'],['termen','Lokale woorden']].map(t=>`<button class="chip ${st.tab===t[0]?'on':''}" data-ct="${t[0]}">${t[1]}</button>`).join('')}</div>${body}`);
  $('#ct').onclick=e=>{const b=e.target.closest('[data-ct]');if(b){st.tab=b.dataset.ct;V.cult()}}};

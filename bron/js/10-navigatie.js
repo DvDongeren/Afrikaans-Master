@@ -10,9 +10,13 @@ function setNav(){if(typeof syncUI==='function')syncUI();const cur=st&&st.ret?'p
 const motionOk=()=>!navigator.webdriver&&!(matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
 function go(v,s){const run=()=>{view=v;st=s||{};render();scrollTo(0,0)};if(document.startViewTransition&&motionOk()&&v!==view)document.startViewTransition(run);else run()}
 const V={};
-const WIDE=new Set(['home','mijlpalen','oef','kaart','paden','zoek','vv','gram','dlgs','stories','cult','reis','path','media','klank']);
+/* Indeling op brede schermen: 'wide' = volle breedte met kolommen, 'read' = zelfde linkerkant maar smaller (lezen),
+   'focus' = oefening, gecentreerd. Op de telefoon is alles één kolom. */
+const WIDE=new Set(['home','mijlpalen','oef','kaart','paden','zoek','vv','gram','dlgs','stories','cult','reis','media','klank','meer','inzicht','spel','beheer']);
+const READ=new Set(['path','dlg','story','own','print','deel']);
+const layout=()=>WIDE.has(view)||view==='les'&&st.n===undefined?'wide':READ.has(view)?'wide read':'focus';
 const DEPS={home:['facts','paths'],paden:['paths'],path:['paths','les','dlg'],dlgs:['dlg'],dlg:['dlg'],gram:['les'],les:['les'],mc:['ext','vv'],zin:['ext'],reis:['ext'],cult:['ext','facts'],media:['media'],klank:['ext'],vertaal:['ext','dlg','vv'],vv:['vv'],stories:['vv'],story:['vv'],luister:['ext','dlg'],zoek:['dlg','vv','les','ext','paths','media'],meer:['paths'],mijlpalen:['paths','les'],gat:['vv']};
-function render(){setNav();app.className=WIDE.has(view)?'wide':'focus';const need=(DEPS[view]||[]).filter(n=>!D[n]);
+function render(){setNav();app.className=layout();const need=(DEPS[view]||[]).filter(n=>!D[n]);
  if(NEEDALL(view)&&GOT.size<3){const v=view,s0=st;app.innerHTML='<p class="loading" role="status">Laden…</p>';allCards().then(()=>{if(view===v&&st===s0)render()},loadError);return}
  if(need.length){const v=view,s0=st;app.innerHTML='<p class="loading" role="status">Laden…</p>';Promise.all(need.map(load)).then(()=>{if(view===v&&st===s0)render()},loadError);return}
  (V[view]||V.home)()}

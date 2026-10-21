@@ -3,14 +3,14 @@
 /* ---------- valse vrienden ---------- */
 V.vv=()=>{const VV=Y().VV;
  draw(`${back('oef','Oefenen')}<h1>Valse vrienden</h1><p class="muted" style="margin:8px 0 16px">Woorden die op Nederlands lijken, maar in het Afrikaans iets anders betekenen.</p><button class="btn" data-a="mc:vv">Oefen met 10 vragen</button>
- <div class="stack" style="margin-top:16px">${VV.map(v=>`<div class="card vv"><div class="row sp"><div class="af">${esc(v.af)}</div>${spk(v.af,'sm')}</div>
+ <div class="stack cols" style="margin-top:16px">${VV.map(v=>`<div class="card vv"><div class="row sp"><div class="af">${esc(v.af)}</div>${spk(v.af,'sm')}</div>
  <div class="pair"><div><div class="lbl">Je denkt</div><div class="strike">${esc(v.schijn)}</div></div><div><div class="lbl">Het betekent</div><div style="font-weight:650">${esc(v.echt)}</div></div></div>
  <div class="bub"><div class="af">${esc(v.ex[0])}</div><div class="nl" style="font-size:.92rem">${esc(v.ex[1])}</div></div><p class="muted" style="margin-top:10px">${esc(v.tip)}</p></div>`).join('')}</div>`)};
 
 /* ---------- verhaaltjes ---------- */
 V.stories=()=>{const ST=Y().ST,n=ST.filter(x=>S.stories[x.id]).length;
  draw(`${back('oef','Oefenen')}<h1>Verhaaltjes</h1><p class="muted" style="margin:8px 0 16px">${n} van ${ST.length} gelezen</p>
- <div class="list">${ST.map(x=>row(`data-story="${x.id}"`,null,esc(x.t),x.niv+' · '+x.s.length+' zinnen',S.stories[x.id]?mark(1):undefined)).join('')}</div>`)};
+ <div class="list grid2">${ST.map(x=>row(`data-story="${x.id}"`,null,esc(x.t),x.niv+' · '+x.s.length+' zinnen',S.stories[x.id]?mark(1):undefined)).join('')}</div>`)};
 const CG=L(()=>{const m=new Map(),bad=new Set();for(const c of CARDS){const k=c.af.toLowerCase();if(!/^\p{L}+$/u.test(k))continue;const v=m.get(k);if(v!==undefined&&v!==c.nl)bad.add(k);else m.set(k,c.nl)}bad.forEach(k=>m.delete(k));return m});
 const wordRe=/('n(?!\p{L})|\p{L}+(?:['’-]\p{L}+)*)/gu;
 function gloss(w,x){const k=w.toLowerCase();return k==="'n"?'een':x.g[k]||Y().G0[k]||CG().get(k)||null}

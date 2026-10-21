@@ -469,3 +469,64 @@ label.btn{cursor:pointer}
 .bkx summary{cursor:pointer;color:var(--muted);font-size:.9rem;margin-top:4px}
 .bkx textarea{margin-top:10px}
 .bkx .row{margin-top:10px}
+/* ---------- brede schermen: uitlijning en kolommen (staat achteraan zodat het voorgaat) ---------- */
+.dsk{display:none}
+.lsplit .rule{margin-top:16px;line-height:1.6}
+.lsplit>.btn{margin-top:20px}
+@media (min-width:960px){
+ .dsk{display:block}
+ h1{font-size:2.25rem}
+ /* leespagina's: zelfde linkerkant als de andere pagina's, maar een prettige regellengte */
+ #app.read>*{max-width:760px}
+ #app.read>.sharecv{max-width:420px;margin-left:0}
+ /* home: begroeting over de volle breedte, daaronder twee gelijk beginnende kolommen */
+ .hero{padding:0 2px 8px}
+ .home-grid>.col:last-child{padding-top:0}
+ .home-grid>.col>.sec:first-child{margin-top:14px}
+ /* oefenen: secties in kolommen zonder gaten */
+ .secs{display:block;columns:2;column-gap:28px}
+ .secs>section{break-inside:avoid;padding-top:24px}
+ .secs>section .sec,.secs>section:first-child .sec{margin-top:0}
+ /* tegels in een raster even hoog */
+ .list.grid2{align-items:stretch}
+ .kaarten .entry-li{display:flex;flex-direction:column}
+ .kaarten .entry-li .meta{margin-top:auto;padding-top:10px}
+ .kbtns{justify-content:flex-start}
+ .kbtns .btn{flex:none;width:auto;min-height:44px;padding:0 18px}
+ /* meer: overzicht links, account en instellingen rechts */
+ .mgrid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);grid-template-rows:auto 1fr;gap:0 32px;align-items:start}
+ .mA{grid-column:2;grid-row:1}.mB{grid-column:1;grid-row:1/span 2}.mC{grid-column:2;grid-row:2}
+ .mB>.sec:first-child,.mA>.inst:first-child,.mA>#acct:first-child>.sec{margin-top:18px}
+ /* twee kolommen (inzicht) en les: uitleg links, voorbeelden rechts */
+ .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 32px;align-items:start}
+ .split>div>.sec:first-child{margin-top:16px}
+ .lsplit{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);grid-template-areas:"rule ex" "btn ex";grid-template-rows:auto 1fr;gap:0 32px;align-items:start}
+ .lsplit .rule{grid-area:rule}.lsplit .lex{grid-area:ex}.lsplit>.btn{grid-area:btn}
+ .lsplit .lex>.sec{margin-top:16px}
+ /* mijlpalen: niveau en rustdag naast elkaar */
+ .duo{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;margin-top:14px}
+ .duo>.card{margin:0}
+ /* tabbalken niet over de volle breedte uitrekken */
+ .wide .seg{max-width:640px}
+ /* meldingen gecentreerd boven de inhoud, niet over de zijbalk */
+ #mstoast,#toast{left:calc(248px + 16px)}
+}
+@media (min-width:1300px){.wide .ms-grid{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:960px){
+ .kaarten .entry-li{align-items:stretch}
+ .mgrid:not(:has(.mA .sec)) .mC>.sec:first-child{margin-top:18px}
+}
+/* kaarten: vanaf 1200px de onderwerpen als vaste lijst links, kaarten rechts */
+@media (min-width:1200px){
+ /* kaarten: onderwerpen als vaste lijst links, kaarten rechts */
+ .kstack{display:grid;grid-template-columns:232px minmax(0,1fr);column-gap:28px;align-items:start}
+ .kstack>*{grid-column:2}
+ .kstack>*+*{margin-top:12px}
+ .kstack>.topics{grid-column:1;grid-row:1/span 6;margin:0;position:sticky;top:24px;flex-direction:column;gap:2px;overflow-x:hidden;overflow-y:auto;max-height:calc(100vh - 48px);scroll-snap-type:none;padding:0 6px 0 0;scrollbar-width:thin}
+ .kstack>.topics .topic{width:100%;flex-direction:row;align-items:center;gap:10px;padding:7px 10px;background:transparent;box-shadow:none;font-size:.9rem;border-radius:12px}
+ .kstack>.topics .topic:hover{background:var(--sunk)}
+ .kstack>.topics .topic.on{background:var(--surface);box-shadow:inset 0 0 0 2px var(--af)}
+ .kstack>#cat{display:none}
+ .kstack .list.grid2.kaarten{grid-template-columns:1fr 1fr}
+}
+@media (min-width:1700px){.kstack .list.grid2.kaarten{grid-template-columns:repeat(3,1fr)}}
