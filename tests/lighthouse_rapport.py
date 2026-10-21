@@ -4,7 +4,11 @@ d = sys.argv[1] if len(sys.argv) > 1 else '.lighthouseci'
 files = sorted(glob.glob(os.path.join(d, 'lhr-*.json')))
 if not files:
     print('::warning::Geen Lighthouse-resultaat gevonden.'); sys.exit(0)
-r = json.load(open(files[-1]))
+# bij meerdere metingen de middelste (mediaan van de snelheidsscore) gebruiken; één meting schommelt sterk
+runs = sorted((json.load(open(f)) for f in files), key=lambda x: x['categories']['performance'].get('score') or 0)
+r = runs[len(runs) // 2]
+if len(runs) > 1:
+    print('::notice title=Lighthouse-metingen::' + str(len(runs)) + ' metingen, snelheid ' + ' / '.join(str(round((x['categories']['performance'].get('score') or 0) * 100)) for x in runs) + ' (de middelste wordt getoond)')
 cats = {k: round((v.get('score') or 0) * 100) for k, v in r['categories'].items()}
 naam = {'performance': 'Snelheid', 'accessibility': 'Toegankelijkheid', 'best-practices': 'Goede praktijken', 'seo': 'Vindbaarheid'}
 regel = ' · '.join(f"{naam.get(k, k)} {v}" for k, v in cats.items())

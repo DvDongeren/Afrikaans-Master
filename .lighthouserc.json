@@ -4,7 +4,7 @@
       "url": ["http://127.0.0.1:8765/"],
       "startServerCommand": "python3 tests/serve.py 8765",
       "startServerReadyPattern": "klaar",
-      "numberOfRuns": 1,
+      "numberOfRuns": 3,
       "settings": {"chromeFlags": "--no-sandbox --headless=new"}
     }
   }
