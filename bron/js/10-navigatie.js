@@ -24,6 +24,8 @@ const catHue=c=>['h-af','h-nl','h-gold'][[...c].reduce((a,ch)=>a+ch.charCodeAt(0
 const back=(a,l)=>`<button class="back" data-a="${a}">${I.back}${l}</button>`;
 const topbar=(i,n,a='back')=>`<div class="top"><button class="x" data-a="${a}" aria-label="Stoppen">${I.x}</button><div class="bar"><i style="width:${i/n*100}%"></i></div><span class="muted" style="font-variant-numeric:tabular-nums">${Math.min(i+1,n)} / ${n}</span></div>`;
 const spk=(t,cls='')=>`<button class="icon ${cls}" data-sp="${esc(t)}" aria-label="Uitspraak">${I.spk}</button>`;
+/* Nederlandse vertaling van de voorbeeldzin, onder de Afrikaanse zin. */
+const exnl=c=>c.vbnl?`<p class="exnl">${esc(c.vbnl)}</p>`:'';
 const mark=k=>k?`<span class="done-mark" aria-label="Gedaan">${I.check}</span>`:'';
 const row=(attrs,icon,title,sub,trail)=>`<button class="li tile" ${attrs}>${icon?`<span class="ico">${icon}</span>`:''}<span class="grow"><h2>${title}</h2>${sub?`<span class="muted">${sub}</span>`:''}</span>${trail??`<span class="chev">${I.chev}</span>`}</button>`;
 function result(sc,n,msg,btns,extra=''){draw(`<div class="result stack"><div class="score" aria-label="${sc} van ${n} goed">${sc}<small> / ${n}</small></div>${msg?`<h1>${msg}</h1>`:''}${extra}<div class="stack" style="margin-top:22px">${btns}</div></div>`)}

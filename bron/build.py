@@ -57,8 +57,10 @@ cat = sorted({c['categorie'] for c in C})
 rows = {0: [], 1: [], 2: []}
 for c in C:
     f = [str(c['id']), str(lv.index(c['niveau'])), str(cat.index(c['categorie'])), c['nl'], c['af'], c['voorbeeld']]
-    if c.get('tips'):
-        f.append(c['tips'])
+    if c.get('tips') or c.get('vbnl'):
+        f.append(c.get('tips', ''))
+    if c.get('vbnl'):
+        f.append(c['vbnl'])
     assert not any(('\t' in x or '\n' in x) for x in f), c['id']
     rows[lv.index(c['niveau'])].append('\t'.join(f))
 X = dict(d['extd'])

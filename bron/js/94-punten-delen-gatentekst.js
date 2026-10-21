@@ -89,6 +89,7 @@ function gapExplain(u,pick,ok){const mean=x=>{const g=GAPS().find(y=>y.w===x);re
  return`<div class="card gapfb ${ok?'good':'wrong'}" role="status"><div class="fbh">${ok?I.check+'Goed!':I.x+'Net niet'}</div>
  <p><b class="af">${esc(u.c.af)}</b> = ${esc(u.c.nl)}${u.c.tips?` <span class="muted">· ${esc(u.c.tips)}</span>`:''}</p>
  ${ok?'':`<p>Jij koos <b class="af">${esc(pick)}</b>${mean(pick)?` (= ${esc(mean(pick))})`:''}. Dat past hier niet: de zin vraagt om <b class="af">${esc(u.w)}</b>.</p>`}
+ ${u.c.vbnl?`<div class="lbl" style="margin-top:12px">De zin betekent</div><p class="exnl" style="margin-top:4px">${esc(u.c.vbnl)}</p>`:''}
  <div class="lbl" style="margin-top:12px">Woord voor woord</div><div class="glw">${gapGloss(u.c.voorbeeld,u.w)}</div>
  ${notes.length?`<div class="lbl" style="margin-top:12px">Let op</div>${notes.map(n=>`<p class="note">${n}</p>`).join('')}`:''}
  <div class="row" style="margin-top:14px"><button class="btn soft" data-sp="${esc(u.c.voorbeeld)}" style="box-shadow:inset 0 0 0 1.5px var(--hair)">${I.spk}Luister</button><button class="btn" id="gnx">${st.i+1<st.q.length?'Volgende':'Bekijk je score'}</button></div></div>`}

@@ -33,10 +33,12 @@ with sync_playwright() as p:
     pg.click('[data-a=deel]'); pg.wait_for_selector('#shc'); pg.wait_for_timeout(1200)
     px=pg.evaluate("(()=>{const c=document.getElementById('shc');const d=c.getContext('2d').getImageData(540,300,1,1).data;return [c.width,c.height,d[0],d[1],d[2]]})()"); print('deelkaart:',px); assert px[0]==1080 and px[3]>60
     pg.screenshot(path='z_deel.png',full_page=True)
-    pg.goto(U+'#'); pg.wait_for_selector('#nav [data-v]'); pg.click('#nav [data-v=oef]'); pg.click('[data-a=gat]'); pg.wait_for_selector('.gapq')
+    pg.goto(U+'#'); pg.wait_for_selector('#nav [data-v]'); pg.click('#nav [data-v=kaart]'); pg.fill('#s','kuier'); pg.wait_for_timeout(400)
+    print('kaartvertaling:',pg.inner_text('#ls .exnl >> nth=0')); assert pg.locator('#ls .exnl').count()>0
+    pg.click('#nav [data-v=oef]'); pg.click('[data-a=gat]'); pg.wait_for_selector('.gapq')
     print('gatentekst:',pg.inner_text('.gapq'),'|',pg.locator('#op .opt').count(),'opties'); pg.click('#op .opt >> nth=0'); pg.wait_for_selector('.gap.ok, .gap.bad')
     print('na antwoord:',pg.inner_text('.gapq'),'| uitleg:',pg.inner_text('.gapfb .fbh'),'| woorden',pg.locator('.gapfb .gl').count()); pg.wait_for_timeout(2500)
-    assert pg.locator('.gapfb').count()==1 and pg.inner_text('.topbar, .bar').count('1') if False else pg.locator('.gapfb').count()==1
+    assert pg.locator('.gapfb').count()==1 and pg.locator('.gapfb .exnl').count()==1; print('vertaling:',pg.inner_text('.gapfb .exnl'))
     pg.screenshot(path='z_gat.png',full_page=True); pg.click('#gnx'); pg.wait_for_selector('.gapq'); print('volgende:',pg.locator('.gapfb').count()==0); ctx.close()
     # rustdag: reeks blijft staan na een gemiste dag
     y2=(today-datetime.timedelta(2)).isoformat()

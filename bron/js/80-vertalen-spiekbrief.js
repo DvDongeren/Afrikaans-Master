@@ -37,7 +37,7 @@ V.print=()=>{st.src=st.src||'cat';st.cat=st.cat??(META.cat[0]||'');st.plv=st.plv
  <button class="btn" id="pgo" ${L.length?'':'disabled'}>${I.print}Afdrukken of opslaan als pdf</button>
  ${lst.length>max?`<p class="muted small">Alleen de eerste ${max} van ${lst.length} kaarten worden afgedrukt.</p>`:''}</div></div>
  <section class="sheetpr"><h2 class="prt">Afrikaans Master · ${esc(title)} <span class="muted">(${L.length})</span></h2>
- ${L.length?`<table class="prtab"><thead><tr><th>Nederlands</th><th>Afrikaans</th></tr></thead><tbody>${L.map(c=>`<tr><td>${esc(c.nl)}</td><td><span class="af">${esc(c.af)}</span>${st.vb&&c.voorbeeld?`<div class="pex">${esc(c.voorbeeld)}</div>`:''}</td></tr>`).join('')}</tbody></table>`:'<p class="muted">Geen kaarten in deze selectie.</p>'}</section>`);
+ ${L.length?`<table class="prtab"><thead><tr><th>Nederlands</th><th>Afrikaans</th></tr></thead><tbody>${L.map(c=>`<tr><td>${esc(c.nl)}</td><td><span class="af">${esc(c.af)}</span>${st.vb&&c.voorbeeld?`<div class="pex">${esc(c.voorbeeld)}${c.vbnl?` <span class="pexnl">(${esc(c.vbnl)})</span>`:''}</div>`:''}</td></tr>`).join('')}</tbody></table>`:'<p class="muted">Geen kaarten in deze selectie.</p>'}</section>`);
  const on=(id,f)=>{const e=$(id);if(e)e.onchange=f};
  on('#psrc',e=>{st.src=e.target.value;V.print()});on('#pcat',e=>{st.cat=e.target.value;V.print()});on('#plv',e=>{st.plv=e.target.value;V.print()});on('#pvb',e=>{st.vb=e.target.checked;V.print()});
  $('#pgo').onclick=()=>window.print()};

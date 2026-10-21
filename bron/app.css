@@ -449,3 +449,6 @@ button.badge.lvb{background:var(--afs);color:var(--af);border:0;cursor:pointer}
 .gl.hit{background:color-mix(in srgb,var(--gold) 30%,var(--sunk))}
 .gapfb .note{padding:8px 12px;border-radius:12px;background:var(--sunk);font-size:.94rem}
 .gapfb .row .btn{flex:1}
+.exnl{margin:3px 0 0;font-size:.9rem;color:var(--muted)}
+.entry .exnl{margin-top:4px}
+.pexnl{font-style:normal;color:#666}

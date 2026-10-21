@@ -6,7 +6,7 @@
 const L=f=>{let v,d=0;const g=()=>d?v:(d=1,v=f());g.reset=()=>{d=0;v=undefined};return g};
 const FILES=JSON.parse(document.getElementById('app').dataset.files||'{}'),D={},PR={};
 function load(n){return PR[n]||(PR[n]=fetch(FILES[n],{credentials:'same-origin'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return /^cards\d$/.test(n)?r.text():r.json()}).then(v=>(D[n]=v)).catch(e=>{delete PR[n];throw e}))}
-function parseCards(t,m){const R=t.split('\n'),o=[],lv=m.lv,ct=m.cat;for(const r of R){if(!r)continue;const f=r.split('\t');o.push({id:+f[0],niveau:lv[+f[1]],categorie:ct[+f[2]],nl:f[3],af:f[4],voorbeeld:f[5],tips:f[6]||''})}return o}
+function parseCards(t,m){const R=t.split('\n'),o=[],lv=m.lv,ct=m.cat;for(const r of R){if(!r)continue;const f=r.split('\t');o.push({id:+f[0],niveau:lv[+f[1]],categorie:ct[+f[2]],nl:f[3],af:f[4],voorbeeld:f[5],tips:f[6]||'',vbnl:f[7]||''})}return o}
 let META={lv:[],cat:[],n:{}},CARDS=[],N={};
 const DLG=()=>D.dlg,PATHS=()=>D.paths,LES=()=>D.les,X=()=>D.ext,Y=()=>D.vv,FACTS=()=>D.facts,MED=()=>D.media;
 const TESTHOOK=location.protocol==='file:'||/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
