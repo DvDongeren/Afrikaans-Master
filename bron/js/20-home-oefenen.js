@@ -69,14 +69,14 @@ V.sess=()=>{
 /* ---------- quiz ---------- */
 V.quiz=()=>{
  if(!st.q){const pool=st.pool||(st.lv&&st.lv!=='Alles'?CARDS.filter(c=>c.niveau===st.lv):CARDS);st.q=shuffle(pool).slice(0,st.n||10);st.i=0;st.score=0;st.ans=null;st.wr=[]}
- const c=st.q[st.i];if(c)remember('quiz');else forget('quiz');
+ const c=st.q[st.i];if(!c)forget('quiz');
  if(!c){const wr=st.wr.length?`<div class="sec" style="text-align:left">Om te herhalen</div><div class="list" style="text-align:left">${st.wr.map(c=>`<div class="li"><span class="grow"><span class="af" style="font-size:1.15rem;display:block">${esc(c.af)}</span><span class="nl">${esc(c.nl)}</span></span>${spk(c.af,'sm')}</div>`).join('')}</div>`:'';
   result(st.score,st.q.length,praise(st.score,st.q.length),st.ret?'<button class="btn" data-a="stepdone">Verder met het pad</button>':'<button class="btn" data-a="oef">Opnieuw oefenen</button><button class="btn ghost" data-a="home">Home</button>',wr);return}
- if(!st.cur||st.cur.id!==c.id){const rev=st.audio?false:Math.random()<.5,k=rev?'nl':'af',q=rev?'af':'nl';
+ if(!st.cur||st.cur.id!==c.id){const rev=st.audio?false:st.rk?st.rk==='nl':Math.random()<.5;st.rk='';const k=rev?'nl':'af',q=rev?'af':'nl';
   const same=(BYCAT().get(c.categorie)||[]).filter(x=>x.id!==c.id&&x[k]!==c[k]),pool=shuffle(same.length>=3?same:CARDS.filter(x=>x.id!==c.id&&x[k]!==c[k])),opts=[];
   for(const x of pool){if(!opts.includes(x[k]))opts.push(x[k]);if(opts.length===3)break}
   st.cur={id:c.id,k,q,opts:shuffle(opts.concat(c[k]))}}
- const u=st.cur;
+ const u=st.cur;remember('quiz');
  draw(`${topbar(st.i,st.q.length)}
  <div class="card q"><div class="lbl">${u.q==='nl'?'Nederlands':'Afrikaans'}</div>${st.audio&&st.ans===null?`<button class="icon" style="margin:10px auto 6px;width:72px;height:72px" data-sp="${esc(c.af)}" aria-label="Luister">${I.spk}</button><div class="muted">Luister en kies de vertaling</div>`:`<div class="big ${u.q==='af'?'af':''}">${esc(c[u.q])}</div>`}</div>
  <div class="stack" id="op" style="margin-top:14px">${u.opts.map(o=>`<button class="opt ${u.k==='af'?'af-opt':''}" data-o="${esc(o)}">${esc(o)}</button>`).join('')}</div>`);

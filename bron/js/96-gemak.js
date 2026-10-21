@@ -7,13 +7,13 @@ const RKEY='af2r',RNAME={sess:'Dagelijkse sessie',quiz:'Quiz',gat:'Gatentekst'};
 const rGet=()=>{try{const r=JSON.parse(localStorage.getItem(RKEY)||'null');return r&&RNAME[r.v]&&Date.now()-r.t<DAY&&Array.isArray(r.ids)&&r.i<r.ids.length?r:null}catch{return null}};
 const forget=k=>{try{const r=JSON.parse(localStorage.getItem(RKEY)||'null');if(!k||(r&&r.v===k))localStorage.removeItem(RKEY)}catch{}};
 function remember(k){if(st.ret||st.audio||st.pool||!st.q||!st.i)return;const id=x=>x&&(x.c?x.c.id:x.id);
- const r={v:k,t:Date.now(),ids:st.q.map(id),i:st.i,sc:k==='sess'?st.done||0:st.score||0,wr:(k==='sess'?st.retry||[]:st.wr||[]).map(id),lv:st.lv||''};
+ const r={v:k,t:Date.now(),ids:st.q.map(id),i:st.i,sc:k==='sess'?st.done||0:st.score||0,wr:(k==='sess'?st.retry||[]:st.wr||[]).map(id),lv:st.lv||'',k:k==='quiz'&&st.cur?st.cur.k:''};
  try{localStorage.setItem(RKEY,JSON.stringify(r))}catch{}}
 async function resume(){const r=rGet();if(!r)return go('home');try{await allCards()}catch{return loadError()}
  const m=byId(),G=r.v==='gat'?new Map(GAPS().map(g=>[g.c.id,g])):null,get=i=>G?G.get(i):m.get(i);
  const q=r.ids.map(get).filter(Boolean),wr=r.wr.map(get).filter(Boolean);if(q.length<=r.i){forget();return go(r.v)}
  if(r.v==='sess')go('sess',{q,i:r.i,open:false,done:r.sc,retry:wr,rv:{}});
- else go(r.v,{q,i:r.i,score:r.sc,ans:null,wr,lv:r.lv})}
+ else go(r.v,{q,i:r.i,score:r.sc,ans:null,wr,lv:r.lv,rk:r.k||''})}
 function resumeBox(){const r=rGet();if(!r||view===r.v)return'';
  return`<div class="sec">Ga verder waar je was</div><div class="card resume"><div class="row" style="gap:12px"><span class="ico">${r.v==='gat'?I.zin:r.v==='quiz'?I.quiz:I.sess}</span><span class="grow"><h2>${RNAME[r.v]}</h2><span class="muted small">Vraag ${r.i+1} van ${r.ids.length} · ${r.sc} goed</span></span><button class="x" id="rsx" aria-label="Niet verdergaan">${I.x}</button></div>
  <div class="ibar" role="img" aria-label="${r.i} van ${r.ids.length} gedaan"><i class="ma" style="width:${Math.round(r.i/r.ids.length*100)}%"></i></div><button class="btn" id="rsgo" style="margin-top:12px">Verder</button></div>`}
