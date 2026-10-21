@@ -11,5 +11,8 @@ for t in (sys.argv[1:] or 't_new t_dlg t_gram t_vv t_ext t_feat t_swipe t_cloud 
     good=r.returncode==0 and last.endswith('[]') or last.endswith('[] [] []')
     ok&=good; print(('OK   ' if good else 'FOUT ')+t+'  '+last[:200])
     if not good: print(r.stdout[-1500:],r.stderr[-1500:])
+    if not good and os.environ.get('GITHUB_ACTIONS'):
+        tail=(r.stderr.strip().splitlines() or r.stdout.strip().splitlines() or [''])[-3:]
+        print('::error title=Test '+t+' faalt::'+' | '.join(x.strip()[:300] for x in tail).replace('%','%25'))
 print('ALLES GOED' if ok else 'ER ZIJN FOUTEN')
 sys.exit(0 if ok else 1)
