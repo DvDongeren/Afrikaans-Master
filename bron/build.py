@@ -180,6 +180,8 @@ index = f'''<!doctype html>
 <meta property="og:description" content="Leer Afrikaans vanuit het Nederlands: kaarten, grammatica, dialogen en verhaaltjes.">
 <meta property="og:type" content="website">{CANON}
 <link rel="preload" href="{FILES['cards0']}" as="fetch" crossorigin>
+<link rel="preload" href="{FILES['facts']}" as="fetch" crossorigin>
+<link rel="preload" href="{FILES['paths']}" as="fetch" crossorigin>
 <script defer src="{JS}"></script>
 </head>
 <body>

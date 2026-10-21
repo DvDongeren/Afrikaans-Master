@@ -17,11 +17,23 @@ for k in ('accessibility', 'best-practices', 'seo'):
 m = r['audits']
 vals = [f"{label} {m[key].get('displayValue', '')}" for key, label in (('first-contentful-paint', 'Eerste beeld'), ('largest-contentful-paint', 'Grootste element'), ('speed-index', 'Snelheidsindex'), ('total-blocking-time', 'Blokkeertijd'), ('cumulative-layout-shift', 'Verspringen')) if key in m]
 print('::notice title=Lighthouse-metingen::' + ' · '.join(vals))
-lcp = m.get('largest-contentful-paint-element', {}).get('details', {})
-try:
-    print('::notice title=Grootste element::' + str(lcp['items'][0]['items'][0]['node'].get('snippet', ''))[:200])
-except Exception:
-    pass
+def snippets(o):
+    """Zoek alle html-fragmenten (node.snippet) in een audit, ongeacht het formaat van de Lighthouse-versie."""
+    if isinstance(o, dict):
+        if isinstance(o.get('snippet'), str):
+            yield o['snippet']
+        for v in o.values():
+            yield from snippets(v)
+    elif isinstance(o, list):
+        for v in o:
+            yield from snippets(v)
+el = next(snippets(m.get('largest-contentful-paint-element', {}).get('details', {})), '')
+if el:
+    print('::notice title=Grootste element::' + el[:200])
+for key, title, lab in (('mainthread-work-breakdown', 'Hoofdthread', 'groupLabel'), ('bootup-time', 'Scripttijd', 'url')):
+    it = sorted(m.get(key, {}).get('details', {}).get('items', []), key=lambda x: -(x.get('duration') or x.get('total') or 0))[:4]
+    if it:
+        print(f'::notice title={title}::' + ' · '.join(f"{str(x.get(lab) or x.get('group',''))[-40:]} {round(x.get('duration') or x.get('total') or 0)} ms" for x in it))
 ops = sorted((a for a in m.values() if a.get('details', {}).get('type') == 'opportunity' and (a.get('numericValue') or 0) > 100), key=lambda a: -a['numericValue'])
 for a in ops[:4]:
     print(f"::notice title=Kans::{a.get('title', '')} ({a.get('displayValue', '')})")

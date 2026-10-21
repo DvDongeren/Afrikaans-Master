@@ -16,7 +16,7 @@ V.mem=()=>{if(!st.tiles){const P=gamePool(6);st.tiles=shuffle(P.flatMap(c=>[{id:
 function memTap(i){if(st.lock||st.open.includes(i)||st.done.includes(st.tiles[i].id))return;st.open.push(i);
  if(st.open.length===2){st.moves++;const[a,b]=st.open.map(x=>st.tiles[x]);
   if(a.id===b.id&&a.l!==b.l){st.done.push(a.id);st.open=[];if(a.l==='af')speak(a.x);else speak(b.x)}
-  else{st.lock=1;buzz();setTimeout(()=>{st.open=[];st.lock=0;if(view==='mem')V.mem()},900)}}
+  else{st.lock=1;buzz();const s0=st;setTimeout(()=>{if(st!==s0||view!=='mem')return;st.open=[];st.lock=0;V.mem()},900)}}
  V.mem()}
 V.race=()=>{if(st.over)return raceEnd();
  if(!st.t0){st.t0=Date.now();st.sc=0;st.q=null;clearInterval(window.__race);window.__race=setInterval(()=>{if(view!=='race'||st.over){clearInterval(window.__race);return}const left=Math.max(0,60-Math.floor((Date.now()-st.t0)/1000));const el=$('#rt');if(el)el.textContent=left+' s';if(left<=0){st.over=1;clearInterval(window.__race);raceEnd()}},250)}
@@ -26,7 +26,7 @@ V.race=()=>{if(st.over)return raceEnd();
  <div class="card race-q"><div class="big af">${esc(st.q.c.af)}</div></div><div class="stack">${st.q.o.map(o=>`<button class="opt" data-ro="${esc(o)}">${esc(o)}</button>`).join('')}</div>`)}
 function raceTap(o,el){if(st.over||st.wait)return;const ok=o===st.q.c.nl;
  if(ok){st.sc++;st.q=null;return V.race()}
- buzz();st.wait=1;el.classList.add('bad');for(const x of app.querySelectorAll('[data-ro]'))if(x.dataset.ro===st.q.c.nl)x.classList.add('ok');setTimeout(()=>{st.wait=0;st.q=null;if(view==='race'&&!st.over)V.race()},700)}
+ buzz();st.wait=1;el.classList.add('bad');for(const x of app.querySelectorAll('[data-ro]'))if(x.dataset.ro===st.q.c.nl)x.classList.add('ok');const s0=st;setTimeout(()=>{if(st!==s0||view!=='race')return;st.wait=0;st.q=null;if(!st.over)V.race()},700)}
 function raceEnd(){const best=S.games.race||0,rec=st.sc>best;if(rec&&!st.saved){S.games.race=st.sc;st.saved=1;saveNow()}
  draw(`<div class="result stack"><div class="score">${st.sc}</div><h1>${rec?'Nieuw record!':'Tijd is om'}</h1><p class="muted">${st.sc} ${st.sc===1?'woord':'woorden'} goed${!rec&&best?` · je record is ${best}`:''}</p><div class="stack" style="margin-top:22px"><button class="btn" data-again="race">Nog een keer</button><button class="btn ghost" data-a="spel">Terug naar spelletjes</button></div></div>`)}
 

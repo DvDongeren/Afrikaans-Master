@@ -31,7 +31,10 @@ function fuzzyCards(q){if(q.length<4||q.includes(' '))return[];const T=TOK(),r=[
 const BYCAT=L(()=>{const m=new Map();for(const c of CARDS){let a=m.get(c.categorie);if(!a)m.set(c.categorie,a=[]);a.push(c)}return m});
 const ORDER=L(()=>{const s0=rank[S.startLv]||0,k=c=>c.own?-1:(rank[c.niveau]-s0+3)%3;return CARDS.slice().sort((a,b)=>k(a)-k(b)||a.id-b.id)});
 const okWord=c=>{const n=t=>t.toLowerCase().replace(/[^\p{L} ]/gu,'').trim();return c.niveau!=='Advanced'&&n(c.nl)!==n(c.af)&&n(c.voorbeeld)!==n(c.af)&&c.voorbeeld.split(' ').length>=4&&c.af.length<=40};
-function wordOfDay(){const P=CARDS.filter(c=>c.niveau==='Beginner'&&!c.own).sort((a,b)=>a.id-b.id),d=Math.floor(Date.now()/DAY),n=P.length;if(!n)return CARDS[0];let i=(d*7919)%n;for(let k=0;k<n;k++,i=(i+1)%n)if(okWord(P[i]))return P[i];return P[0]}
+let WOD=null;
+function wordOfDay(){const d=Math.floor(Date.now()/DAY);if(WOD&&WOD.d===d&&WOD.n===CARDS.length&&byId().get(WOD.c.id)===WOD.c)return WOD.c;
+ const P=CARDS.filter(c=>c.niveau==='Beginner'&&!c.own).sort((a,b)=>a.id-b.id),n=P.length;let c=P[0]||CARDS[0];if(n){let i=(d*7919)%n;for(let k=0;k<n;k++,i=(i+1)%n)if(okWord(P[i])){c=P[i];break}}
+ WOD={d,n:CARDS.length,c};return c}
 
 /* ---------- opslag: gebundeld schrijven, altijd wegschrijven bij verlaten ---------- */
 const KEY='af2';

@@ -5,25 +5,25 @@ V.home=()=>{const h=new Date().getHours(),hi=h<12?['Goeiemôre','Goedemorgen']:h
  const wc=wordOfDay(),F=FACTS(),fact=F[Math.floor(Date.now()/DAY)%F.length];
  let cont='';if(S.lp){const lp=PATHS().find(p=>p.id===S.lp),dn=lp&&(S.paths[lp.id]||[]),nxi=lp?lp.steps.findIndex((_,i)=>!dn.includes(i)):-1;
   if(nxi>=0)cont=`<div class="sec">Ga verder met je pad</div><div class="list">${row(`data-p="${lp.id}"`,I.pad,esc(lp.title),'Volgende: '+esc(lp.steps[nxi].title))}</div>`}
- const s=streak();
- draw(`<div class="home-grid"><div class="col"><header class="hero"><div class="row sp"><span class="brand">Afrikaans Master</span><span class="row" style="gap:8px"><button class="badge lvb" data-a="mijlpalen" aria-label="Niveau ${xpInfo().L}, naar mijlpalen">Niv. ${xpInfo().L}</button>${s?`<span class="badge" title="${s} ${s===1?'dag':'dagen'} op rij">${I.flame}${s}${S.frz?`<span class="frzb" title="${S.frz} ${S.frz===1?'rustdag':'rustdagen'}">${I.shield}${S.frz}</span>`:''}</span>`:''}<button class="x" data-a="zoek" aria-label="Zoeken">${I.search}</button></span></div>
+ const s=streak(),xp=xpInfo(),nst=Object.keys(S.srs).length;
+ draw(`<div class="home-grid"><div class="col"><header class="hero"><div class="row sp"><span class="brand">Afrikaans Master</span><span class="row" style="gap:8px"><button class="badge lvb" data-a="mijlpalen" aria-label="Niveau ${xp.L}, naar mijlpalen">Niv. ${xp.L}</button>${s?`<span class="badge" title="${s} ${s===1?'dag':'dagen'} op rij">${I.flame}${s}${S.frz?`<span class="frzb" title="${S.frz} ${S.frz===1?'rustdag':'rustdagen'}">${I.shield}${S.frz}</span>`:''}</span>`:''}<button class="x" data-a="zoek" aria-label="Zoeken">${I.search}</button></span></div>
  <div class="hero-row"><div><div class="hello">${hi[0]}</div><div class="nl">${hi[1]}</div></div><svg class="illu" viewBox="0 0 120 84" aria-hidden="true"><circle cx="86" cy="26" r="13" class="sun"/><path d="M6 64 L30 40 Q32 38 35 38 L84 38 Q87 38 89 40 L114 64" class="mtn"/><path d="M16 72h88M30 79h60" class="sea"/></svg></div></header>
  ${resumeBox()}${cta()}
  <div class="quick" style="margin-top:12px"><button data-a="quiz">${I.quiz}Quiz</button><button data-a="dlgs">${I.dlg}Dialogen</button><button data-a="stories">${I.story}Verhalen</button></div>
- ${!S.lvDone&&Object.keys(S.srs).length<30?`<div class="card stack" style="margin-top:12px"><h2>Wat is je niveau?</h2><p class="muted">Doe de niveautoets van 12 vragen. Daarna start je sessie op jouw niveau.</p><div class="row"><button class="btn ghost" data-lvskip="1">Niet nu</button><button class="btn" data-a="toets">Start toets</button></div></div>`:''}
+ ${!S.lvDone&&nst<30?`<div class="card stack" style="margin-top:12px"><h2>Wat is je niveau?</h2><p class="muted">Doe de niveautoets van 12 vragen. Daarna start je sessie op jouw niveau.</p><div class="row"><button class="btn ghost" data-lvskip="1">Niet nu</button><button class="btn" data-a="toets">Start toets</button></div></div>`:''}
  ${installBox(true)}
  ${cont}${(()=>{const nx=msNext();return nx?`<div class="sec">Volgende mijlpaal</div><button class="card ms home-ms" data-a="mijlpalen" style="width:100%;text-align:left"><div class="row" style="gap:10px"><span class="msmedal ${nx.n?'t'+Math.min(nx.n-1,8):'off'}">${I[nx.f.ic]||I.medal}</span><span class="grow"><h2>${esc(nx.next.name)}</h2><span class="muted small">${esc(nx.f.t)}</span></span></div>${msBar(nx)}</button>`:''})()}</div><div class="col">
  <div class="sec">Woord van de dag</div>
  <div class="card entry"><div class="row sp"><div class="grow"><div class="af">${esc(wc.af)}</div><div class="nl">${esc(wc.nl)}</div></div>${spk(wc.af)}</div>${wc.voorbeeld?`<p class="ex">${esc(wc.voorbeeld)}</p>${exnl(wc)}`:''}</div>
  <div class="sec">Weetje van de dag</div>
  <button class="card fact" data-a="cult" style="width:100%;text-align:left"><div class="lbl">${esc(fact.s)}</div><p>${esc(fact.t)}</p></button>
- <p class="muted" style="text-align:center;margin-top:22px">${Object.keys(S.srs).length} van ${CARDS.length} kaarten gestart</p></div></div>`);bindResume()};
+ <p class="muted" style="text-align:center;margin-top:22px">${nst} van ${CARDS.length} kaarten gestart</p></div></div>`);bindResume()};
 
 /* ---------- oefenen ---------- */
-V.oef=()=>{const lv=st.lv||'Alles';
+V.oef=()=>{const lv=st.lv||'Alles',wk=weakList().length;
  draw(`<div class="row sp"><h1>Oefenen</h1><button class="x" data-a="zoek" aria-label="Zoeken">${I.search}</button></div><div style="margin-top:18px">${cta()}</div>
  <div class="secs"><section><div class="sec">Slim oefenen</div><div class="list">
- ${row('data-a="weak"',I.bolt,'Moeilijke kaarten',weakList().length?weakList().length+' kaarten die je vaak fout hebt':'Nog geen moeilijke kaarten')}
+ ${row('data-a="weak"',I.bolt,'Moeilijke kaarten',wk?wk+' kaarten die je vaak fout hebt':'Nog geen moeilijke kaarten')}
  ${row('data-a="gat"',I.zin,'Gatentekst','Vul het ontbrekende woord in een echte zin in')}
  ${row('data-a="spel"',I.spel,'Spelletjes','Memory en tijdrace')}
  ${row('data-a="luister"',I.ear,'Luisteren',canSpeak()?'Hoor een zin en typ wat je hoort':'Niet beschikbaar op dit toestel')}</div>
@@ -82,4 +82,4 @@ V.quiz=()=>{
  <div class="stack" id="op" style="margin-top:14px">${u.opts.map(o=>`<button class="opt ${u.k==='af'?'af-opt':''}" data-o="${esc(o)}">${esc(o)}</button>`).join('')}</div>`);
  $('#op').onclick=e=>{const b=e.target.closest('.opt');if(!b||st.ans!==null)return;const ok=b.dataset.o===c[u.k];st.ans=1;
   for(const x of $('#op').children){if(x.dataset.o===c[u.k])x.classList.add('ok');x.disabled=true}if(!ok)b.classList.add('bad');
-  if(ok){st.score++;count()}else{grade(c.id,false);st.wr.push(c);buzz('bad')}setTimeout(()=>{st.ans=null;st.i++;st.cur=null;render()},ok?650:1400)}};
+  if(ok){st.score++;count()}else{grade(c.id,false);st.wr.push(c);buzz('bad')}const s0=st;setTimeout(()=>{if(st!==s0||view!=='quiz')return;st.ans=null;st.i++;st.cur=null;render()},ok?650:1400)}};

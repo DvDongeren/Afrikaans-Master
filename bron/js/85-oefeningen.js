@@ -71,7 +71,7 @@ V.toets=()=>{
  const c=it.c;if(!st.cur||st.cur.id!==c.id){const same=CARDS.filter(x=>!x.own&&x.niveau===it.lv&&x.id!==c.id&&x.af!==c.af),opts=[];for(const x of shuffle(same)){if(!opts.includes(x.af))opts.push(x.af);if(opts.length===3)break}st.cur={id:c.id,opts:shuffle(opts.concat(c.af))}}
  draw(`${topbar(st.i,n,'home')}<div class="card q"><div class="lbl">Wat is dit in het Afrikaans?</div><div class="big">${esc(c.nl)}</div></div>
  <div class="stack" id="op" style="margin-top:14px">${st.cur.opts.map(o=>`<button class="opt af-opt" data-o="${esc(o)}">${esc(o)}</button>`).join('')}<button class="btn ghost" id="tdk">Weet ik niet</button></div>`);
- const next=ok=>{if(ok)st.res[it.lv]++;setTimeout(()=>{st.i++;st.cur=null;st.ans=null;V.toets()},ok?500:900)};
+ const s0=st,next=ok=>{if(ok)st.res[it.lv]++;setTimeout(()=>{if(st!==s0||view!=='toets')return;st.i++;st.cur=null;st.ans=null;V.toets()},ok?500:900)};
  $('#op').onclick=e=>{const b=e.target.closest('.opt');if(!b||st.ans)return;st.ans=1;const ok=b.dataset.o===c.af;for(const x of $('#op').querySelectorAll('.opt')){if(x.dataset.o===c.af)x.classList.add('ok');x.disabled=true}if(!ok)b.classList.add('bad');next(ok)};
  $('#tdk').onclick=()=>{if(st.ans)return;st.ans=1;next(false)}};
 const okWord2=c=>c.nl.toLowerCase()!==c.af.toLowerCase()&&c.af.length<=30;
