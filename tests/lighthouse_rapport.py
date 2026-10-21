@@ -27,9 +27,12 @@ def snippets(o):
     elif isinstance(o, list):
         for v in o:
             yield from snippets(v)
-el = next(snippets(m.get('largest-contentful-paint-element', {}).get('details', {})), '')
-if el:
-    print('::notice title=Grootste element::' + el[:200])
+for aid, a in m.items():
+    if 'lcp' in aid or 'largest-contentful' in aid:
+        el = next(snippets(a.get('details', {})), '')
+        ph = [f"{x.get('phase') or x.get('subpart') or x.get('label')} {round(x.get('timing') or x.get('duration') or 0)}" for t in (a.get('details', {}).get('items') or []) if isinstance(t, dict) for x in (t.get('items') or []) if isinstance(x, dict) and (x.get('phase') or x.get('subpart'))]
+        if el or ph:
+            print(f'::notice title=Grootste element ({aid})::' + (el[:160] + ' ' if el else '') + ' · '.join(ph))
 for key, title, lab in (('mainthread-work-breakdown', 'Hoofdthread', 'groupLabel'), ('bootup-time', 'Scripttijd', 'url')):
     it = sorted(m.get(key, {}).get('details', {}).get('items', []), key=lambda x: -(x.get('duration') or x.get('total') or 0))[:4]
     if it:
