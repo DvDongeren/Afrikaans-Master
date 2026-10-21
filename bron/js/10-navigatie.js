@@ -5,18 +5,37 @@ let view='home',st={};
 const NAV=[['home','Home',I.home],['oef','Oefen',I.oef],['paden','Paden',I.pad],['kaart','Kaarten',I.kaart],['zoek','Zoeken',I.search],['meer','Meer',I.meer]];
 const navEl=document.getElementById('nav');
 navEl.innerHTML=NAV.map(([k,l,i])=>`<button data-v="${k}" ${k==='zoek'?'class="desk"':''}>${i}<span>${l}</span></button>`).join('');
-const PARENT={sess:'oef',quiz:'oef',dlgs:'oef',dlg:'oef',gram:'oef',les:'oef',mc:'oef',zin:'oef',reis:'oef',cult:'oef',media:'oef',klank:'oef',vertaal:'oef',print:'kaart',spel:'oef',mem:'oef',race:'oef',inzicht:'meer',beheer:'meer',mijlpalen:'meer',deel:'meer',gat:'oef',vv:'oef',stories:'oef',story:'oef',path:'paden',luister:'oef',weak:'oef',toets:'home',own:'kaart',zoek:'zoek'};
+const PARENT={sess:'oef',quiz:'oef',dlgs:'oef',dlg:'oef',gram:'oef',les:'oef',mc:'oef',zin:'oef',reis:'oef',cult:'oef',media:'oef',klank:'oef',vertaal:'oef',print:'kaart',spel:'oef',mem:'oef',race:'oef',inzicht:'meer',beheer:'meer',mijlpalen:'meer',deel:'meer',gat:'oef',beeld:'oef',plaat:'oef',examen:'oef',exam:'oef',cert:'oef',seizoen:'oef',szquiz:'oef',vv:'oef',stories:'oef',story:'oef',path:'paden',luister:'oef',weak:'oef',toets:'home',own:'kaart',zoek:'zoek'};
 function setNav(){if(typeof syncUI==='function')syncUI();const cur=st&&st.ret?'paden':PARENT[view]||view;for(const b of navEl.children){const on=b.dataset.v===cur;b.classList.toggle('on',on);on?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')}}
 const motionOk=()=>!navigator.webdriver&&!(matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
-function go(v,s){const run=()=>{view=v;st=s||{};render();scrollTo(0,0)};if(document.startViewTransition&&motionOk()&&v!==view)document.startViewTransition(run);else run()}
+/* ---------- adres per scherm: terugknop van browser/telefoon en deelbare links ----------
+   Elk scherm krijgt een adres als #/paden of #/path?p=week1. De geschiedenis staat ook in HST,
+   zodat 'terug' de vorige toestand (filters, voortgang) herstelt. */
+const RP={path:['p'],les:['l'],dlg:['t'],story:['id'],kaart:['cat','q'],zoek:['q'],media:['tab'],cult:['tab'],mc:['kind'],beeld:['th'],seizoen:['id'],exam:['lv'],cert:['lv']};
+/* Oefeningen starten na herladen niet vanzelf opnieuw; dan kom je op home (met 'Ga verder waar je was'). */
+const EXER=new Set(['sess','quiz','gat','toets','mem','race','weak','plaat','exam','szquiz','stepdone']);
+const hashOf=(v,s)=>{const q=new URLSearchParams();for(const k of RP[v]||[])if(s&&typeof s[k]==='string'&&s[k])q.set(k,s[k]);const t=q.toString();return v==='home'&&!t?'#/':'#/'+v+(t?'?'+t:'')};
+function parseHash(h){const m=/^#\/([a-z]*)(?:\?(.*))?$/.exec(h||'');if(!m)return null;const v=m[1]||'home';if(!(v in V))return null;const s={},q=new URLSearchParams(m[2]||'');for(const k of RP[v]||[]){const x=q.get(k);if(x)s[k]=x.slice(0,200)}return[v,s]}
+const HST=[];let HPOS=0;
+function record(push){const h=hashOf(view,st);try{if(push){HPOS++;HST.length=HPOS;HST[HPOS]={v:view,s:st,h};history.pushState({am:HPOS},'',h)}else{HST[HPOS]={v:view,s:st,h};history.replaceState({am:HPOS},'',h)}}catch{}}
+/* Na een filter of zoekopdracht het adres bijwerken zonder nieuwe stap in de geschiedenis. */
+function syncHash(){const h=hashOf(view,st);if(location.hash!==h)try{if(HST[HPOS])HST[HPOS].h=h;history.replaceState({am:HPOS},'',h)}catch{}}
+function go(v,s){
+ /* Is het doel precies het vorige scherm, dan gaan we echt terug (zelfde als de terugknop). */
+ const prev=HST[HPOS-1],onlyRoute=!s||Object.keys(s).every(k=>(RP[v]||[]).includes(k));
+ if(prev&&onlyRoute&&!EXER.has(v)&&history.state&&history.state.am===HPOS&&prev.h===hashOf(v,s)){history.back();return}
+ const run=()=>{const same=v===view;view=v;st=s||{};record(!same);if(!same)stat('v',v);render();scrollTo(0,0)};if(document.startViewTransition&&motionOk()&&v!==view)document.startViewTransition(run);else run()}
+addEventListener('popstate',e=>{const sh=document.getElementById('sheet');if(sh)sh.remove();const i=e.state&&e.state.am,ent=typeof i==='number'?HST[i]:null;
+ if(ent&&ent.h===location.hash){HPOS=i;view=ent.v;st=ent.s}else{const r=parseHash(location.hash)||['home',{}];view=EXER.has(r[0])?'home':r[0];st=r[1];if(typeof i==='number')HPOS=i;HST[HPOS]={v:view,s:st,h:location.hash}}
+ stat('v',view);const run=()=>{render();scrollTo(0,0)};if(document.startViewTransition&&motionOk())document.startViewTransition(run);else run()});
 const V={};
 /* Indeling op brede schermen: 'wide' = volle breedte met kolommen, 'read' = zelfde linkerkant maar smaller (lezen),
    'focus' = oefening, gecentreerd. Op de telefoon is alles één kolom. */
-const WIDE=new Set(['home','mijlpalen','oef','kaart','paden','zoek','vv','gram','dlgs','stories','cult','reis','media','klank','meer','inzicht','spel','beheer']);
-const READ=new Set(['path','dlg','story','own','print','deel']);
+const WIDE=new Set(['home','mijlpalen','oef','kaart','paden','zoek','vv','gram','dlgs','stories','cult','reis','media','klank','meer','inzicht','spel','beheer','beeld','examen','seizoen']);
+const READ=new Set(['path','dlg','story','own','print','deel','cert']);
 const layout=()=>WIDE.has(view)||view==='les'&&st.n===undefined?'wide':READ.has(view)?'wide read':'focus';
-const DEPS={home:['facts','paths'],paden:['paths'],path:['paths','les','dlg'],dlgs:['dlg'],dlg:['dlg'],gram:['les'],les:['les'],mc:['ext','vv'],zin:['ext'],reis:['ext'],cult:['ext','facts'],media:['media'],klank:['ext'],vertaal:['ext','dlg','vv'],vv:['vv'],stories:['vv'],story:['vv'],luister:['ext','dlg'],zoek:['dlg','vv','les','ext','paths','media'],meer:['paths'],mijlpalen:['paths','les'],gat:['vv']};
-function render(){setNav();app.className=layout();const need=(DEPS[view]||[]).filter(n=>!D[n]);
+const DEPS={home:['facts','paths','sz'],oef:['sz'],seizoen:['sz'],szquiz:['sz'],paden:['paths'],path:['paths','les','dlg'],dlgs:['dlg'],dlg:['dlg'],gram:['les'],les:['les'],mc:['ext','vv'],zin:['ext'],reis:['ext'],cult:['ext','facts'],media:['media'],klank:['ext'],vertaal:['ext','dlg','vv'],vv:['vv'],stories:['vv'],story:['vv'],luister:['ext','dlg'],zoek:['dlg','vv','les','ext','paths','media','pics'],meer:['paths'],mijlpalen:['paths','les'],gat:['vv'],beeld:['pics'],plaat:['pics']};
+function render(){setNav();if(typeof selHide==='function')selHide();app.className=layout();const need=(DEPS[view]||[]).filter(n=>!D[n]);
  if(NEEDALL(view)&&GOT.size<3){const v=view,s0=st;app.innerHTML='<p class="loading" role="status">Laden…</p>';allCards().then(()=>{if(view===v&&st===s0)render()},loadError);return}
  if(need.length){const v=view,s0=st;app.innerHTML='<p class="loading" role="status">Laden…</p>';Promise.all(need.map(load)).then(()=>{if(view===v&&st===s0)render()},loadError);return}
  (V[view]||V.home)()}
@@ -32,7 +51,7 @@ const spk=(t,cls='')=>`<button class="icon ${cls}" data-sp="${esc(t)}" aria-labe
 const exnl=c=>c.vbnl?`<p class="exnl">${esc(c.vbnl)}</p>`:'';
 const mark=k=>k?`<span class="done-mark" aria-label="Gedaan">${I.check}</span>`:'';
 const row=(attrs,icon,title,sub,trail)=>`<button class="li tile" ${attrs}>${icon?`<span class="ico">${icon}</span>`:''}<span class="grow"><h2>${title}</h2>${sub?`<span class="muted">${sub}</span>`:''}</span>${trail??`<span class="chev">${I.chev}</span>`}</button>`;
-function result(sc,n,msg,btns,extra=''){draw(`<div class="result stack"><div class="score" aria-label="${sc} van ${n} goed">${sc}<small> / ${n}</small></div>${msg?`<h1>${msg}</h1>`:''}${extra}<div class="stack" style="margin-top:22px">${btns}</div></div>`)}
+function result(sc,n,msg,btns,extra=''){if(!st.__sd){st.__sd=1;stat('d',view)}draw(`<div class="result stack"><div class="score" aria-label="${sc} van ${n} goed">${sc}<small> / ${n}</small></div>${msg?`<h1>${msg}</h1>`:''}${extra}<div class="stack" style="margin-top:22px">${btns}</div></div>`)}
 const praise=(sc,n)=>sc===n?'Foutloos, knap gedaan!':sc>=n*.7?'Goed bezig!':'Oefening baart kunst';
 
 /* ---------- sessieknop met voortgang ---------- */

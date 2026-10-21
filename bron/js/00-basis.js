@@ -38,7 +38,7 @@ function wordOfDay(){const d=Math.floor(Date.now()/DAY);if(WOD&&WOD.d===d&&WOD.n
 
 /* ---------- opslag: gebundeld schrijven, altijd wegschrijven bij verlaten ---------- */
 const KEY='af2';
-const DEF=()=>({srs:{},favs:[],streak:0,last:'',days:{},theme:'auto',goal:15,paths:{},dlg:{},les:{},lp:'',typed:false,stories:{},own:[],reports:[],rate:1,startLv:'',lvDone:false,haptic:true,games:{},instHide:false,fs:'n',read:false,ms:{},frz:0,frzD:[],lvl:0,notes:{}});
+const DEF=()=>({srs:{},favs:[],streak:0,last:'',days:{},theme:'auto',goal:15,paths:{},dlg:{},les:{},lp:'',typed:false,stories:{},own:[],reports:[],rate:1,startLv:'',lvDone:false,haptic:true,games:{},instHide:false,fs:'n',read:false,ms:{},frz:0,frzD:[],lvl:0,notes:{},pics:{},exam:{},sz:{},stat:true});
 let S=DEF();try{Object.assign(S,JSON.parse(localStorage.getItem(KEY))||{})}catch{}
 const ownCard=o=>({id:o.id,niveau:'Beginner',categorie:'Eigen kaarten',nl:o.nl,af:o.af,voorbeeld:o.vb||'',tips:'',own:1});
 let saveT=0;
@@ -61,7 +61,7 @@ function count(){const t=fmt(new Date());S.days[t]=(S.days[t]||0)+1;
   else S.streak=1;
   S.last=t;if(S.streak%7===0&&(S.frz||0)<2){S.frz=(S.frz||0)+1;S.frzNew=1}}
  save()}
-function grade(id,ok){const r=S.srs[id]||{box:0};r.box=ok?Math.min(r.box+1,6):0;r.due=Date.now()+(ok?BOX[r.box]*DAY:6e5);r.t=Date.now();if(!r.f)r.f=r.t;S.srs[id]=r;count()}
+function grade(id,ok){if(!ok&&id>0&&typeof stat==='function')stat('f','c'+id);const r=S.srs[id]||{box:0};r.box=ok?Math.min(r.box+1,6):0;r.due=Date.now()+(ok?BOX[r.box]*DAY:6e5);r.t=Date.now();if(!r.f)r.f=r.t;S.srs[id]=r;count()}
 const isDue=id=>{const r=S.srs[id];return!!r&&r.due<=Date.now()};
 function dueCount(){const now=Date.now();let n=0;for(const k in S.srs)if(S.srs[k].due<=now)n++;return n}
 function sessionQueue(n){const now=Date.now(),due=[],m=byId();
@@ -140,5 +140,14 @@ trash:ic('<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>'),
 medal:ic('<circle cx="12" cy="14.5" r="5.5"/><path d="M8.5 9.8L6 3h4l2 4.5L14 3h4l-2.5 6.8"/>'),
 shield:ic('<path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6z"/><path d="M9 12l2 2 4-4"/>'),
 radar:ic('<circle cx="12" cy="12" r="9"/><path d="M12 12l6.4-6.4"/><path d="M12 6.5A5.5 5.5 0 006.5 12"/><path d="M12 9.5A2.5 2.5 0 009.5 12"/><circle cx="15.6" cy="15.2" r="1"/>'),
+pic:ic('<rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="2"/><path d="M3 17l5-5 4 4 3-3 6 6"/>'),
+leaf:ic('<path d="M5 19C5 10 10 5 19 5c0 9-5 14-14 14z"/><path d="M5 19L14 10"/>'),
+sun:ic('<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/>'),
+snow:ic('<path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/><path d="M10 5l2 2 2-2M10 19l2-2 2 2"/>'),
+gift:ic('<rect x="3.5" y="9" width="17" height="11" rx="1.5"/><path d="M12 9v11M3.5 13h17"/><path d="M12 9c-1-3-5-4-5-1.5S12 9 12 9zM12 9c1-3 5-4 5-1.5S12 9 12 9z"/>'),
+egg:ic('<path d="M12 3c-4 0-6.5 6-6.5 10a6.5 6.5 0 0013 0C18.5 9 16 3 12 3z"/><path d="M6 12l3 2 3-2 3 2 3-2"/>'),
+grape:ic('<circle cx="9" cy="10" r="2.5"/><circle cx="15" cy="10" r="2.5"/><circle cx="12" cy="14.5" r="2.5"/><circle cx="9" cy="19" r="2"/><circle cx="15" cy="19" r="2"/><path d="M12 7V3M12 5c2-2 4-2 5 0"/>'),
+spark:ic('<path d="M12 3v5M12 16v5M3 12h5M16 12h5M6 6l3 3M15 15l3 3M6 18l3-3M15 9l3-3"/>'),
+flower:ic('<circle cx="12" cy="9" r="2.5"/><path d="M12 6.5c0-3 3-3 3-.5M12 6.5c0-3-3-3-3-.5M14.5 9c3 0 3 3 .5 3M9.5 9c-3 0-3 3-.5 3M12 11.5V21M12 17c-2-2-4-2-5-1 1 2 3 2 5 1z"/>'),
 bulb:ic('<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 00-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0012 3z"/>'),
 share:ic('<path d="M12 15V3M7.5 7.5L12 3l4.5 4.5"/><path d="M5 12v7.5h14V12"/>')};

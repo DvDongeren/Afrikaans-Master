@@ -539,3 +539,60 @@ label.btn{cursor:pointer}
 .ezel .linkbtn{margin-top:4px;color:var(--nl)}
 .linkbtn[data-ezel]{color:var(--nl)}
 .wsave{margin-top:10px;width:auto;box-shadow:inset 0 0 0 1.5px var(--hair)}
+/* fouten terugkijken na een sessie */
+.review{text-align:left}
+.review .rv .af{font-size:1.3rem;line-height:1.25}
+.review .rv .ex{margin-top:8px}
+.review .rv .linkbtn{margin-top:6px}
+@media (min-width:960px){.review{display:grid;grid-template-columns:1fr 1fr;gap:12px}.review>*{margin:0!important}}
+.rem input[type=time]{width:auto;min-width:120px;padding:10px 12px;border-radius:12px;border:0;background:var(--sunk);font-variant-numeric:tabular-nums}
+.wrapbtns{flex-wrap:wrap}.wrapbtns .btn{flex:1 1 160px}
+/* luisterverhaal */
+.reader .hid{display:flex;align-items:center;gap:10px;font-family:var(--sans);font-size:.95rem;color:var(--muted);padding:14px;border-radius:var(--rs);background:var(--sunk);margin-top:14px}
+.reader .hid svg{width:20px;height:20px;flex:none}
+.reader p.cur{background:color-mix(in srgb,var(--af) 8%,transparent);border-radius:12px;padding:6px 8px;margin-left:-8px;margin-right:-8px}
+.lctl{flex-wrap:wrap}.lctl .btn{flex:1 1 120px}
+/* plaatjes */
+.pic{display:block;width:56px;height:56px;color:var(--ink)}
+.pic .a{fill:var(--afs)}.pic .g{fill:var(--golds)}.pic .n{fill:color-mix(in srgb,var(--nl) 16%,var(--surface))}.pic .w{fill:var(--surface)}
+.pic .r{fill:color-mix(in srgb,#e2513f 30%,var(--surface))}.pic .o{fill:color-mix(in srgb,#f08a24 32%,var(--surface))}.pic .p{fill:color-mix(in srgb,#f08fb8 38%,var(--surface))}
+.pic .b{fill:color-mix(in srgb,#8b5a2b 32%,var(--surface))}.pic .k{fill:currentColor}.pic .u{fill:color-mix(in srgb,#7b4bd1 30%,var(--surface))}
+.pic.big{width:120px;height:120px;margin:4px auto 10px}
+.pthemes{display:grid;grid-template-columns:1fr;gap:10px}
+.ptile{display:flex;align-items:center;gap:14px;padding:12px 14px;background:var(--surface);border-radius:var(--r);text-align:left;width:100%}
+.ptile .pic{width:48px;height:48px;flex:none}
+.ptile b{display:block}.ptile .af,.ptile .muted{display:block}
+.ptile.full{box-shadow:inset 0 0 0 2px var(--af)}
+.picgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px}
+.pcard{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 6px;background:var(--surface);border-radius:var(--rs);text-align:center}
+.pcard .pic{width:60px;height:60px}.pcard .af{font-size:1.02rem}
+.pq{text-align:center}
+.popts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.popt{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:132px;background:var(--surface);border-radius:var(--r);box-shadow:inset 0 0 0 1.5px var(--hair)}
+.popt .pic{width:84px;height:84px}
+.popt.ok{box-shadow:inset 0 0 0 3px var(--ok);background:color-mix(in srgb,var(--ok) 10%,var(--surface))}
+.popt.bad{box-shadow:inset 0 0 0 3px var(--bad);background:color-mix(in srgb,var(--bad) 10%,var(--surface))}
+.popt[disabled]{cursor:default}
+.pfb{margin-top:12px}.pfb.good{box-shadow:inset 0 0 0 2px var(--ok)}.pfb.wrong{box-shadow:inset 0 0 0 2px var(--bad)}
+.pmodes{flex-wrap:wrap}
+@media (min-width:700px){.pthemes{grid-template-columns:1fr 1fr}}
+@media (min-width:1300px){.pthemes{grid-template-columns:1fr 1fr 1fr}}
+/* examen en certificaat */
+.exgrid{display:grid;gap:12px}
+.exc.passed{box-shadow:inset 0 0 0 2px var(--af)}
+.exc h2{margin:0}
+.opt.sel{box-shadow:inset 0 0 0 2.5px var(--nl)}
+.exr p{line-height:1.45}.bad-t{color:var(--bad)}.ok-t{color:var(--ok);font-weight:600}
+.certcv{display:block;width:100%;max-width:760px;height:auto;margin-top:16px;border-radius:12px;box-shadow:0 10px 28px rgba(0,0,0,.16)}
+@media (min-width:960px){.exgrid{grid-template-columns:repeat(3,1fr)}.exgrid .card{display:flex;flex-direction:column}.exgrid .card>.row:last-child{margin-top:auto!important;padding-top:14px}}
+/* seizoenen */
+.szgrid{display:grid;gap:10px}
+.sztile{display:flex;align-items:center;gap:12px;width:100%;text-align:left}
+.sztile.on{box-shadow:inset 0 0 0 2px var(--gold)}.sztile.done{box-shadow:inset 0 0 0 2px var(--af)}
+.sztile.off{opacity:.75}.sztile h2{margin:0}
+@media (min-width:960px){.szgrid{grid-template-columns:1fr 1fr 1fr}}
+/* zoekknop bij een selectie */
+#selz{position:absolute;z-index:45;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:var(--btn);color:var(--btni);font-weight:600;font-size:.9rem;box-shadow:0 8px 24px rgba(0,0,0,.22);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#selz svg{width:16px;height:16px;flex:none}#selz span{overflow:hidden;text-overflow:ellipsis}
+.bstat .col{height:70px}.bstat b{display:none}
+.fxs textarea{min-height:64px}

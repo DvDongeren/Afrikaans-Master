@@ -66,7 +66,7 @@ for c in C:
 X = dict(d['extd'])
 FACTS = X.pop('FACTS')
 n = {'les': len(d['lesd']), 'bs': len(X['BS']), 'nie': len(X['NIE']), 'vv': len(d['vvd']['VV']), 'dlg': len(d['dlgd']),
-     'st': len(d['vvd']['ST']), 'reis': len(X['REIS']), 'wa': len(X['WA']), 'menu': len(X['MENU']), 'sl': len(X['SL'])}
+     'st': len(d['vvd']['ST']), 'pics': len(d['picd']['items']), 'reis': len(X['REIS']), 'wa': len(X['WA']), 'menu': len(X['MENU']), 'sl': len(X['SL'])}
 FILES = {
     'meta': emit('data', 'meta', 'json', j({'lv': lv, 'cat': cat, 'n': n})),
     'cards0': emit('data', 'cards0', 'txt', '\n'.join(rows[0])),
@@ -79,6 +79,8 @@ FILES = {
     'ext': emit('data', 'ext', 'json', j(X)),
     'vv': emit('data', 'vv', 'json', j(d['vvd'])),
     'media': emit('data', 'media', 'json', j(d['mediad'])),
+    'pics': emit('data', 'pics', 'json', j(d['picd'])),
+    'sz': emit('data', 'sz', 'json', j(d['szd'])),
 }
 
 # ---------- lettertype ----------
@@ -182,6 +184,7 @@ index = f'''<!doctype html>
 <link rel="preload" href="{FILES['cards0']}" as="fetch" crossorigin>
 <link rel="preload" href="{FILES['facts']}" as="fetch" crossorigin>
 <link rel="preload" href="{FILES['paths']}" as="fetch" crossorigin>
+<link rel="preload" href="{FILES['sz']}" as="fetch" crossorigin>
 <script defer src="{JS}"></script>
 </head>
 <body>

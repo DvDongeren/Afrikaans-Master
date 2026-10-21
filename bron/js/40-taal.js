@@ -42,19 +42,24 @@ V.mc=()=>{const T=MCT[st.kind];if(!T)return go('oef');
  else $('#nx').onclick=()=>{st.i++;st.pick=null;st.perm=null;V.mc();scrollTo(0,0)}};
 
 /* ---------- zinnen bouwen ---------- */
-V.zin=()=>{const BS=X().BS;
+let ZM='nl';
+V.zin=()=>{const BS=X().BS;st.zm=st.zm||ZM;
  if(!st.items){const lv=st.zl||'Alles',f={Alles:()=>1,Kort:b=>b.af.length<=4,Middel:b=>b.af.length===5,Lang:b=>b.af.length>=6}[lv];
-  if(!st.go){st.zl=lv;draw(`${back('oef','Oefenen')}<h1>Zinnen bouwen</h1><p class="muted" style="margin:8px 0 16px">Tik de Afrikaanse woorden in de goede volgorde. De plaats van het werkwoord en van 'nie' zijn het lastigst.</p><div class="seg" id="zl">${['Alles','Kort','Middel','Lang'].map(l=>`<button class="chip ${lv===l?'on':''}" data-l="${l}">${l}</button>`).join('')}</div><button class="btn" id="zs" style="margin-top:16px">Start met 10 zinnen</button>`);
-   $('#zl').onclick=e=>{const b=e.target.closest('[data-l]');if(b){st.zl=b.dataset.l;V.zin()}};$('#zs').onclick=()=>{st.go=1;V.zin()};return}
+  if(!st.go){st.zl=lv;draw(`${back('oef','Oefenen')}<h1>Zinnen bouwen</h1><p class="muted" style="margin:8px 0 16px">Tik de Afrikaanse woorden in de goede volgorde. De plaats van het werkwoord en van 'nie' zijn het lastigst.</p><div class="lbl" style="margin:0 2px 6px">Lengte</div><div class="seg" id="zl">${['Alles','Kort','Middel','Lang'].map(l=>`<button class="chip ${lv===l?'on':''}" data-l="${l}">${l}</button>`).join('')}</div>
+   <div class="lbl" style="margin:16px 2px 6px">Zo krijg je de zin</div><div class="seg" id="zm">${[['nl','Nederlandse zin'],['oor','Luisteren']].map(([k,l])=>`<button class="chip ${(st.zm||'nl')===k?'on':''}" data-m2="${k}">${l}</button>`).join('')}</div>
+   ${st.zm==='oor'?`<p class="muted small" style="margin-top:8px">Je hoort de Afrikaanse zin en zet de woorden in dezelfde volgorde. De Nederlandse vertaling zie je pas na het controleren.${canSpeak()?'':' Je toestel heeft geen spraak; deze vorm werkt hier niet.'}</p>`:''}<button class="btn" id="zs" style="margin-top:16px" ${st.zm==='oor'&&!canSpeak()?'disabled':''}>Start met 10 zinnen</button>`);
+   $('#zl').onclick=e=>{const b=e.target.closest('[data-l]');if(b){st.zl=b.dataset.l;V.zin()}};$('#zm').onclick=e=>{const b=e.target.closest('[data-m2]');if(b){st.zm=ZM=b.dataset.m2;V.zin()}};$('#zs').onclick=()=>{st.go=1;V.zin()};return}
   st.items=shuffle(BS.filter(f)).slice(0,10);st.i=0;st.sc=0;st.t=null}
  const u=st.items[st.i],n=st.items.length;
  if(!u){result(st.sc,n,praise(st.sc,n),'<button class="btn" data-a="zin">Nog een ronde</button><button class="btn ghost" data-a="oef">Terug naar oefenen</button>');return}
  if(!st.t){st.t=shuffle(u.af.map((w,i)=>i));st.a=[];st.res=null}
  const bank=st.t.filter(i=>!st.a.includes(i)),sent=st.a.map(i=>u.af[i]).join(' ');
- draw(`${topbar(st.i,n,'oef')}<div class="card q"><div class="lbl">Vertaal naar het Afrikaans</div><div class="big" style="font-size:1.4rem">${esc(u.nl)}</div></div>
+ const oor=st.zm==='oor';
+ draw(`${topbar(st.i,n,'oef')}${oor?`<div class="card q"><div class="lbl">Luister en zet de woorden in volgorde</div><div class="row" style="justify-content:center;gap:12px;margin-top:10px"><button class="icon" style="width:64px;height:64px" id="zp" aria-label="Zin afspelen">${I.spk}</button><button class="chip" id="zp2">Langzaam</button></div>${st.res?`<div class="nl" style="margin-top:10px">${esc(u.nl)}</div>`:''}</div>`:`<div class="card q"><div class="lbl">Vertaal naar het Afrikaans</div><div class="big" style="font-size:1.4rem">${esc(u.nl)}</div></div>`}
  <div class="card zin-area" id="za" style="margin-top:12px">${st.a.map(i=>`<button class="chip on" data-i="${i}" ${st.res?'disabled':''}>${esc(u.af[i])}</button>`).join('')||'<span class="muted">Tik hieronder de woorden aan</span>'}</div>
  ${st.res?`<div class="tip" style="margin-top:12px;${st.res==='ok'?'':'background:color-mix(in srgb,var(--bad) 12%,var(--surface))'}">${st.res==='ok'?'Goed!':'Niet helemaal. De standaardzin is: <b class="af">'+esc(u.af.join(' '))+'</b><br><span class="muted">Soms kan een andere volgorde ook.</span>'}</div><div class="row" style="margin-top:12px">${spk(u.af.join(' '))}<button class="btn" id="zn">${st.i+1<n?'Volgende':'Klaar'}</button></div>`
  :`<div class="chips wrap" id="zb" style="margin-top:14px">${bank.map(i=>`<button class="chip" data-i="${i}" style="font-family:var(--serif);font-size:1rem">${esc(u.af[i])}</button>`).join('')}</div><div class="row" style="margin-top:16px"><button class="btn ghost" id="zw">Wissen</button><button class="btn" id="zc" ${bank.length?'disabled':''}>Controleer</button></div>`}`);
+ if(oor){const say=u.af.join(' ');$('#zp').onclick=()=>speak(say);$('#zp2').onclick=()=>speak(say,.6);if(st.played!==st.i+1&&!st.res){st.played=st.i+1;setTimeout(()=>{if(view==='zin')speak(say)},300)}}
  if(st.res){$('#zn').onclick=()=>{st.i++;st.t=null;V.zin();scrollTo(0,0)};return}
  $('#zb').onclick=e=>{const b=e.target.closest('[data-i]');if(b){st.a.push(+b.dataset.i);V.zin()}};
  $('#za').onclick=e=>{const b=e.target.closest('[data-i]');if(b){st.a.splice(st.a.indexOf(+b.dataset.i),1);V.zin()}};
@@ -71,4 +76,4 @@ V.cult=()=>{st.tab=st.tab||'weetjes';const x=X();let body='';
  else if(st.tab==='za')body=`<div class="stack cols">${x.ZA.map(z=>`<div class="card"><p class="af" style="font-size:1.08rem;font-weight:500;line-height:1.5">${esc(z.fact)}</p><div class="chips wrap" style="margin-top:12px">${z.words.map(w=>`<button class="chip" data-sp="${esc(w.af)}">${I.spk}<span class="af">${esc(w.af)}</span><span class="nl">${esc(w.nl)}</span></button>`).join('')}</div></div>`).join('')}</div>`;
  else body=`<div class="list grid2">${Object.entries(x.CULT).sort((a,b)=>a[0].localeCompare(b[0])).map(([k,v])=>`<div class="li" style="align-items:flex-start"><span class="grow"><span class="af" style="font-size:1.15rem;display:block">${esc(k)}</span><span class="muted">${esc(v)}</span></span>${spk(k,'sm')}</div>`).join('')}</div>`;
  draw(`${back('oef','Oefenen')}<h1>Cultuur</h1><div class="seg" id="ct" style="margin:16px 0">${[['weetjes','Weetjes'],['za','ZA vandaag'],['termen','Lokale woorden']].map(t=>`<button class="chip ${st.tab===t[0]?'on':''}" data-ct="${t[0]}">${t[1]}</button>`).join('')}</div>${body}`);
- $('#ct').onclick=e=>{const b=e.target.closest('[data-ct]');if(b){st.tab=b.dataset.ct;V.cult()}}};
+ $('#ct').onclick=e=>{const b=e.target.closest('[data-ct]');if(b){st.tab=b.dataset.ct;syncHash();V.cult()}}};

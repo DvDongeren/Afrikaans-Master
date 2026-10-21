@@ -3,7 +3,7 @@
    Behaalde mijlpalen staan in S.ms als {id: tijdstip}; S.ms._ markeert dat de eerste stille controle gedaan is. */
 const MSKL=['Brons','Zilver','Goud','Smaragd','Saffier','Robijn','Diamant','Legende','Legende+'];
 const fmtN=n=>n.toLocaleString('nl-NL');
-const MS1={'dagen op rij':'dag op rij',dagen:'dag',weekenden:'weekend',antwoorden:'antwoord',kaarten:'kaart',onderwerpen:'onderwerp',dialogen:'dialoog',lessen:'les',verhalen:'verhaal',paden:'pad',punten:'punt',favorieten:'favoriet'};
+const MS1={'dagen op rij':'dag op rij',dagen:'dag',weekenden:'weekend',antwoorden:'antwoord',kaarten:'kaart',onderwerpen:'onderwerp',dialogen:'dialoog',lessen:'les',verhalen:'verhaal',paden:'pad',punten:'punt',favorieten:'favoriet',examens:'examen',seizoenen:'seizoen'};
 const msU=(f,n)=>n===1?(MS1[f.u]||f.u):f.u;
 /* Alle cijfers waar mijlpalen op letten, in één keer berekend. */
 function msStats(){const E=Object.entries(S.srs),dk=Object.keys(S.days).filter(k=>S.days[k]>0).sort(),all=GOT.size>=3;
@@ -18,7 +18,7 @@ function msStats(){const E=Object.entries(S.srs),dk=Object.keys(S.days).filter(k
  return{all,best,cur:streak(),days:dk.length,reps:dk.reduce((a,k)=>a+S.days[k],0),goal:dk.filter(k=>S.days[k]>=S.goal).length,wk:wk.size,
   st,ma,top,lvI:lv.Intermediate,lvA:lv.Advanced,cats:cats.size,catN:Object.keys(catTot).length,catFull,total,
   dlg:Object.keys(S.dlg).length,les:Object.keys(S.les).length,perfect,st2:Object.keys(S.stories).length,pathDone,pathN:P?P.length:null,
-  race:(S.games||{}).race||0,mem:(S.games||{}).mem?1:0,own:S.own.length,favs:S.favs.length}}
+  race:(S.games||{}).race||0,picFull:Object.values(S.pics||{}).filter(v=>v>=100).length,exam:Object.values(S.exam||{}).filter(e=>e&&e.p).length,sz:Object.keys(S.sz||{}).length,mem:(S.games||{}).mem?1:0,own:S.own.length,favs:S.favs.length}}
 /* Families: een titel, een icoon, de waarde en de stappen. Een stap is [drempel, naam]; 'need' = welke gegevens nodig zijn. */
 const MSF=[
  {id:'reeks',ic:'flame',t:'Dagen op rij',u:'dagen op rij',v:s=>Math.max(s.best,s.cur),steps:[[3,'Op gang'],[7,'Een week vol'],[14,'Twee weken'],[30,'Een maand'],[60,'Twee maanden'],[100,'Honderd dagen'],[180,'Een half jaar'],[365,'Een heel jaar']]},
@@ -38,6 +38,9 @@ const MSF=[
  {id:'perfect',ic:'star',t:'Foutloze lessen',u:'lessen',need:'les',v:s=>s.perfect,steps:()=>[[1,'Foutloos'],[5,'Vijf keer foutloos'],[N.les||17,'Grammaticameester']]},
  {id:'st2',ic:'story',t:'Verhalen gelezen',u:'verhalen',v:s=>s.st2,steps:()=>[[1,'Eerste verhaal'],[3,'Lezer'],[N.st||6,'Alle verhalen']]},
  {id:'pad',ic:'pad',t:'Leerpaden voltooid',u:'paden',need:'paths',v:s=>s.pathDone,steps:s=>[[1,'Eerste pad'],[3,'Drie paden'],[5,'Vijf paden'],[10,'Tien paden'],[s.pathN,'Alle paden']]},
+ {id:'examen',ic:'medal',t:'Examens gehaald',u:'examens',sub:'30 vragen per niveau, 80% goed',v:s=>s.exam,steps:[[1,'Geslaagd!'],[2,'Twee niveaus'],[3,'Alle drie de examens']]},
+ {id:'seizoen',ic:'star',t:'Seizoenen',u:'seizoenen',sub:'Mini-quiz van een seizoensthema gehaald',v:s=>s.sz,steps:[[1,'Eerste seizoen'],[4,'Vier seizoenen'],[9,'Het hele jaar rond']]},
+ {id:'beeld',ic:'pic',t:'Plaatjes foutloos',u:'onderwerpen',sub:'Een thema bij Plaatjes zonder fouten',v:s=>s.picFull,steps:[[1,'Eerste plaatjesthema'],[5,'Vijf thema\'s'],[10,'Alle plaatjes']]},
  {id:'race',ic:'spel',t:'Tijdrace',u:'punten',sub:'Je beste score',v:s=>s.race,steps:[[10,'Snel'],[20,'Bliksemsnel'],[30,'Supersonisch'],[40,'Onverslaanbaar']]},
  {id:'mem',ic:'spel',t:'Memory',u:'keer',v:s=>s.mem,steps:[[1,'Memory gespeeld']]},
  {id:'own',ic:'plus',t:'Eigen kaarten',u:'kaarten',v:s=>s.own,steps:[[1,'Eigen woord'],[10,'Verzamelaar'],[50,'Woordenboekmaker']]},

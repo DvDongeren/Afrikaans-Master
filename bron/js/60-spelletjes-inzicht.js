@@ -8,7 +8,7 @@ V.spel=()=>{const g=S.games||{};
  draw(`${back('oef','Oefenen')}<h1>Spelletjes</h1><p class="muted" style="margin-top:6px">Even ontspannen oefenen met woorden${Object.keys(S.srs).length>=18?' die je al kent':' voor beginners'}.</p>
  <div class="list grid2" style="margin-top:16px">${row('data-a="mem"',I.spel,'Memory','Zoek de Afrikaanse en Nederlandse paren'+(g.mem?` · record ${g.mem} beurten`:''))}${row('data-a="race"',I.bolt,'Tijdrace','Zoveel mogelijk woorden in 60 seconden'+(g.race?` · record ${g.race}`:''))}</div>`)};
 V.mem=()=>{if(!st.tiles){const P=gamePool(6);st.tiles=shuffle(P.flatMap(c=>[{id:c.id,l:'af',x:c.af},{id:c.id,l:'nl',x:c.nl}]));st.open=[];st.done=[];st.moves=0;st.lock=0}
- if(st.done.length===st.tiles.length/2){const best=S.games.mem,rec=!best||st.moves<best;if(rec&&!st.saved){S.games.mem=st.moves;st.saved=1;saveNow()}
+ if(st.done.length===st.tiles.length/2){if(!st.__sd){st.__sd=1;stat('d','mem')}const best=S.games.mem,rec=!best||st.moves<best;if(rec&&!st.saved){S.games.mem=st.moves;st.saved=1;saveNow()}
   return draw(`<div class="result stack"><div class="score">${st.moves}</div><h1>${rec?'Nieuw record!':'Alle paren gevonden'}</h1><p class="muted">${st.moves} beurten${best&&!rec?` · je record is ${best}`:''}</p><div class="stack" style="margin-top:22px"><button class="btn" data-again="mem">Nog een keer</button><button class="btn ghost" data-a="spel">Terug naar spelletjes</button></div></div>`)}
  draw(`${back('spel','Spelletjes')}<div class="row sp" style="margin-top:4px"><h1>Memory</h1><span class="muted">${st.done.length} van ${st.tiles.length/2} · ${st.moves} beurten</span></div>
  <div class="mem" role="grid" aria-label="Memory">${st.tiles.map((t,i)=>{const done=st.done.includes(t.id),open=done||st.open.includes(i);return`<button class="mt ${open?'open':''} ${done?'done':''} ${t.l}" data-mi="${i}" ${done?'disabled':''} aria-label="${open?esc(t.x):'Verborgen kaart'}"><span>${open?esc(t.x):''}</span></button>`}).join('')}</div>
@@ -27,7 +27,7 @@ V.race=()=>{if(st.over)return raceEnd();
 function raceTap(o,el){if(st.over||st.wait)return;const ok=o===st.q.c.nl;
  if(ok){st.sc++;st.q=null;return V.race()}
  buzz();st.wait=1;el.classList.add('bad');for(const x of app.querySelectorAll('[data-ro]'))if(x.dataset.ro===st.q.c.nl)x.classList.add('ok');const s0=st;setTimeout(()=>{if(st!==s0||view!=='race')return;st.wait=0;st.q=null;if(!st.over)V.race()},700)}
-function raceEnd(){const best=S.games.race||0,rec=st.sc>best;if(rec&&!st.saved){S.games.race=st.sc;st.saved=1;saveNow()}
+function raceEnd(){if(!st.__sd){st.__sd=1;stat('d','race')}const best=S.games.race||0,rec=st.sc>best;if(rec&&!st.saved){S.games.race=st.sc;st.saved=1;saveNow()}
  draw(`<div class="result stack"><div class="score">${st.sc}</div><h1>${rec?'Nieuw record!':'Tijd is om'}</h1><p class="muted">${st.sc} ${st.sc===1?'woord':'woorden'} goed${!rec&&best?` · je record is ${best}`:''}</p><div class="stack" style="margin-top:22px"><button class="btn" data-again="race">Nog een keer</button><button class="btn ghost" data-a="spel">Terug naar spelletjes</button></div></div>`)}
 
 /* ---------- inzicht ---------- */

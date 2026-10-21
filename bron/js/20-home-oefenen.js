@@ -12,7 +12,7 @@ V.home=()=>{const h=new Date().getHours(),hi=h<12?['Goeiemôre','Goedemorgen']:h
  <div class="quick" style="margin-top:12px"><button data-a="quiz">${I.quiz}Quiz</button><button data-a="dlgs">${I.dlg}Dialogen</button><button data-a="stories">${I.story}Verhalen</button></div>
  ${!S.lvDone&&nst<30?`<div class="card stack" style="margin-top:12px"><h2>Wat is je niveau?</h2><p class="muted">Doe de niveautoets van 12 vragen. Daarna start je sessie op jouw niveau.</p><div class="row"><button class="btn ghost" data-lvskip="1">Niet nu</button><button class="btn" data-a="toets">Start toets</button></div></div>`:''}
  ${installBox(true)}
- ${cont}${(()=>{const nx=msNext();return nx?`<div class="sec">Volgende mijlpaal</div><button class="card ms home-ms" data-a="mijlpalen" style="width:100%;text-align:left"><div class="row" style="gap:10px"><span class="msmedal ${nx.n?'t'+Math.min(nx.n-1,8):'off'}">${I[nx.f.ic]||I.medal}</span><span class="grow"><h2>${esc(nx.next.name)}</h2><span class="muted small">${esc(nx.f.t)}</span></span></div>${msBar(nx)}</button>`:''})()}</div><div class="col">
+ ${szBox()}${cont}${(()=>{const nx=msNext();return nx?`<div class="sec">Volgende mijlpaal</div><button class="card ms home-ms" data-a="mijlpalen" style="width:100%;text-align:left"><div class="row" style="gap:10px"><span class="msmedal ${nx.n?'t'+Math.min(nx.n-1,8):'off'}">${I[nx.f.ic]||I.medal}</span><span class="grow"><h2>${esc(nx.next.name)}</h2><span class="muted small">${esc(nx.f.t)}</span></span></div>${msBar(nx)}</button>`:''})()}</div><div class="col">
  <div class="sec">Woord van de dag</div>
  <div class="card entry"><div class="row sp"><div class="grow"><div class="af">${esc(wc.af)}</div><div class="nl">${esc(wc.nl)}</div></div>${spk(wc.af)}</div>${wc.voorbeeld?`<p class="ex">${esc(wc.voorbeeld)}</p>${exnl(wc)}`:''}</div>
  <div class="sec">Weetje van de dag</div>
@@ -21,11 +21,14 @@ V.home=()=>{const h=new Date().getHours(),hi=h<12?['Goeiemôre','Goedemorgen']:h
 
 /* ---------- oefenen ---------- */
 V.oef=()=>{const lv=st.lv||'Alles',wk=weakList().length;
- draw(`<div class="row sp"><h1>Oefenen</h1><button class="x" data-a="zoek" aria-label="Zoeken">${I.search}</button></div><div style="margin-top:18px">${cta()}</div>
+ draw(`<div class="row sp"><h1>Oefenen</h1><button class="x" data-a="zoek" aria-label="Zoeken">${I.search}</button></div><div style="margin-top:18px">${cta()}</div>${szBox()}
  <div class="secs"><section><div class="sec">Slim oefenen</div><div class="list">
  ${row('data-a="weak"',I.bolt,'Moeilijke kaarten',wk?wk+' kaarten die je vaak fout hebt':'Nog geen moeilijke kaarten')}
+ ${row('data-a="beeld"',I.pic,'Plaatjes',(N.pics||118)+' eerste woorden met tekeningen')}
  ${row('data-a="gat"',I.zin,'Gatentekst','Vul het ontbrekende woord in een echte zin in')}
  ${row('data-a="spel"',I.spel,'Spelletjes','Memory en tijdrace')}
+ ${row('data-a="seizoen"',I.star,'Seizoenen',(()=>{const a=szActive();return a.length?'Nu: '+a.map(s=>s.t).join(', '):'Thema\'s bij de tijd van het jaar'})())}
+ ${row('data-a="examen"',I.medal,'Examen',(()=>{const e=S.exam||{},p=['Beginner','Intermediate','Advanced'].filter(l=>e[l]&&e[l].p).length;return p?p+' van 3 niveaus gehaald, met certificaat':'30 vragen per niveau, met certificaat'})())}
  ${row('data-a="luister"',I.ear,'Luisteren',canSpeak()?'Hoor een zin en typ wat je hoort':'Niet beschikbaar op dit toestel')}</div>
 </section><section><div class="sec">Taal en grammatica</div><div class="list">
  ${row('data-a="gram"',I.gram,'Grammatica',N.les+' lessen met uitleg en oefeningen')}
@@ -55,7 +58,10 @@ V.sess=()=>{
  const c=st.q[st.i];if(c)remember('sess');else forget('sess');
  if(c&&st.rv[st.i]===undefined){const r=S.srs[c.id];st.rv[st.i]=!S.typed&&!!r&&r.box>=2&&Math.random()<.35}
  const rv=c&&st.rv[st.i];
- if(!c){draw(`<div class="result stack"><div class="score">${st.done}</div><h1>Sessie klaar</h1><p class="muted">Vandaag: ${todayN()} van ${S.goal} kaarten.</p><div class="stack" style="margin-top:22px">${st.ret?'<button class="btn" data-a="stepdone">Verder met het pad</button>':'<button class="btn" data-a="home">Terug naar home</button>'}</div></div>`);return}
+ if(!c){if(!st.__sd){st.__sd=1;stat('d','sess')}const m=byId(),bad=st.retry.map(id=>m.get(id)).filter(Boolean);
+  draw(`<div class="result stack"><div class="score">${st.done}</div><h1>Sessie klaar</h1><p class="muted">Vandaag: ${todayN()} van ${S.goal} kaarten.${bad.length?` Je had er ${bad.length} niet in één keer goed.`:' Alles in één keer goed!'}</p><div class="stack" style="margin-top:22px">${st.ret?'<button class="btn" data-a="stepdone">Verder met het pad</button>':`${bad.length?'<button class="btn" id="srv">Oefen deze nog een keer</button>':''}<button class="btn ${bad.length?'ghost':''}" data-a="home">Terug naar home</button>`}</div>
+  ${bad.length?`<div class="sec">Even terugkijken</div><div class="stack review">${bad.map(c=>`<div class="card rv"><div class="row sp"><div class="grow"><div class="af">${esc(c.af)}</div><div class="nl">${esc(c.nl)}</div></div>${spk(c.af,'sm')}</div>${c.voorbeeld?`<p class="ex">${esc(c.voorbeeld)}</p>${exnl(c)}`:''}${S.notes[c.id]?`<div class="ezel"><div class="lbl">${I.bulb}Jouw ezelsbruggetje</div><p class="ezn">${esc(S.notes[c.id])}</p></div>`:''}${(()=>{const t=c.own?[]:ezelTips(c);return t.length?`<div class="ezel"><div class="lbl">${I.bulb}Ezelsbruggetje</div>${t.map(x=>`<p>${x}</p>`).join('')}</div>`:''})()}${c.own?'':`<button class="linkbtn" data-ezel="${c.id}">${I.bulb}${S.notes[c.id]?'Ezelsbruggetje aanpassen':'Eigen ezelsbruggetje'}</button>`}</div>`).join('')}</div>`:''}</div>`);
+  const r=$('#srv');if(r)r.onclick=()=>go('sess',{q:shuffle(bad)});return}
  let verdict='';if(st.tv===1)verdict='<span class="verdict ok">Goed!</span>';else if(st.tv===0)verdict=`<span class="verdict bad">Jij typte: ${esc(st.val)}</span>`;
  const closed=S.typed?`<form id="tf"><input type="text" id="ta" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Typ het Afrikaans" aria-label="Antwoord"><div class="row" style="margin-top:10px"><button type="button" class="btn ghost" id="tskip">Weet ik niet</button><button class="btn" type="submit">Controleer</button></div></form>`:`<div class="muted hint">Tik om het antwoord te zien</div>`;
  draw(`${topbar(st.i,st.q.length)}

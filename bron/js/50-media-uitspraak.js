@@ -21,7 +21,7 @@ V.media=()=>{const m=MED();st.tab=st.tab||'muziek';st.lv=st.lv||'';let body='';
  draw(`${back('oef','Oefenen')}<h1>Muziek, films en series</h1><p class="muted" style="margin-top:6px">Leer Afrikaans door te luisteren, te kijken en te lezen.</p>
  <details class="card tips" style="margin-top:14px"><summary>Tips om ermee te leren</summary><ul>${m.tips.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></details>
  <div class="seg" id="mt" style="margin:16px 0">${[['muziek','Muziek'],['films','Films'],['series','Series'],['lezen','Lezen'],['waar','Bronnen']].map(t=>`<button class="chip ${st.tab===t[0]?'on':''}" data-mt="${t[0]}">${t[1]}</button>`).join('')}</div>${body}`);
- $('#mt').onclick=e=>{const b=e.target.closest('[data-mt]');if(b){st.tab=b.dataset.mt;st.lv='';V.media();scrollTo(0,0)}};
+ $('#mt').onclick=e=>{const b=e.target.closest('[data-mt]');if(b){st.tab=b.dataset.mt;st.lv='';syncHash();V.media();scrollTo(0,0)}};
  const lv=$('#mlv');if(lv)lv.onclick=e=>{const b=e.target.closest('[data-lv]');if(b){st.lv=b.dataset.lv;V.media()}}};
 
 /* ---------- uitspraakgids ---------- */

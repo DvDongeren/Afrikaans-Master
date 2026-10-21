@@ -46,12 +46,13 @@ const SIDX=L(()=>{const a=[],add=(t,title,sub,go,extra='')=>a.push({t,title,sub,
  X().REIS.forEach(r=>add('Reisgids',r.af,r.nl,['reis',{q:r.af}]));
  X().SL.forEach(x=>add('Slang',x.af,x.opts[x.a],['mc',{kind:'slang'}],x.expl));
  Object.entries(X().CULT).forEach(([k,v])=>add('Cultuur',k,v,['cult',{tab:'termen'}]));
+ if(D.pics)PICS().items.forEach(x=>add('Plaatjes',x[0],x[1],['beeld',{tab:'wb',th:x[2]}]));
  PATHS().forEach(p=>add('Paden',p.title,p.desc,['path',{p:p.id}]));
  const m=MED();m.muziek.forEach(x=>add('Muziek',x.n,x.g+(x.s?' · '+x.s:''),['media',{tab:'muziek'}],x.d));
  m.films.forEach(x=>add('Films',x.t,x.g+(x.j?' · '+x.j:''),['media',{tab:'films'}],x.d));m.series.forEach(x=>add('Series',x.t,x.g,['media',{tab:'series'}],x.d));
  return a});
 V.zoek=()=>{draw(`<h1>Zoeken</h1><p class="muted" style="margin:8px 0 14px">Zoek in kaarten, dialogen, verhalen, grammatica, paden en meer.</p><input type="search" id="zq" placeholder="Bijvoorbeeld: braai, nie, lughawe" aria-label="Zoeken" value="${esc(st.q||'')}" autocomplete="off"><div id="zr" style="margin-top:6px"></div>`);
- const run=()=>{const q=norm($('#zq').value.trim());st.q=$('#zq').value;const out=$('#zr');st.res=[];
+ const run=()=>{const q=norm($('#zq').value.trim());st.q=$('#zq').value;syncHash();const out=$('#zr');st.res=[];
   if(q.length<2){out.innerHTML='<p class="muted" style="margin-top:16px">Typ minstens twee letters.</p>';return}
   const ix=IDX(),cards=[];for(let i=0;i<CARDS.length;i++)if(ix[i].includes(q))cards.push(CARDS[i]);
   let groups={};for(const r of SIDX())if(r.k.includes(q))(groups[r.t]=groups[r.t]||[]).push(r);

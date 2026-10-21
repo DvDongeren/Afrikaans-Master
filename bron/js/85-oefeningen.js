@@ -14,14 +14,28 @@ V.stories=()=>{const ST=Y().ST,n=ST.filter(x=>S.stories[x.id]).length;
 const CG=L(()=>{const m=new Map(),bad=new Set();for(const c of CARDS){const k=c.af.toLowerCase();if(!/^\p{L}+$/u.test(k))continue;const v=m.get(k);if(v!==undefined&&v!==c.nl)bad.add(k);else m.set(k,c.nl)}bad.forEach(k=>m.delete(k));return m});
 const wordRe=/('n(?!\p{L})|\p{L}+(?:['’-]\p{L}+)*)/gu;
 function gloss(w,x){const k=w.toLowerCase();return k==="'n"?'een':x.g[k]||Y().G0[k]||CG().get(k)||null}
-V.story=()=>{const x=Y().ST.find(z=>z.id===st.id);if(!x)return go('stories');
- const html=x.s.map((p,i)=>`<p data-i="${i}">${p[0].split(wordRe).map((t,j)=>j%2?`<span class="w" data-w="${esc(t)}">${esc(t)}</span>`:esc(t)).join('')}${spk(p[0],'sm')}${st.tr?`<span class="nl">${esc(p[1])}</span>`:''}</p>`).join('');
- draw(`<div class="row sp">${back('back','Verhaaltjes')}<button class="chip ${st.tr?'on':''}" id="tt" style="margin-top:-14px">Vertaling</button></div><h1>${esc(x.t)}</h1><p class="muted" style="margin:8px 0 16px">${x.niv} · tik op een woord voor de vertaling</p>
+/* Eén zin van een verhaal met tikbare woorden. */
+const storyP=(p,i,tr)=>`<p data-i="${i}">${p[0].split(wordRe).map((t,j)=>j%2?`<span class="w" data-w="${esc(t)}">${esc(t)}</span>`:esc(t)).join('')}${spk(p[0],'sm')}${tr?`<span class="nl">${esc(p[1])}</span>`:''}</p>`;
+V.story=()=>{const x=Y().ST.find(z=>z.id===st.id);if(!x)return go('stories');if(st.lm)return storyListen(x);
+ const html=x.s.map((p,i)=>storyP(p,i,st.tr)).join('');
+ draw(`<div class="row sp">${back('back','Verhaaltjes')}<span class="row" style="gap:8px;margin-top:-14px">${canSpeak()?`<button class="chip" id="lm">${I.ear}Luisteren</button>`:''}<button class="chip ${st.tr?'on':''}" id="tt">Vertaling</button></span></div><h1>${esc(x.t)}</h1><p class="muted" style="margin:8px 0 16px">${x.niv} · tik op een woord voor de vertaling</p>
  <div class="card reader">${html}</div>
  <div class="row" style="margin:16px 0 120px"><button class="btn soft" id="pl">${I.spk}Voorlezen</button><button class="btn" id="fin">${S.stories[x.id]?'Opnieuw gelezen':'Klaar met lezen'}</button></div><div id="wp" role="status"></div>`);
- $('#tt').onclick=()=>{st.tr=!st.tr;V.story()};
+ $('#tt').onclick=()=>{st.tr=!st.tr;V.story()};{const l=$('#lm');if(l)l.onclick=()=>{st.lm=1;st.li=0;st.shown=0;st.played=-1;V.story()}}
  $('#pl').onclick=()=>speakAll(x.s.map(p=>p[0]));
- $('#fin').onclick=()=>{if(!S.stories[x.id]){S.stories[x.id]=1;count()}saveNow();go('stories')}};
+ $('#fin').onclick=()=>{stat('d','story');if(!S.stories[x.id]){S.stories[x.id]=1;count()}saveNow();go('stories')}};
+/* Luisterverhaal: zin voor zin voorlezen; de tekst verschijnt pas als je erom vraagt. */
+function storyListen(x){const n=x.s.length,i=st.li||0,cur=x.s[i];
+ const html=x.s.slice(0,i).map((p,k)=>storyP(p,k,true)).join('')+(cur?(st.shown?storyP(cur,i,true).replace('<p ','<p class="cur" '):`<div class="hid" aria-live="polite">${I.ear}<span>Zin ${i+1} van ${n}: luister goed en probeer hem te begrijpen</span></div>`):'');
+ draw(`<div class="row sp">${back('back','Verhaaltjes')}<button class="chip on" id="lm" style="margin-top:-14px">${I.ear}Luisteren</button></div><h1>${esc(x.t)}</h1><p class="muted" style="margin:8px 0 16px">${x.niv} · ${i<n?`zin ${i+1} van ${n}`:'helemaal beluisterd'} · tik op een woord voor de vertaling</p>
+ <div class="card reader">${html}</div>
+ ${cur?`<div class="row lctl" style="margin:16px 0 120px"><button class="btn soft" id="lp">${I.spk}Nog eens</button><button class="btn soft" id="lps">Langzaam</button>${st.shown?`<button class="btn" id="lnx">${i+1<n?'Volgende zin':'Klaar'}</button>`:`<button class="btn" id="lsh">Toon tekst</button>`}</div>`
+ :`<div class="row" style="margin:16px 0 120px"><button class="btn soft" id="lre">${I.ear}Opnieuw luisteren</button><button class="btn" id="fin">${S.stories[x.id]?'Opnieuw gelezen':'Klaar met luisteren'}</button></div>`}<div id="wp" role="status"></div>`);
+ $('#lm').onclick=()=>{st.lm=0;V.story()};
+ if(cur){$('#lp').onclick=()=>speak(cur[0]);$('#lps').onclick=()=>speak(cur[0],.6);
+  const sh=$('#lsh');if(sh)sh.onclick=()=>{st.shown=1;V.story()};const nx=$('#lnx');if(nx)nx.onclick=()=>{st.li=i+1;st.shown=0;V.story()};
+  if(st.played!==i){st.played=i;setTimeout(()=>{if(view==='story'&&st.lm&&st.li===i)speak(cur[0])},350)}}
+ else{$('#lre').onclick=()=>{st.li=0;st.shown=0;st.played=-1;V.story()};$('#fin').onclick=()=>{stat('d','story');if(!S.stories[x.id]){S.stories[x.id]=1;count()}saveNow();go('stories')}}}
 function storyWord(w){const x=Y().ST.find(z=>z.id===st.id);for(const z of app.querySelectorAll('.w.on'))z.classList.remove('on');w.classList.add('on');
  const t=w.dataset.w,g=gloss(t,x),p=$('#wp'),pi=w.closest('[data-i]'),vb=pi&&x.s[+pi.dataset.i]?x.s[+pi.dataset.i][0]:'';p.style.display='block';
  p.innerHTML=`<div class="row sp"><div class="grow"><div class="af" style="font-size:1.25rem">${esc(t)}</div><div>${g?esc(g):'<span class="muted">Geen vertaling bekend. Zet "Vertaling" aan.</span>'}</div></div>${spk(t)}</div>${storyActions(t,g,vb)}`;bindStoryActions(p,t,g,vb)}

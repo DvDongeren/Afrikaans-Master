@@ -29,6 +29,10 @@ async function fbInit(){if(FB)return FB;
   logError:e=>F.addDoc(F.collection(db,'errors'),{...e,t:F.serverTimestamp()}),
   listErrors:async()=>(await F.getDocs(F.query(F.collection(db,'errors'),F.orderBy('t','desc'),F.limit(200)))).docs.map(d=>{const x=d.data();return{doc:d.id,...x,t:x.t&&x.t.toMillis?x.t.toMillis():0}}),
   delError:doc=>F.deleteDoc(F.doc(db,'errors',doc)),
+  saveFix:(id,f)=>F.setDoc(F.doc(db,'fixes',String(id)),{...f,t:F.serverTimestamp()}),
+  listFixes:async()=>(await F.getDocs(F.collection(db,'fixes'))).docs.map(d=>{const x=d.data();return{...x,id:+d.id,t:x.t&&x.t.toMillis?x.t.toMillis():0}}).sort((a,b)=>b.t-a.t),
+  delFix:id=>F.deleteDoc(F.doc(db,'fixes',String(id))),
+  listStats:async n=>(await F.getDocs(F.query(F.collection(db,'stats'),F.orderBy(F.documentId(),'desc'),F.limit(n)))).docs.map(d=>({day:d.id,...d.data()})),
   remove:async uid=>{await F.deleteDoc(F.doc(db,'users',uid));const u=auth.currentUser;if(!u)return;try{await Au.deleteUser(u)}catch(e){if(/requires-recent-login/.test(e&&e.code||'')){await Au.reauthenticateWithPopup(u,new Au.GoogleAuthProvider());await Au.deleteUser(u)}else throw e}}};
  return FB}
 function cleanState(o){if(!o||typeof o!=='object'||Array.isArray(o))return null;const d=DEF(),r={};
@@ -47,7 +51,10 @@ function cleanState(o){if(!o||typeof o!=='object'||Array.isArray(o))return null;
  r.fs=['n','l','xl'].includes(o.fs)?o.fs:'n';
  r.frz=num(o.frz)?Math.max(0,Math.min(2,o.frz|0)):0;r.frzD=Array.isArray(o.frzD)?o.frzD.filter(x=>typeof x==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(x)).slice(-400):[];r.lvl=num(o.lvl)?Math.max(0,Math.min(999,o.lvl|0)):0;
  r.ms={};if(obj(o.ms))for(const[k,v]of Object.entries(o.ms).slice(0,1000))if(/^(_|[a-zA-Z0-9]{1,20}:\d{1,2})$/.test(k)&&num(v))r.ms[k]=v;
- for(const k of['typed','lvDone','haptic','instHide','read'])r[k]=typeof o[k]==='boolean'?o[k]:d[k];
+ for(const k of['typed','lvDone','haptic','instHide','read','stat'])r[k]=typeof o[k]==='boolean'?o[k]:d[k];
+ r.exam={};if(obj(o.exam))for(const lv of['Beginner','Intermediate','Advanced']){const e=o.exam[lv];if(obj(e)&&num(e.b))r.exam[lv]={b:Math.max(0,Math.min(100,e.b|0)),...(num(e.p)?{p:e.p}:{})}}
+ r.sz={};if(obj(o.sz))for(const[k,v]of Object.entries(o.sz).slice(0,40))if(/^[a-z]{1,16}$/.test(k)&&num(v)&&v>2000&&v<3000)r.sz[k]=v|0;
+ r.pics={};if(obj(o.pics))for(const[k,v]of Object.entries(o.pics).slice(0,30))if(/^[a-z]{1,12}$/.test(k)&&num(v)&&v>=0&&v<=100)r.pics[k]=v|0;
  r.notes={};if(obj(o.notes))for(const[k,v]of Object.entries(o.notes).slice(0,5000))if(/^-?\d{1,15}$/.test(k)&&str(v,200)&&v.trim())r.notes[k]=v;
  r.lp=str(o.lp,60)?o.lp:'';for(const k of['mt','resetAt','cloud'])if(num(o[k]))r[k]=o[k];return Object.assign(d,r)}
 function mergeState(a,b){
@@ -63,9 +70,9 @@ function mergeState(a,b){
  const own=new Map(),used=new Set();for(const x of[...(b.own||[]),...(a.own||[])]){const key=x.id+'|'+x.af;if(own.has(key))continue;let c={...x};if(used.has(c.id))c.id=-Date.now()-own.size-1;used.add(c.id);own.set(key,c)}o.own=[...own.values()];
  const rp=new Map();for(const r of[...(b.reports||[]),...(a.reports||[])])rp.set(r.id+'|'+r.t,r);o.reports=[...rp.values()];
  const ga=a.games||{},gb=b.games||{};o.games={};if(ga.race!=null||gb.race!=null)o.games.race=Math.max(ga.race??0,gb.race??0);if(ga.mem!=null||gb.mem!=null)o.games.mem=Math.min(ga.mem??1e4,gb.mem??1e4);
- o.frzD=[...new Set([...(a.frzD||[]),...(b.frzD||[])])].sort().slice(-400);o.lvl=Math.max(a.lvl||0,b.lvl||0);o.notes={...(b.notes||{}),...(a.notes||{})};
+ o.frzD=[...new Set([...(a.frzD||[]),...(b.frzD||[])])].sort().slice(-400);o.lvl=Math.max(a.lvl||0,b.lvl||0);o.notes={...(b.notes||{}),...(a.notes||{})};o.exam={};for(const lv of['Beginner','Intermediate','Advanced']){const x=(a.exam||{})[lv],y=(b.exam||{})[lv];if(x||y){const ps=[x&&x.p,y&&y.p].filter(Boolean);o.exam[lv]={b:Math.max(x?x.b:0,y?y.b:0),...(ps.length?{p:Math.min(...ps)}:{})}}}o.sz={...(b.sz||{})};for(const[k,v]of Object.entries(a.sz||{}))o.sz[k]=Math.max(o.sz[k]||0,v);o.pics={...(b.pics||{})};for(const[k,v]of Object.entries(a.pics||{}))o.pics[k]=Math.max(o.pics[k]??0,v);
  o.ms={...(b.ms||{})};for(const[k,v]of Object.entries(a.ms||{}))o.ms[k]=o.ms[k]?Math.min(o.ms[k],v):v;
- o.theme=a.theme;o.rate=a.rate;o.haptic=a.haptic;o.fs=a.fs||'n';o.read=!!a.read;o.instHide=a.instHide||b.instHide;
+ o.theme=a.theme;o.rate=a.rate;o.stat=a.stat!==false;o.haptic=a.haptic;o.fs=a.fs||'n';o.read=!!a.read;o.instHide=a.instHide||b.instHide;
  o.mt=Math.max(a.mt||0,b.mt||0);o.cloud=1;return o}
 function applyState(n){S=n;for(let i=CARDS.length-1;i>=0;i--)if(CARDS[i].own)CARDS.splice(i,1);for(const o of S.own)CARDS.push(ownCard(o));resetCards();theme();
  try{localStorage.setItem(KEY,JSON.stringify(S))}catch{}if(['home','meer','oef'].includes(view))render()}
@@ -87,7 +94,7 @@ function accountBox(){
  if(!cloud.avail)return'<div id="acct"></div>';
  const u=cloud.user,st={pending:'Wijzigingen worden zo opgeslagen…',saving:'Bezig met opslaan…',ok:'Opgeslagen'+(cloud.at?' om '+new Date(cloud.at).toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'}):''),offline:'Offline. Wordt opgeslagen zodra je weer online bent.',error:'Opslaan lukte niet. Probeer het opnieuw.'}[cloud.status]||'';
  return`<div id="acct"><div class="sec">Account</div><div class="card stack">${u?`<div class="row"><span class="avatar">${u.photo?`<img src="${esc(u.photo)}" alt="" referrerpolicy="no-referrer">`:esc((u.name||u.email||'?')[0].toUpperCase())}</span><span class="grow"><b>${esc(u.name||'Ingelogd')}</b><span class="muted" style="display:block">${esc(u.email)}</span></span></div>
- <p class="muted" role="status">${st||'Je voortgang wordt bewaard in je account.'}</p><div class="row"><button class="btn soft" id="csync" style="box-shadow:inset 0 0 0 1.5px var(--hair)">Nu opslaan</button><button class="btn ghost" id="cout">Uitloggen</button></div>${cloud.admin?`<button class="btn soft" data-a="beheer" style="box-shadow:inset 0 0 0 1.5px var(--hair)">${I.inbox}Meldingen beheren</button>`:''}<button class="linkbtn" id="cdel" style="color:var(--bad)">${I.trash}Account en cloudgegevens verwijderen</button>`
+ <p class="muted" role="status">${st||'Je voortgang wordt bewaard in je account.'}</p><div class="row"><button class="btn soft" id="csync" style="box-shadow:inset 0 0 0 1.5px var(--hair)">Nu opslaan</button><button class="btn ghost" id="cout">Uitloggen</button></div>${cloud.admin?`<button class="btn soft" data-a="beheer" style="box-shadow:inset 0 0 0 1.5px var(--hair)">${I.inbox}Beheer: meldingen, correcties en gebruik</button>`:''}<button class="linkbtn" id="cdel" style="color:var(--bad)">${I.trash}Account en cloudgegevens verwijderen</button>`
  :`<p>Log in met je Google-account om je voortgang te bewaren en op andere apparaten verder te gaan.</p><button class="btn" id="cin">${I.user}Inloggen met Google</button><p class="muted small">Alleen je leervoortgang wordt opgeslagen. Niemand anders kan hem lezen. <a href="privacy.html" style="color:var(--nl)">Privacyverklaring</a>.${cloud.loginErr?'<br><span style="color:var(--bad)">'+esc(cloud.loginErr)+'</span>':''}</p>`}</div></div>`}
 function acctRefresh(){syncUI();if(view!=='meer')return;const el=$('#acct');if(!el)return;el.outerHTML=accountBox();bindAccount()}
 function bindAccount(){const i=$('#cin'),o=$('#cout'),y=$('#csync');
