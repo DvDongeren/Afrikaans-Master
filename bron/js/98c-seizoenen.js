@@ -13,9 +13,6 @@ function szWin(s,now=new Date()){const mk=yy=>{if(s.easter){const e=easter(yy);r
 const szDone=s=>{const w=szWin(s);return w&&(S.sz||{})[s.id]===w.a.getFullYear()};
 const szActive=()=>D.sz?SZ().filter(s=>szWin(s).on):[];
 const dmy=d=>d.toLocaleDateString('nl-NL',{day:'numeric',month:'long'});
-/* Kaart op home en bij oefenen: actieve seizoenen die je nog niet hebt afgerond. */
-function szBox(){const A=szActive().filter(s=>!szDone(s));if(!A.length)return'';
- return`<div class="sec">Seizoensthema</div><div class="list">${A.map(s=>row(`data-sz="${s.id}"`,I[s.ic]||I.star,esc(s.t)+(s.nl!==s.t?` <span class="muted small" style="font-weight:500">· ${esc(s.nl)}</span>`:''),`${s.w.length} woorden en een mini-quiz · nog tot ${dmy(szWin(s).b)}`)).join('')}</div>`}
 /* ---------- overzicht en detail ---------- */
 V.seizoen=()=>{const L=SZ(),s=st.id&&L.find(x=>x.id===st.id);
  if(!s){const sorted=L.map(x=>({x,w:szWin(x)})).sort((a,b)=>(b.w.on-a.w.on)||(a.w.a-b.w.a));
@@ -24,7 +21,7 @@ V.seizoen=()=>{const L=SZ(),s=st.id&&L.find(x=>x.id===st.id);
  const w=szWin(s),done=szDone(s);
  draw(`${back('back','Seizoenen')}<div class="row" style="gap:12px"><span class="msmedal ${w.on?'t2':'off'}">${I[s.ic]||I.star}</span><h1>${esc(s.t)}</h1></div><p class="muted" style="margin-top:8px">${s.nl!==s.t?esc(s.nl)+' · ':''}${w.on?'open tot '+dmy(w.b):'komt terug op '+dmy(w.a)}</p>
  <div class="card" style="margin-top:14px;line-height:1.6">${esc(s.intro)}</div>
- ${w.on?`<div class="sec">Woorden</div><div class="list grid2">${s.w.map(x=>`<div class="li" style="display:block"><div class="row sp"><span class="af" style="font-size:1.15rem">${esc(x[0])}</span>${spk(x[0],'sm')}</div><div class="nl">${esc(x[1])}</div><p class="ex" style="margin-top:4px">${esc(x[2])}</p><p class="exnl">${esc(x[3])}</p></div>`).join('')}</div>
+ ${w.on?`<h2 class="sec">Woorden</h2><div class="list grid2">${s.w.map(x=>`<div class="li" style="display:block"><div class="row sp"><span class="af" style="font-size:1.15rem">${esc(x[0])}</span>${spk(x[0],'sm')}</div><div class="nl">${esc(x[1])}</div><p class="ex" style="margin-top:4px">${esc(x[2])}</p><p class="exnl">${esc(x[3])}</p></div>`).join('')}</div>
  <div class="row" style="margin:18px 0 8px">${canSpeak()?`<button class="btn soft" id="szall" style="box-shadow:inset 0 0 0 1.5px var(--hair)">${I.spk}Alles beluisteren</button>`:''}<button class="btn" data-szq="${s.id}">${done?'Mini-quiz nog eens':'Start de mini-quiz'}</button></div>${done?`<p class="muted small">${I.check} Voltooid dit seizoen. Mooi!</p>`:''}`
  :`<div class="card muted" style="margin-top:12px">Dit seizoen is nu gesloten. Vanaf ${dmy(w.a)} kun je de woorden leren en de mini-quiz doen.</div>`}`);
  const a=$('#szall');if(a)a.onclick=()=>speakAll(s.w.map(x=>x[2]));

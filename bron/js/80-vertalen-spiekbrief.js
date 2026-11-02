@@ -27,12 +27,12 @@ function vCheck(v){const u=st.items[st.i],d=alignDiff(v,u.af);st.res={...d,typed
 /* ---------- spiekbrief afdrukken ---------- */
 V.print=()=>{st.src=st.src||'cat';st.cat=st.cat??(META.cat[0]||'');st.plv=st.plv||'Beginner';st.vb=st.vb??false;
  const lst=st.src==='fav'?CARDS.filter(c=>S.favs.includes(c.id)):st.src==='weak'?weakList():st.src==='lv'?CARDS.filter(c=>c.niveau===st.plv&&!c.own):CARDS.filter(c=>c.categorie===st.cat);
- const max=400,L=lst.slice(0,max),title=st.src==='fav'?'Mijn favorieten':st.src==='weak'?'Moeilijke kaarten':st.src==='lv'?st.plv:st.cat;
+ const max=400,L=lst.slice(0,max),title=st.src==='fav'?'Mijn favorieten':st.src==='weak'?'Moeilijke kaarten':st.src==='lv'?lvd(st.plv):st.cat;
  const opt=(v,l,cur)=>`<option value="${esc(v)}" ${cur===v?'selected':''}>${esc(l)}</option>`;
  draw(`<div class="noprint">${back('kaart','Kaarten')}<h1>Spiekbrief</h1><p class="muted" style="margin-top:6px">Maak een overzicht om af te drukken of als pdf op te slaan.</p>
  <div class="card stack" style="margin-top:14px"><label class="lbl" for="psrc">Welke kaarten?</label><select class="sel" id="psrc">${opt('cat','Een onderwerp',st.src)}${opt('lv','Een niveau',st.src)}${opt('fav','Mijn favorieten ('+S.favs.length+')',st.src)}${opt('weak','Moeilijke kaarten',st.src)}</select>
  ${st.src==='cat'?`<select class="sel" id="pcat" aria-label="Onderwerp">${(S.own.length?['Eigen kaarten'].concat(META.cat):META.cat).map(c=>opt(c,c,st.cat)).join('')}</select>`:''}
- ${st.src==='lv'?`<select class="sel" id="plv" aria-label="Niveau">${META.lv.map(c=>opt(c,c,st.plv)).join('')}</select>`:''}
+ ${st.src==='lv'?`<select class="sel" id="plv" aria-label="Niveau">${META.lv.map(c=>opt(c,lvd(c),st.plv)).join('')}</select>`:''}
  <label class="check"><input type="checkbox" id="pvb" ${st.vb?'checked':''}> Met voorbeeldzinnen</label>
  <button class="btn" id="pgo" ${L.length?'':'disabled'}>${I.print}Afdrukken of opslaan als pdf</button>
  ${lst.length>max?`<p class="muted small">Alleen de eerste ${max} van ${lst.length} kaarten worden afgedrukt.</p>`:''}</div></div>

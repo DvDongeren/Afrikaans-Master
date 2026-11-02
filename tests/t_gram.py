@@ -8,7 +8,7 @@ with sync_playwright() as p:
     pg.click('[data-ls]')
     LESQ=pg.evaluate("(async()=>{const F=JSON.parse(document.getElementById('app').dataset.files);return (await (await fetch(F.les)).json())})().then(L=>L.find(l=>l.id==='ontkenning').q)")
     for q in LESQ:
-        pg.wait_for_timeout(100); pg.click(f'[data-lo="{q[2]}"]'); pg.wait_for_timeout(900)
+        pg.wait_for_timeout(100); pg.click(f'[data-lo="{q[2]}"]'); pg.click('.nxt')
     print('resultaat:',pg.inner_text('h1'),'| opgeslagen:',pg.evaluate("JSON.parse(localStorage.getItem('af2')).les"))
     pg.screenshot(path='g_klaar.png')
     pg.click('#nav [data-v=paden]'); print('paden alles:',pg.eval_on_selector_all('[data-p]','e=>e.length'))
@@ -18,7 +18,7 @@ with sync_playwright() as p:
     pg.click('[data-step="1"]'); pg.click('[data-ls]')
     for i in range(10):
         if pg.query_selector('[data-a=stepdone]'): break
-        pg.click('.opt'); pg.wait_for_timeout(1700)
+        pg.click('.opt'); pg.click('.nxt')
     pg.click('[data-a=stepdone]'); print('pad voortgang:',pg.evaluate("JSON.parse(localStorage.getItem('af2')).paths"))
     pg.screenshot(path='g_pad.png')
     # quiz met cat-scope + nieuw pad met dialoog

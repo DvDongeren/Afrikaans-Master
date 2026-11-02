@@ -31,13 +31,13 @@ document.addEventListener('click',e=>{const t=e.target;
  const rd=t.closest('[data-rdone]');if(rd&&view==='beheer')return reportDone(rd.dataset.rdone,rd);
  const ed=t.closest('[data-edone]');if(ed&&view==='beheer')return errorDone(ed.dataset.edone,ed);
  const s=t.closest('[data-s]');if(s){const[k,val]=s.dataset.s.split(':');S[k]=k==='goal'||k==='rate'?+val:val==='true'?true:val==='false'?false:val;if(k==='startLv'){S.lvDone=true;ORDER.reset()}saveNow();theme();if(k==='rate')speak('Goeiemôre, hoe gaan dit?');return V.meer()}
- const a=t.closest('[data-a]');if(a){const k=a.dataset.a;if(k.startsWith('mc:'))return go('mc',{kind:k.slice(3)});if(k==='back')return goBack();if(k==='stepdone')return stepDone();return go(k)}
+ const a=t.closest('[data-a]');if(a){const k=a.dataset.a;if(k.startsWith('mc:'))return go('mc',{kind:k.slice(3)});if(k==='back')return goBack();if(k==='quizkies')return quizSheet();if(k==='stepdone')return stepDone();return go(k)}
  const ex=t.closest('[data-les],[data-ls],[data-lo],[data-pg],[data-t],[data-m],[data-tr],[data-rev],[data-fin],[data-play],[data-p],[data-step],[data-story]');if(!ex)return;const D=ex.dataset;
  if(D.story)return go('story',{id:D.story});
  if(D.les)return go('les',{l:D.les});
  if(D.ls){st.n=0;st.sc=0;st.ans=null;return V.les()}
  if(D.pg){st.g=D.pg;return V.paden()}
- if(D.lo!==undefined&&view==='les'){if(st.ans)return;const q=LES().find(x=>x.id===st.l).q[st.n],ok=+D.lo===q[2];st.ans=1;for(const x of app.querySelectorAll('.opt')){if(+x.dataset.lo===q[2])x.classList.add('ok');x.disabled=true}if(!ok){ex.classList.add('bad');buzz('bad')}if(ok){st.sc++;count()}const s0=st;return setTimeout(()=>{if(st!==s0||view!=='les')return;st.ans=null;st.n++;V.les()},ok?650:1500)}
+ if(D.lo!==undefined&&view==='les'){if(st.ans!=null)return;const q=LES().find(x=>x.id===st.l).q[st.n],ok=+D.lo===q[2];st.ans=ok;st.pick=+D.lo;if(ok){st.sc++;count()}else buzz('bad');return V.les()}
  if(D.t)return go('dlg',{t:D.t});
  if(D.m){st.m=D.m;st.rev={};return V.dlg()}
  if(D.tr){st.tr=!st.tr;return V.dlg()}

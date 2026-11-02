@@ -7,7 +7,7 @@ const RKEY='af2r',RNAME={sess:'Dagelijkse sessie',quiz:'Quiz',gat:'Gatentekst'};
 const rGet=()=>{try{const r=JSON.parse(localStorage.getItem(RKEY)||'null');return r&&RNAME[r.v]&&Date.now()-r.t<DAY&&Array.isArray(r.ids)&&r.i<r.ids.length?r:null}catch{return null}};
 const forget=k=>{try{const r=JSON.parse(localStorage.getItem(RKEY)||'null');if(!k||(r&&r.v===k))localStorage.removeItem(RKEY)}catch{}};
 function remember(k){if(st.ret||st.audio||st.pool||!st.q||!st.i)return;const id=x=>x&&(x.c?x.c.id:x.id);
- const r={v:k,t:Date.now(),ids:st.q.map(id),i:st.i,sc:k==='sess'?st.done||0:st.score||0,wr:(k==='sess'?st.retry||[]:st.wr||[]).map(id),lv:st.lv||'',k:k==='quiz'&&st.cur?st.cur.k:''};
+ const r={v:k,t:Date.now(),ids:st.q.map(id),i:st.i+(k!=='sess'&&st.ans!=null?1:0),sc:k==='sess'?st.done||0:st.score||0,wr:(k==='sess'?st.retry||[]:st.wr||[]).map(id),lv:st.lv||'',k:k==='quiz'&&st.cur?st.cur.k:''};
  try{localStorage.setItem(RKEY,JSON.stringify(r))}catch{}}
 async function resume(){const r=rGet();if(!r)return go('home');try{await allCards()}catch{return loadError()}
  const m=byId(),G=r.v==='gat'?new Map(GAPS().map(g=>[g.c.id,g])):null,get=i=>G?G.get(i):m.get(i);
@@ -15,7 +15,7 @@ async function resume(){const r=rGet();if(!r)return go('home');try{await allCard
  if(r.v==='sess')go('sess',{q,i:r.i,open:false,done:r.sc,retry:wr,rv:{}});
  else go(r.v,{q,i:r.i,score:r.sc,ans:null,wr,lv:r.lv,rk:r.k||''})}
 function resumeBox(){const r=rGet();if(!r||view===r.v)return'';
- return`<div class="sec">Ga verder waar je was</div><div class="card resume"><div class="row" style="gap:12px"><span class="ico">${r.v==='gat'?I.zin:r.v==='quiz'?I.quiz:I.sess}</span><span class="grow"><h2>${RNAME[r.v]}</h2><span class="muted small">Vraag ${r.i+1} van ${r.ids.length} · ${r.sc} goed</span></span><button class="x" id="rsx" aria-label="Niet verdergaan">${I.x}</button></div>
+ return`<h2 class="sec">Ga verder waar je was</h2><div class="card resume"><div class="row" style="gap:12px"><span class="ico">${r.v==='gat'?I.zin:r.v==='quiz'?I.quiz:I.sess}</span><span class="grow"><h2>${RNAME[r.v]}</h2><span class="muted small">Vraag ${r.i+1} van ${r.ids.length} · ${r.sc} goed</span></span><button class="x" id="rsx" aria-label="Niet verdergaan">${I.x}</button></div>
  <div class="ibar" role="img" aria-label="${r.i} van ${r.ids.length} gedaan"><i class="ma" style="width:${Math.round(r.i/r.ids.length*100)}%"></i></div><button class="btn" id="rsgo" style="margin-top:12px">Verder</button></div>`}
 function bindResume(){const g=$('#rsgo'),x=$('#rsx');if(g)g.onclick=resume;if(x)x.onclick=()=>{forget();const b=x.closest('.resume');b&&b.previousElementSibling&&b.previousElementSibling.remove();b&&b.remove()}}
 
@@ -58,7 +58,7 @@ function remGoogle(t){const a=remStart(t),b=new Date(+a+15*6e4);let tz='';try{tz
  const q=new URLSearchParams({action:'TEMPLATE',text:'Afrikaans oefenen',details:'Even je dagelijkse sessie doen: '+appUrl(),dates:icsT(a)+'/'+icsT(b),recur:'RRULE:FREQ=DAILY'});if(tz)q.set('ctz',tz);
  return'https://calendar.google.com/calendar/render?'+q.toString()}
 function remBox(){const t=remTime();
- return`<div class="sec">Herinnering</div><div class="card stack rem"><p class="muted">Zet een dagelijkse afspraak in je eigen agenda, zodat je telefoon je eraan herinnert.</p>
+ return`<h2 class="sec">Herinnering</h2><div class="card stack rem"><p class="muted">Zet een dagelijkse afspraak in je eigen agenda, zodat je telefoon je eraan herinnert.</p>
  <label class="row" style="gap:12px"><span class="grow"><b>Tijdstip</b></span><input type="time" id="remt" value="${t}" aria-label="Tijdstip van de herinnering"></label>
  <div class="row wrapbtns"><button class="btn soft" id="remics" style="box-shadow:inset 0 0 0 1.5px var(--hair)">${I.dl}Agenda-bestand</button><a class="btn soft" id="remg" target="_blank" rel="noopener noreferrer" href="${esc(remGoogle(t))}" style="box-shadow:inset 0 0 0 1.5px var(--hair);text-decoration:none">Google Agenda</a></div>
  <p class="muted small">Het agenda-bestand werkt met Apple Agenda, Outlook en de meeste agenda-apps: open het en kies Toevoegen.</p></div>`}

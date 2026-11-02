@@ -51,7 +51,7 @@ const GAPS=L(()=>{const out=[];for(const c of CARDS){if(c.own)continue;const w=c
 V.gat=()=>{if(!st.q){const G=GAPS(),lv=S.startLv||'Beginner',a=shuffle(G.filter(g=>S.srs[g.c.id])).slice(0,6),b=shuffle(G.filter(g=>!S.srs[g.c.id]&&g.c.niveau===lv));
   st.q=shuffle([...a,...b].slice(0,10));if(st.q.length<10)st.q=shuffle(G).slice(0,10);st.i=0;st.score=0;st.ans=null;st.wr=[]}
  const u=st.q[st.i];if(u)remember('gat');else forget('gat');
- if(!u){const wr=st.wr.length?`<div class="sec" style="text-align:left">Om te herhalen</div><div class="list" style="text-align:left">${st.wr.map(g=>`<div class="li"><span class="grow"><span class="af" style="display:block">${esc(g.pre)}<b>${esc(g.hit)}</b>${esc(g.post)}</span><span class="nl">${esc(g.c.af)} = ${esc(g.c.nl)}</span></span>${spk(g.c.voorbeeld,'sm')}</div>`).join('')}</div>`:'';
+ if(!u){const wr=st.wr.length?`<h2 class="sec" style="text-align:left">Om te herhalen</h2><div class="list" style="text-align:left">${st.wr.map(g=>`<div class="li"><span class="grow"><span class="af" style="display:block">${esc(g.pre)}<b>${esc(g.hit)}</b>${esc(g.post)}</span><span class="nl">${esc(g.c.af)} = ${esc(g.c.nl)}</span></span>${spk(g.c.voorbeeld,'sm')}</div>`).join('')}</div>`:'';
   result(st.score,st.q.length,praise(st.score,st.q.length),'<button class="btn" data-again="gat">Nog een ronde</button><button class="btn ghost" data-a="oef">Oefenen</button>',wr);return}
  if(!st.cur||st.cur.c!==u.c){const same=GAPS().filter(g=>g.c.categorie===u.c.categorie&&g.w!==u.w),pool=shuffle(same.length>=3?same:GAPS().filter(g=>g.w!==u.w)),opts=[];
   for(const g of pool){if(!opts.includes(g.w))opts.push(g.w);if(opts.length===3)break}st.cur={c:u.c,opts:shuffle(opts.concat(u.w))}}

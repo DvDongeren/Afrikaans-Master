@@ -13,7 +13,7 @@ with sync_playwright() as p:
     ctx,pg=page({'lvDone':True,'ms':{'_':1},'lvl':99}); pg.goto(U); pg.wait_for_selector('#nav [data-v]')
     pg.click('[data-a=quiz]'); pg.wait_for_selector('#op .opt')
     for k in range(3):
-        pg.click('#op .opt >> nth=0'); pg.wait_for_timeout(1600)
+        pg.click('#op .opt >> nth=0'); pg.click('.nxt')
     q1=pg.inner_text('.card.q .big')
     pg.goto(U); pg.wait_for_selector('.resume'); print('hervatten:',pg.inner_text('.resume').replace('\n',' | ')[:80])
     pg.click('#rsgo'); pg.wait_for_selector('#op .opt'); print('zelfde vraag:',pg.inner_text('.card.q .big')==q1, '| teller:',pg.inner_text('.topbar, .bar, .top').replace('\n',' ')[:30] if pg.locator('.topbar').count() else '')

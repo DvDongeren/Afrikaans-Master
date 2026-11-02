@@ -13,7 +13,7 @@ window.__cloudAdapter=(()=>{let cb=null;const U={uid:'admin1',displayName:'Behee
  delReport:async doc=>{await window.repDel(doc)}}})();
 """
 def page(b,mock=False,voices=None,state=None):
-    ctx=b.new_context(viewport={'width':390,'height':844}); pg=ctx.new_page()
+    ctx=b.new_context(viewport={'width':390,'height':844}); pg=ctx.new_page(); pg.add_init_script("new MutationObserver(()=>document.querySelectorAll('details.more:not([open])').forEach(d=>d.open=true)).observe(document,{childList:true,subtree:true})")
     pg.add_init_script("addEventListener('securitypolicyviolation',e=>console.error('CSP '+e.violatedDirective+' '+e.blockedURI))")
     pg.on('pageerror',lambda e:errs.append(str(e)[:160])); pg.on('console',lambda m:errs.append(m.text[:140]) if m.type=='error' else None)
     pg.on('dialog',lambda d:d.accept())
@@ -68,7 +68,7 @@ with sync_playwright() as p:
     pg.clock if False else None
     print('race loopt, score zichtbaar:',pg.locator('#rs').count())
     ctx.close()
-    ctx=b.new_context(viewport={'width':390,'height':844}); pg=ctx.new_page(); pg.clock.install()
+    ctx=b.new_context(viewport={'width':390,'height':844}); pg=ctx.new_page(); pg.add_init_script("new MutationObserver(()=>document.querySelectorAll('details.more:not([open])').forEach(d=>d.open=true)).observe(document,{childList:true,subtree:true})"); pg.clock.install()
     pg.on('pageerror',lambda e:errs.append(str(e)[:160]))
     pg.goto(U); pg.wait_for_selector('#nav [data-v]'); pg.click('#nav [data-v=oef]'); pg.click('[data-a=spel]'); pg.click('[data-a=race]'); pg.wait_for_selector('[data-ro]')
     pg.clock.fast_forward(62000); pg.wait_for_selector('.result',timeout=5000); print('race einde:',pg.inner_text('h1'),'| score',pg.inner_text('.score'))

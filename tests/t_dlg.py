@@ -29,13 +29,13 @@ with sync_playwright() as p:
             pg.click('[data-ls]')
             for _ in range(10):
                 if pg.query_selector('[data-a=stepdone]'): break
-                pg.click('.opt'); pg.wait_for_timeout(1700)
+                pg.click('.opt'); pg.click('.nxt')
             pg.click('[data-a=stepdone]')
         elif kind=='dlg': pg.click('[data-fin]')
         elif kind=='quiz':
             for _ in range(30):
                 if pg.query_selector('[data-a=stepdone]'): break
-                pg.click('.opt'); pg.wait_for_timeout(1500)
+                pg.click('.opt'); pg.click('.nxt')
             pg.click('[data-a=stepdone]')
         print(' stap',i,kind,'->',V(pg))
     print('voortgang week1:',pg.evaluate("JSON.parse(localStorage.getItem('af2')).paths"))

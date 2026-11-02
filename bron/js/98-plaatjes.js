@@ -24,7 +24,7 @@ V.beeld=()=>{const P=PICS();st.tab=st.tab||'oef';
  else{const best=S.pics||{},done=P.themes.filter(t=>best[t.id]>=100).length;
   body=`<div class="lbl" style="margin:0 2px 6px">Oefenvorm</div><div class="seg pmodes" id="pmo">${PMODES.map(([k,l])=>`<button class="chip ${PM===k?'on':''}" data-pmo="${k}">${l}</button>`).join('')}</div>
   <p class="muted small" style="margin:8px 2px 0">${{mix:'Elke vraag een andere vorm.',woord:'Je ziet het Afrikaanse woord en kiest het plaatje.',beeld:'Je ziet een plaatje en kiest het Afrikaanse woord.',oor:'Je hoort het woord en kiest het plaatje.'}[PM]}${PM==='oor'&&!canSpeak()?' Je toestel heeft geen spraak; kies een andere vorm.':''}</p>
-  <div class="sec">Kies een thema <span class="muted small" style="font-weight:500">· ${done} van ${P.themes.length} foutloos</span></div>
+  <h2 class="sec">Kies een thema <span class="muted small" style="font-weight:500">· ${done} van ${P.themes.length} foutloos</span></h2>
   <div class="pthemes">${P.themes.map(t=>{const it=picItems(t.id),b=best[t.id],f=picFull(t.id);return`<button class="ptile ${b>=100?'full':''}" data-pth="${t.id}">${pic(picOf(PTI[t.id])||it[0][3])}<span class="grow"><b>${esc(t.nl)}</b><span class="af small">${esc(t.af)}</span><span class="muted small">${it.length} woorden${b!==undefined?` · beste ${Math.round(b*f/100)}/${f}`:''}</span></span>${b>=100?`<span class="done-mark" aria-label="Foutloos">${I.check}</span>`:''}</button>`}).join('')}
   <button class="ptile" data-pth="alles">${pic(picOf(PTI.alles))}<span class="grow"><b>Alles door elkaar</b><span class="muted small">${P.items.length} woorden</span></span></button></div>`}
  draw(`${back('oef','Oefenen')}<h1>Plaatjes</h1><p class="muted" style="margin-top:8px">Leer de eerste woorden met tekeningen: kleuren, getallen, dieren, eten en meer. Handig als je net begint.</p>${tabs}${body}`);
@@ -41,7 +41,7 @@ function picOpts(x,pool){const P=PICS(),grp=new Set((P.groups.find(g=>g.includes
 V.plaat=()=>{const P=PICS();if(!st.q){const pool=picItems(st.th);if(!pool.length)return go('beeld');st.pool=pool;st.q=shuffle(pool).slice(0,10);st.i=0;st.sc=0;st.ans=null;st.wr=[];st.ms=[]}
  const x=st.q[st.i],n=st.q.length,th=st.th==='alles'?null:picTheme(st.th);
  if(!x){if(th){const pc=Math.round(st.sc/n*100);S.pics=S.pics||{};if((S.pics[st.th]??-1)<pc){S.pics[st.th]=pc;saveNow()}}
-  const wr=st.wr.length?`<div class="sec" style="text-align:left">Om te onthouden</div><div class="picgrid" style="text-align:left">${st.wr.map(y=>`<button class="pcard" data-sp="${esc(y[0])}">${pic(y[3])}<span class="af">${esc(y[0])}</span><span class="nl small">${esc(y[1])}</span></button>`).join('')}</div>`:'';
+  const wr=st.wr.length?`<h2 class="sec" style="text-align:left">Om te onthouden</h2><div class="picgrid" style="text-align:left">${st.wr.map(y=>`<button class="pcard" data-sp="${esc(y[0])}">${pic(y[3])}<span class="af">${esc(y[0])}</span><span class="nl small">${esc(y[1])}</span></button>`).join('')}</div>`:'';
   result(st.sc,n,st.sc===n?'Foutloos, knap gedaan!':praise(st.sc,n),`<button class="btn" id="pagain">Nog een ronde</button><button class="btn ghost" data-a="beeld">Ander thema</button>`,wr);
   $('#pagain').onclick=()=>go('plaat',{th:st.th,pm:st.pm});return}
  if(!st.ms[st.i]){const ms=st.pm==='mix'?(canSpeak()?['woord','beeld','oor']:['woord','beeld']):[st.pm];st.ms[st.i]=ms[Math.floor(Math.random()*ms.length)];st.opts=picOpts(x,st.pool)}

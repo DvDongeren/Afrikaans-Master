@@ -29,8 +29,8 @@ const MSF=[
  {id:'kaart',ic:'kaart',t:'Kaarten gestart',u:'kaarten',need:'all',v:s=>s.st,steps:s=>[[10,'Tien kaarten'],[50,'Vijftig kaarten'],[100,'Honderd kaarten'],[250,'Kwart duizend'],[500,'Vijfhonderd'],[1000,'Duizend kaarten'],[2000,'Tweeduizend'],[3000,'Drieduizend'],[s.total,'Alle kaarten']]},
  {id:'beheerst',ic:'medal',t:'Kaarten beheerst',u:'beheerst',need:'all',sub:'Vier keer op rij goed, met steeds langere pauzes',v:s=>s.ma,steps:[[10,'Tien vast'],[25,'Vijfentwintig'],[50,'Vijftig'],[100,'Honderd'],[250,'Tweehonderdvijftig'],[500,'Vijfhonderd'],[1000,'Duizend'],[2000,'Woordenschatkoning']]},
  {id:'top',ic:'bolt',t:'IJzersterk',u:'kaarten',need:'all',sub:'Kaarten in het hoogste herhaalvak',v:s=>s.top,steps:[[10,'Tien ijzersterk'],[50,'Vijftig'],[250,'Tweehonderdvijftig'],[1000,'Duizend']]},
- {id:'lvI',ic:'pad',t:'Intermediate beheerst',u:'kaarten',need:'all',v:s=>s.lvI,steps:[[25,'Verder dan de basis'],[100,'Gevorderd op weg'],[250,'Intermediate-kenner']]},
- {id:'lvA',ic:'pad',t:'Advanced beheerst',u:'kaarten',need:'all',v:s=>s.lvA,steps:[[25,'Advanced-proever'],[100,'Gevorderd'],[250,'Bijna moedertaal']]},
+ {id:'lvI',ic:'pad',t:'Gemiddeld beheerst',u:'kaarten',need:'all',v:s=>s.lvI,steps:[[25,'Verder dan de basis'],[100,'Op weg naar gevorderd'],[250,'Kenner']]},
+ {id:'lvA',ic:'pad',t:'Gevorderd beheerst',u:'kaarten',need:'all',v:s=>s.lvA,steps:[[25,'Proever'],[100,'Gevorderd'],[250,'Bijna moedertaal']]},
  {id:'cats',ic:'cult',t:'Onderwerpen verkend',u:'onderwerpen',need:'all',v:s=>s.cats,steps:s=>[[3,'Rondkijker'],[10,'Ontdekker'],[20,'Wereldreiziger'],[s.catN,'Alles gezien']]},
  {id:'catFull',ic:'check',t:'Onderwerpen compleet',u:'onderwerpen',need:'all',sub:'Elke kaart van het onderwerp gestart',v:s=>s.catFull,steps:[[1,'Eerste onderwerp'],[5,'Vijf onderwerpen'],[15,'Vijftien onderwerpen']]},
  {id:'dlg',ic:'dlg',t:'Dialogen',u:'dialogen',v:s=>s.dlg,steps:()=>[[1,'Eerste gesprek'],[5,'Babbelaar'],[10,'Prater'],[20,'Gesprekspartner'],[N.dlg||33,'Alle dialogen']]},
@@ -82,7 +82,7 @@ V.mijlpalen=()=>{checkMs();const s=msStats(),L=msList(s),got=L.reduce((a,r)=>a+r
  <div class="card frzcard"><div class="row" style="gap:12px"><span class="msmedal ${f?'t4':'off'}">${I.shield}</span><span class="grow"><h2>${f?f+' '+(f===1?'rustdag':'rustdagen')+' klaar':'Nog geen rustdag'}</h2><span class="muted small">Elke 7 dagen op rij verdien je een rustdag (maximaal 2). Mis je een dag, dan blijft je reeks staan.${(S.frzD||[]).length?' Al '+S.frzD.length+' keer gebruikt.':''}</span></span></div></div></div>
  <div class="card stats" style="margin-top:12px"><div><div class="big">${got}</div><div class="muted">behaald</div></div><div><div class="big">${tot}</div><div class="muted">in totaal</div></div><div><div class="big">${s.best}</div><div class="muted">langste reeks</div></div></div>
  <div class="ibar" style="margin-top:10px" role="img" aria-label="${got} van ${tot} mijlpalen"><i class="ma" style="width:${tot?Math.round(got/tot*100):0}%"></i></div>
- ${near.length?`<div class="sec">Bijna binnen</div><div class="ms-grid">${near.map(card).join('')}</div>`:''}
- ${recent.length?`<div class="sec">Laatst behaald</div><div class="card"><div class="chips wrap">${recent.map(x=>`<span class="chip on"><span class="msmini t${Math.min(x.i,8)}"></span>${esc(x.r.steps[x.i][1])}</span>`).join('')}</div></div>`:''}
- <div class="sec">Alle reeksen</div><div class="ms-grid">${L.map(card).join('')}</div>
+ ${near.length?`<h2 class="sec">Bijna binnen</h2><div class="ms-grid">${near.map(card).join('')}</div>`:''}
+ ${recent.length?`<h2 class="sec">Laatst behaald</h2><div class="card"><div class="chips wrap">${recent.map(x=>`<span class="chip on"><span class="msmini t${Math.min(x.i,8)}"></span>${esc(x.r.steps[x.i][1])}</span>`).join('')}</div></div>`:''}
+ <h2 class="sec">Alle reeksen</h2><div class="ms-grid">${L.map(card).join('')}</div>
  <p class="muted small" style="text-align:center;margin:18px 0 120px">Niveaus: ${MSKL.slice(0,8).join(' · ')}</p>`)};

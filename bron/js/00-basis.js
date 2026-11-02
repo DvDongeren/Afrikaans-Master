@@ -19,6 +19,8 @@ const norm=t=>t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
 const nzs=t=>norm(t).replace(/['’‘`´]/g,'').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 const DAY=864e5,BOX=[0,1,3,7,14,30,60],rank={Beginner:0,Intermediate:1,Advanced:2};
+/* Niveaus heten intern Beginner/Intermediate/Advanced (data en voortgang); in beeld Nederlands. */
+const LVD={Beginner:'Beginner',Intermediate:'Gemiddeld',Advanced:'Gevorderd',Alles:'Alles',Favorieten:'Favorieten'},lvd=l=>LVD[l]||l;
 const fmt=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 const byId=L(()=>{const m=new Map();for(const c of CARDS)m.set(c.id,c);return m});
 const IDX=L(()=>CARDS.map(c=>norm(c.nl+' '+c.af)));

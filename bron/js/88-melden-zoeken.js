@@ -15,11 +15,11 @@ function report(id){const c=byId().get(id);if(!c)return;
 /* ---------- sessie: beoordelen en vegen ---------- */
 function sessGrade(ok){const c=st.q[st.i];if(!c||!st.open)return;st.swiped=0;grade(c.id,ok);if(!ok)buzz('bad');st.done++;if(!ok&&!st.retry.includes(c.id)){st.retry.push(c.id);st.q.push(c)}st.i++;st.open=false;st.tv=undefined;render()}
 let drag=null;
-document.addEventListener('pointerdown',e=>{if(view!=='sess'||!st.open)return;const fc=e.target.closest('#fc');if(!fc||e.target.closest('button,a,input'))return;drag={x:e.clientX,y:e.clientY,el:fc,dx:0,tick:0};fc.style.transition='none'});
+document.addEventListener('pointerdown',e=>{if(view!=='sess'||!st.open)return;const fc=e.target.closest('#fc');if(!fc||e.target.closest('button,a,input'))return;drag={x:e.clientX,y:e.clientY,el:fc,dx:0,tick:0};fc.style.transition='none';fc.style.willChange='transform'});
 document.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dx)<12)return;drag.dx=dx;
  drag.el.style.transform=`translateX(${dx}px) rotate(${dx/22}deg)`;drag.el.classList.toggle('sw-ok',dx>60);drag.el.classList.toggle('sw-no',dx<-60);
  const past=Math.abs(dx)>90;if(past&&!drag.tick){drag.tick=1;buzz('ok')}else if(!past)drag.tick=0});
-const endDrag=()=>{if(!drag)return;const{dx,el}=drag;drag=null;el.style.transition='transform .22s ease';
+const endDrag=()=>{if(!drag)return;const{dx,el}=drag;drag=null;el.style.transition='transform .22s cubic-bezier(.16,1,.3,1)';el.style.willChange='';
  if(Math.abs(dx)>90){el.style.transform=`translateX(${dx>0?520:-520}px) rotate(${dx>0?18:-18}deg)`;const s0=st,i0=st.i;st.swiped=1;setTimeout(()=>{if(st===s0&&view==='sess'&&st.i===i0)sessGrade(dx>0)},180)}
  else{el.style.transform='';el.classList.remove('sw-ok','sw-no')}};
 document.addEventListener('pointerup',endDrag);document.addEventListener('pointercancel',endDrag);
@@ -58,7 +58,7 @@ V.zoek=()=>{draw(`<h1>Zoeken</h1><p class="muted" style="margin:8px 0 14px">Zoek
   let groups={};for(const r of SIDX())if(r.k.includes(q))(groups[r.t]=groups[r.t]||[]).push(r);
   let fz=false;if(!cards.length&&!Object.keys(groups).length&&q.length>=4&&!q.includes(' ')){fz=true;for(const i of fuzzyCards(q))cards.push(CARDS[i]);
    for(const r of SIDX())if((r.w||(r.w=r.k.split(/[^\p{L}\p{N}]+/u).filter(w=>w.length>=3))).some(w=>fuzzyOk(w,q)))(groups[r.t]=groups[r.t]||[]).push(r)}
-  let h=fz&&(cards.length||Object.keys(groups).length)?`<p class="muted" style="margin-top:14px">Geen exacte treffers voor “${esc($('#zq').value.trim())}”. Bedoelde je:</p>`:'';if(cards.length)h+=`<div class="sec">Kaarten · ${cards.length}</div><div class="list">${cards.slice(0,5).map(c=>`<div class="li"><span class="grow"><span class="af" style="font-size:1.12rem;display:block">${esc(c.af)}</span><span class="nl">${esc(c.nl)}</span></span>${spk(c.af,'sm')}</div>`).join('')}${cards.length>5?`<button class="li" data-zk="1" style="color:var(--nl);font-weight:600">Alle ${cards.length} kaarten bekijken</button>`:''}</div>`;
-  for(const[t,rs]of Object.entries(groups)){h+=`<div class="sec">${t} · ${rs.length}</div><div class="list">${rs.slice(0,5).map(r=>{st.res.push(r);return row(`data-zr="${st.res.length-1}"`,null,`<span class="${/Grammatica|Paden/.test(t)?'':'af'}">${esc(r.title)}</span>`,esc(r.sub))}).join('')}</div>`}
+  let h=fz&&(cards.length||Object.keys(groups).length)?`<p class="muted" style="margin-top:14px">Geen exacte treffers voor “${esc($('#zq').value.trim())}”. Bedoelde je:</p>`:'';if(cards.length)h+=`<h2 class="sec">Kaarten · ${cards.length}</h2><div class="list">${cards.slice(0,5).map(c=>`<div class="li"><span class="grow"><span class="af" style="font-size:1.12rem;display:block">${esc(c.af)}</span><span class="nl">${esc(c.nl)}</span></span>${spk(c.af,'sm')}</div>`).join('')}${cards.length>5?`<button class="li" data-zk="1" style="color:var(--nl);font-weight:600">Alle ${cards.length} kaarten bekijken</button>`:''}</div>`;
+  for(const[t,rs]of Object.entries(groups)){h+=`<h2 class="sec">${t} · ${rs.length}</h2><div class="list">${rs.slice(0,5).map(r=>{st.res.push(r);return row(`data-zr="${st.res.length-1}"`,null,`<span class="${/Grammatica|Paden/.test(t)?'':'af'}">${esc(r.title)}</span>`,esc(r.sub))}).join('')}</div>`}
   out.innerHTML=h||`<div class="card muted" style="margin-top:16px">Niets gevonden voor “${esc($('#zq').value.trim())}”. Probeer een kortere zoekterm.</div>`};
  let t;$('#zq').oninput=()=>{clearTimeout(t);t=setTimeout(run,140)};run();requestAnimationFrame(()=>$('#zq').focus())};

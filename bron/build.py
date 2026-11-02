@@ -188,7 +188,7 @@ index = f'''<!doctype html>
 <script defer src="{JS}"></script>
 </head>
 <body>
-<main id="app" aria-live="polite" data-files='{files_attr}' data-meta='{meta_attr}'><div class="boot"><div><b>Afrikaans Master</b><p class="muted">Laden…</p></div></div></main>
+<main id="app" data-files='{files_attr}' data-meta='{meta_attr}'><div class="boot"><div><b>Afrikaans Master</b><p class="muted">Laden…</p></div></div></main>
 <nav aria-label="Hoofdmenu"><div id="nav"></div></nav>
 <noscript><p style="padding:24px;text-align:center">Deze app heeft JavaScript nodig.</p></noscript>
 </body>

@@ -55800,13 +55800,13 @@
   },
   {
    "id": "intermediate_boost",
-   "title": "Intermediate boost",
+   "title": "Op naar Gemiddeld",
    "desc": "Diepere vocabulaire + slimme quiz",
    "steps": [
     {
      "type": "info",
      "title": "Niveau omhoog",
-     "text": "Meer woorden op Intermediate-niveau en een stevige quiz."
+     "text": "Meer woorden op niveau Gemiddeld en een stevige quiz."
     },
     {
      "type": "les",
@@ -55833,7 +55833,7 @@
     },
     {
      "type": "quiz",
-     "title": "Intermediate quiz",
+     "title": "Quiz Gemiddeld",
      "scope": "Intermediate",
      "count": 20
     }
@@ -55842,12 +55842,12 @@
   },
   {
    "id": "advanced_track",
-   "title": "Advanced track",
+   "title": "Gevorderd",
    "desc": "Uitdaging voor gevorderden",
    "steps": [
     {
      "type": "info",
-     "title": "Advanced",
+     "title": "Gevorderde kaarten",
      "text": "Moeilijkere woorden, abstracte taal en een strenge quiz."
     },
     {
@@ -55869,7 +55869,7 @@
     },
     {
      "type": "quiz",
-     "title": "Advanced quiz",
+     "title": "Quiz Gevorderd",
      "scope": "Advanced",
      "count": 20
     },

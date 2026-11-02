@@ -19,7 +19,7 @@ with sync_playwright() as p:
             opts=pg.eval_on_selector_all('.opt','e=>e.map(x=>x.dataset.o)'); tgt=[o for o in opts if o in good][0]
             pg.click(f'.opt[data-o="{tgt}"]')
         else: pg.click('#tdk')
-        pg.wait_for_timeout(1000)
+        pg.click('.nxt')
     print('toets uitslag:',pg.inner_text('.score'),'| startLv:',pg.evaluate("JSON.parse(localStorage.getItem('af2')).startLv"))
     pg.screenshot(path='f_toets.png')
     pg.click('[data-a=sess]'); nl=pg.inner_text('.fc .big')
@@ -55,5 +55,5 @@ with sync_playwright() as p:
     print('meldingen in meer:',pg.inner_text('#rpt')[:60])
     pg.click('#nav [data-v=kaart]'); pg.click('[data-sp]'); print('uitspraak gebruikt snelheid:',pg.evaluate("window.__said.at(-1)[1]"))
     # quiz: sneltoets 1-4
-    pg.click('#nav [data-v=oef]'); pg.click('#qs'); pg.keyboard.press('3'); print('toets 3 kiest antwoord:',pg.eval_on_selector_all('.opt.ok,.opt.bad','e=>e.length')>0)
+    pg.click('#nav [data-v=oef]'); pg.click('[data-a=quizkies]'); pg.click('#qs'); pg.keyboard.press('3'); print('toets 3 kiest antwoord:',pg.eval_on_selector_all('.opt.ok,.opt.bad','e=>e.length')>0)
     print('FOUTEN',errs); b.close()

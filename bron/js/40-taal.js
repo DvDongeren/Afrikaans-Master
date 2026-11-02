@@ -6,16 +6,19 @@ V.gram=()=>{const A=LES(),dn=A.filter(l=>S.les[l.id]!==undefined).length;
  <div class="list grid2">${A.map(l=>row(`data-les="${l.id}"`,null,esc(l.t),S.les[l.id]!==undefined?'Beste score: '+S.les[l.id]+' / '+l.q.length:l.q.length+' oefenvragen',S.les[l.id]!==undefined?mark(1):undefined)).join('')}</div>`)};
 V.les=()=>{const l=LES().find(x=>x.id===st.l);if(!l)return go('gram');app.className=layout();
  if(st.n===undefined){draw(`${back('back','Terug')}<h1>${esc(l.t)}</h1><div class="lsplit"><div class="card rule">${esc(l.rule)}</div>
-  <div class="lex"><div class="sec">Voorbeelden</div><div class="list">${l.ex.map(e=>`<div class="li"><span class="grow"><span class="af" style="font-size:1.12rem;display:block">${esc(e[0])}</span><span class="nl">${esc(e[1])}</span></span>${spk(e[0],'sm')}</div>`).join('')}</div></div>
+  <div class="lex"><h2 class="sec">Voorbeelden</h2><div class="list">${l.ex.map(e=>`<div class="li"><span class="grow"><span class="af" style="font-size:1.12rem;display:block">${esc(e[0])}</span><span class="nl">${esc(e[1])}</span></span>${spk(e[0],'sm')}</div>`).join('')}</div></div>
   <button class="btn" data-ls="1">Oefenen (${l.q.length} vragen)</button></div>`);return}
  const q=l.q[st.n];
  if(!q){S.les[l.id]=Math.max(S.les[l.id]||0,st.sc);saveNow();result(st.sc,l.q.length,st.sc===l.q.length?'Foutloos!':'Lees de uitleg nog eens en probeer opnieuw.',(st.ret?'<button class="btn" data-a="stepdone">Verder met het pad</button>':'<button class="btn" data-a="gram">Terug naar lessen</button>')+'<button class="btn ghost" data-ls="1">Opnieuw oefenen</button>');return}
  if(!st.o||st.oi!==st.n){st.o=shuffle(q[1].map((_,i)=>i));st.oi=st.n}
+ const done=st.ans!=null;
  draw(`${topbar(st.n,l.q.length)}<div class="card q"><div class="lbl">Kies de juiste Afrikaanse zin</div><div class="big" style="font-size:1.4rem">${esc(q[0])}</div></div>
- <div class="stack" style="margin-top:14px">${st.o.map(i=>`<button class="opt" data-lo="${i}">${esc(q[1][i])}</button>`).join('')}</div>`)};
+ <div class="stack" style="margin-top:14px">${st.o.map(i=>`<button class="opt ${done?(i===q[2]?'ok':i===st.pick?'bad':''):''}" data-lo="${i}" ${done?'disabled':''}>${esc(q[1][i])}</button>`).join('')}</div>
+ ${done?`<div class="card pfb ${st.ans?'good':'wrong'}" role="status"><b>${st.ans?'Goed!':'Net niet.'}</b> <span class="af">${esc(q[1][q[2]])}</span>${st.ans?'':'<p class="muted small" style="margin-top:6px">Kijk nog eens naar de uitleg van de les als je twijfelt.</p>'}</div><div class="row" style="margin-top:12px">${spk(q[1][q[2]])}${nextBtn('lnx',st.n+1>=l.q.length)}</div>`:''}`);
+ if(done){$('#lnx').onclick=()=>{st.ans=null;st.pick=null;st.n++;V.les();scrollTo(0,0)};focusNext('lnx')}};
 
 /* ---------- meerkeuze-oefeningen ---------- */
-const MCT={slang:'Slang',nie:'Nie-drill',menu:'Restaurant',wa:'WhatsApp',vv:'Valse vrienden'};
+const MCT={slang:'Spreektaal',nie:'Ontkenning: nie … nie',menu:'Restaurant',wa:'WhatsApp',vv:'Valse vrienden'};
 function vvBuild(){const VV=Y().VV;return shuffle(VV.map((v,i)=>{const others=shuffle(VV.filter((_,j)=>j!==i)).slice(0,2).map(o=>o.echt);
  return{q:v.ex[0],sub:'Wat betekent "'+v.af+'" in deze zin?',opts:[v.echt,v.schijn].concat(others),a:0,ex:v.ex[1]+' — '+v.tip,say:v.ex[0]}})).slice(0,10)}
 function mcBuild(k){const x=X();let it;

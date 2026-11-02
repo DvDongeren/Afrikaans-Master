@@ -15,7 +15,7 @@ with sync_playwright() as p:
     ctx,pg=page({'srs':srs,'days':days,'last':today.isoformat(),'streak':8,'lvDone':True}); pg.goto(U); pg.wait_for_selector('#nav [data-v]'); pg.wait_for_timeout(1500)
     print('stil eerst:',pg.locator('#mstoast').count()); assert pg.locator('#mstoast').count()==0
     s=pg.evaluate("JSON.parse(localStorage.getItem('af2'))"); print('opgeslagen:',len(s['ms'])); assert s['ms'].get('_') and s['ms'].get('reeks:1')
-    print('startscherm:',pg.inner_text('.home-ms')[:90].replace('\n',' | '))
+    print('startscherm:',pg.inner_text('[data-a=mijlpalen]')[:90].replace('\n',' | '))
     ctx.close()
     # nieuwe mijlpaal: felicitatie
     ctx,pg=page({'srs':srs,'days':days,'last':today.isoformat(),'streak':8,'lvDone':True,'ms':{'_':1}}); pg.goto(U); pg.wait_for_selector('#mstoast',timeout=8000)

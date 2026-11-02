@@ -6,9 +6,9 @@ with sync_playwright() as p:
     pg.screenshot(path='n_home.png')
     pg.click('[data-a=sess]'); pg.click('#fc'); pg.wait_for_timeout(100); pg.screenshot(path='n_sess.png')
     for i in range(3): pg.click('[data-g="1"]'); pg.click('#fc')
-    pg.click('#nav [data-v=oef]'); pg.click('#qs')
+    pg.click('#nav [data-v=oef]'); pg.click('[data-a=quizkies]'); pg.click('#qs')
     for i in range(10):
-        pg.click('.opt'); pg.wait_for_timeout(1500)
+        pg.click('.opt'); pg.click('.nxt')
     print('quiz klaar:',pg.inner_text('h1'))
     pg.click('#nav [data-v=kaart]'); pg.fill('#s','dank'); pg.wait_for_timeout(300)
     print('zoek-resultaat:',pg.inner_text('#ls .muted'))

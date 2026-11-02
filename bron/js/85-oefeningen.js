@@ -10,7 +10,7 @@ V.vv=()=>{const VV=Y().VV;
 /* ---------- verhaaltjes ---------- */
 V.stories=()=>{const ST=Y().ST,n=ST.filter(x=>S.stories[x.id]).length;
  draw(`${back('oef','Oefenen')}<h1>Verhaaltjes</h1><p class="muted" style="margin:8px 0 16px">${n} van ${ST.length} gelezen</p>
- <div class="list grid2">${ST.map(x=>row(`data-story="${x.id}"`,null,esc(x.t),x.niv+' · '+x.s.length+' zinnen',S.stories[x.id]?mark(1):undefined)).join('')}</div>`)};
+ <div class="list grid2">${ST.map(x=>row(`data-story="${x.id}"`,null,esc(x.t),lvd(x.niv)+' · '+x.s.length+' zinnen',S.stories[x.id]?mark(1):undefined)).join('')}</div>`)};
 const CG=L(()=>{const m=new Map(),bad=new Set();for(const c of CARDS){const k=c.af.toLowerCase();if(!/^\p{L}+$/u.test(k))continue;const v=m.get(k);if(v!==undefined&&v!==c.nl)bad.add(k);else m.set(k,c.nl)}bad.forEach(k=>m.delete(k));return m});
 const wordRe=/('n(?!\p{L})|\p{L}+(?:['’-]\p{L}+)*)/gu;
 function gloss(w,x){const k=w.toLowerCase();return k==="'n"?'een':x.g[k]||Y().G0[k]||CG().get(k)||null}
@@ -18,7 +18,7 @@ function gloss(w,x){const k=w.toLowerCase();return k==="'n"?'een':x.g[k]||Y().G0
 const storyP=(p,i,tr)=>`<p data-i="${i}">${p[0].split(wordRe).map((t,j)=>j%2?`<span class="w" data-w="${esc(t)}">${esc(t)}</span>`:esc(t)).join('')}${spk(p[0],'sm')}${tr?`<span class="nl">${esc(p[1])}</span>`:''}</p>`;
 V.story=()=>{const x=Y().ST.find(z=>z.id===st.id);if(!x)return go('stories');if(st.lm)return storyListen(x);
  const html=x.s.map((p,i)=>storyP(p,i,st.tr)).join('');
- draw(`<div class="row sp">${back('back','Verhaaltjes')}<span class="row" style="gap:8px;margin-top:-14px">${canSpeak()?`<button class="chip" id="lm">${I.ear}Luisteren</button>`:''}<button class="chip ${st.tr?'on':''}" id="tt">Vertaling</button></span></div><h1>${esc(x.t)}</h1><p class="muted" style="margin:8px 0 16px">${x.niv} · tik op een woord voor de vertaling</p>
+ draw(`<div class="row sp">${back('back','Verhaaltjes')}<span class="row" style="gap:8px;margin-top:-14px">${canSpeak()?`<button class="chip" id="lm">${I.ear}Luisteren</button>`:''}<button class="chip ${st.tr?'on':''}" id="tt">Vertaling</button></span></div><h1>${esc(x.t)}</h1><p class="muted" style="margin:8px 0 16px">${lvd(x.niv)} · tik op een woord voor de vertaling</p>
  <div class="card reader">${html}</div>
  <div class="row" style="margin:16px 0 120px"><button class="btn soft" id="pl">${I.spk}Voorlezen</button><button class="btn" id="fin">${S.stories[x.id]?'Opnieuw gelezen':'Klaar met lezen'}</button></div><div id="wp" role="status"></div>`);
  $('#tt').onclick=()=>{st.tr=!st.tr;V.story()};{const l=$('#lm');if(l)l.onclick=()=>{st.lm=1;st.li=0;st.shown=0;st.played=-1;V.story()}}
@@ -27,7 +27,7 @@ V.story=()=>{const x=Y().ST.find(z=>z.id===st.id);if(!x)return go('stories');if(
 /* Luisterverhaal: zin voor zin voorlezen; de tekst verschijnt pas als je erom vraagt. */
 function storyListen(x){const n=x.s.length,i=st.li||0,cur=x.s[i];
  const html=x.s.slice(0,i).map((p,k)=>storyP(p,k,true)).join('')+(cur?(st.shown?storyP(cur,i,true).replace('<p ','<p class="cur" '):`<div class="hid" aria-live="polite">${I.ear}<span>Zin ${i+1} van ${n}: luister goed en probeer hem te begrijpen</span></div>`):'');
- draw(`<div class="row sp">${back('back','Verhaaltjes')}<button class="chip on" id="lm" style="margin-top:-14px">${I.ear}Luisteren</button></div><h1>${esc(x.t)}</h1><p class="muted" style="margin:8px 0 16px">${x.niv} · ${i<n?`zin ${i+1} van ${n}`:'helemaal beluisterd'} · tik op een woord voor de vertaling</p>
+ draw(`<div class="row sp">${back('back','Verhaaltjes')}<button class="chip on" id="lm" style="margin-top:-14px">${I.ear}Luisteren</button></div><h1>${esc(x.t)}</h1><p class="muted" style="margin:8px 0 16px">${lvd(x.niv)} · ${i<n?`zin ${i+1} van ${n}`:'helemaal beluisterd'} · tik op een woord voor de vertaling</p>
  <div class="card reader">${html}</div>
  ${cur?`<div class="row lctl" style="margin:16px 0 120px"><button class="btn soft" id="lp">${I.spk}Nog eens</button><button class="btn soft" id="lps">Langzaam</button>${st.shown?`<button class="btn" id="lnx">${i+1<n?'Volgende zin':'Klaar'}</button>`:`<button class="btn" id="lsh">Toon tekst</button>`}</div>`
  :`<div class="row" style="margin:16px 0 120px"><button class="btn soft" id="lre">${I.ear}Opnieuw luisteren</button><button class="btn" id="fin">${S.stories[x.id]?'Opnieuw gelezen':'Klaar met luisteren'}</button></div>`}<div id="wp" role="status"></div>`);
@@ -79,15 +79,18 @@ V.toets=()=>{
  if(!st.items){const pick=lv=>shuffle(CARDS.filter(c=>!c.own&&c.niveau===lv&&okWord2(c))).slice(0,4).map(c=>({c,lv}));
   st.items=[...pick('Beginner'),...pick('Intermediate'),...pick('Advanced')];st.i=0;st.res={Beginner:0,Intermediate:0,Advanced:0};st.ans=null}
  const it=st.items[st.i],n=st.items.length;
- if(!it){const R=st.res,lv=R.Beginner<3?'Beginner':R.Intermediate<3?'Intermediate':'Advanced',nm={Beginner:'Beginner',Intermediate:'Intermediate',Advanced:'Advanced'};
+ if(!it){const R=st.res,lv=R.Beginner<3?'Beginner':R.Intermediate<3?'Intermediate':'Advanced',nm=LVD;
   S.startLv=lv;S.lvDone=true;ORDER.reset();saveNow();
-  draw(`<div class="result stack"><div class="score" style="font-size:2.6rem">${nm[lv]}</div><h1>Hier begin je</h1><p class="muted">Beginner ${R.Beginner}/4 · Intermediate ${R.Intermediate}/4 · Advanced ${R.Advanced}/4</p><p class="muted">${lv==='Beginner'?'We beginnen bij de basis.':lv==='Intermediate'?'Je kent de basis al. Nieuwe kaarten beginnen bij Intermediate.':'Je kent de basis en Intermediate al. Nieuwe kaarten beginnen bij Advanced.'} Je kunt dit altijd aanpassen in Meer.</p><div class="stack" style="margin-top:22px"><button class="btn" data-a="sess">Start je sessie</button><button class="btn ghost" data-a="home">Home</button></div></div>`);return}
+  draw(`<div class="result stack"><div class="score" style="font-size:2.6rem">${nm[lv]}</div><h1>Hier begin je</h1><p class="muted">Beginner ${R.Beginner}/4 · Gemiddeld ${R.Intermediate}/4 · Gevorderd ${R.Advanced}/4</p><p class="muted">${lv==='Beginner'?'We beginnen bij de basis.':lv==='Intermediate'?'Je kent de basis al. Nieuwe kaarten beginnen bij Gemiddeld.':'Je kent de basis en Gemiddeld al. Nieuwe kaarten beginnen bij Gevorderd.'} Je kunt dit altijd aanpassen in Meer.</p><div class="stack" style="margin-top:22px"><button class="btn" data-a="sess">Start je sessie</button><button class="btn ghost" data-a="home">Home</button></div></div>`);return}
  const c=it.c;if(!st.cur||st.cur.id!==c.id){const same=CARDS.filter(x=>!x.own&&x.niveau===it.lv&&x.id!==c.id&&x.af!==c.af),opts=[];for(const x of shuffle(same)){if(!opts.includes(x.af))opts.push(x.af);if(opts.length===3)break}st.cur={id:c.id,opts:shuffle(opts.concat(c.af))}}
+ const done=st.ans!=null;
  draw(`${topbar(st.i,n,'home')}<div class="card q"><div class="lbl">Wat is dit in het Afrikaans?</div><div class="big">${esc(c.nl)}</div></div>
- <div class="stack" id="op" style="margin-top:14px">${st.cur.opts.map(o=>`<button class="opt af-opt" data-o="${esc(o)}">${esc(o)}</button>`).join('')}<button class="btn ghost" id="tdk">Weet ik niet</button></div>`);
- const s0=st,next=ok=>{if(ok)st.res[it.lv]++;setTimeout(()=>{if(st!==s0||view!=='toets')return;st.i++;st.cur=null;st.ans=null;V.toets()},ok?500:900)};
- $('#op').onclick=e=>{const b=e.target.closest('.opt');if(!b||st.ans)return;st.ans=1;const ok=b.dataset.o===c.af;for(const x of $('#op').querySelectorAll('.opt')){if(x.dataset.o===c.af)x.classList.add('ok');x.disabled=true}if(!ok)b.classList.add('bad');next(ok)};
- $('#tdk').onclick=()=>{if(st.ans)return;st.ans=1;next(false)}};
+ <div class="stack" id="op" style="margin-top:14px">${st.cur.opts.map(o=>`<button class="opt af-opt ${done?(o===c.af?'ok':o===st.pick?'bad':''):''}" data-o="${esc(o)}" ${done?'disabled':''}>${esc(o)}</button>`).join('')}${done?'':'<button class="btn ghost" id="tdk">Weet ik niet</button>'}</div>
+ ${done?fbCard(st.ans,c.af,c.nl)+nextBtn('tnx',st.i+1>=n):''}`);
+ if(done){$('#tnx').onclick=()=>{st.i++;st.cur=null;st.ans=null;st.pick=null;V.toets();scrollTo(0,0)};return focusNext('tnx')}
+ const answer=(ok,pick)=>{if(st.ans!=null)return;st.ans=ok;st.pick=pick;if(ok)st.res[it.lv]++;V.toets()};
+ $('#op').onclick=e=>{const b=e.target.closest('.opt');if(b)answer(b.dataset.o===c.af,b.dataset.o)};
+ $('#tdk').onclick=()=>answer(false,'')};
 const okWord2=c=>c.nl.toLowerCase()!==c.af.toLowerCase()&&c.af.length<=30;
 
 /* ---------- eigen kaarten ---------- */

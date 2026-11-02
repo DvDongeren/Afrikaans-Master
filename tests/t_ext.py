@@ -2,7 +2,7 @@ import json
 from playwright.sync_api import sync_playwright
 F='http://127.0.0.1:8765/'
 with sync_playwright() as p:
-    b=p.chromium.launch(); ctx=b.new_context(viewport={'width':390,'height':844}); pg=ctx.new_page(); errs=[]
+    b=p.chromium.launch(); ctx=b.new_context(viewport={'width':390,'height':844}); pg=ctx.new_page(); pg.add_init_script("new MutationObserver(()=>document.querySelectorAll('details.more:not([open])').forEach(d=>d.open=true)).observe(document,{childList:true,subtree:true})"); errs=[]
     pg.add_init_script("addEventListener('securitypolicyviolation',e=>console.error('CSP '+e.violatedDirective+' '+e.blockedURI))"); pg.on('pageerror',lambda e:errs.append(str(e)[:160])); pg.on('console',lambda m:errs.append(m.text[:120]) if m.type=='error' else None)
     pg.goto(F); pg.wait_for_selector('#nav [data-v]'); pg.wait_for_timeout(300)
     pg.click('#nav [data-v=oef]'); print('tegels:',pg.eval_on_selector_all('.tile','e=>e.map(x=>x.querySelector("h2").innerText)')); pg.screenshot(path='e_oef.png')
@@ -51,8 +51,8 @@ with sync_playwright() as p:
     # categoriefilter
     pg.click('#nav [data-v=kaart]'); pg.select_option('#cat','Nood & veiligheid'); print('categoriefilter:',pg.inner_text('#ls .muted'))
     # quiz met fouten-lijst
-    pg.click('#nav [data-v=oef]'); pg.click('#qs')
-    for i in range(10): pg.click('.opt'); pg.wait_for_timeout(1450)
+    pg.click('#nav [data-v=oef]'); pg.click('[data-a=quizkies]'); pg.click('#qs')
+    for i in range(10): pg.click('.opt'); pg.click('.nxt')
     print('quiz einde bevat herhaallijst:',('Om te herhalen' in pg.inner_text('#app')) or ('Foutloos' in pg.inner_text('#app')))
     # statistieken + badges + import
     pg.click('#nav [data-v=meer]'); print('badges:',pg.eval_on_selector_all('.chip.on,.chip.lock','e=>e.length'),'| weekbalken:',pg.eval_on_selector_all('.wk div','e=>e.length')); pg.screenshot(path='e_meer.png')
@@ -75,7 +75,7 @@ with sync_playwright() as p:
         elif pg.query_selector('.opt'):
             for _ in range(30):
                 if pg.query_selector('[data-a=stepdone]'): break
-                pg.click('.opt'); pg.wait_for_timeout(1450)
+                pg.click('.opt'); pg.click('.nxt')
             pg.click('[data-a=stepdone]')
     print('noodpad voortgang:',pg.evaluate("JSON.parse(localStorage.getItem('af2')).paths.sc_emergency"),'van',steps)
     print('FOUTEN',errs); b.close()
