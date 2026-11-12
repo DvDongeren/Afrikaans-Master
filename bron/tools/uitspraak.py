@@ -28,6 +28,7 @@ def teksten(d):
         if v.get('ex'): add(v['ex'][0])
     X = d['extd']
     for r in X.get('REIS', []): add(r['af'])
+    for o in X.get('OMZ', []): add(o['af'])
     for b in X.get('BS', []): add(' '.join(b['af']) if isinstance(b['af'], list) else b['af'])
     for z in X.get('ZA', []):
         for w in z.get('words', []): add(w['af'])

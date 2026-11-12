@@ -117,6 +117,7 @@ zin:ic('<rect x="2.5" y="5.5" width="8" height="5.5" rx="1.6"/><rect x="13.5" y=
 nie:ic('<circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/>'),
 vv:ic('<path d="M4 8h14l-3.5-3.5M20 16H6l3.5 3.5"/>'),
 story:ic('<path d="M2.5 5.5c3-1.2 6.2-1 9.5 1 3.3-2 6.5-2.2 9.5-1V19c-3-1.2-6.2-1-9.5 1-3.3-2-6.5-2.2-9.5-1z"/><path d="M12 6.5V20"/>'),
+omzet:ic('<path d="M4 7h11M12 4l3 3-3 3"/><path d="M20 17H9M12 14l-3 3 3 3"/>'),
 vertaal:ic('<path d="M4 5h8M8 3v2M5.5 5c.5 3 2.5 5.5 5.5 7M10.5 5c-.6 3-2.6 5.6-6 7.5"/><path d="M13 21l4-9 4 9M14.5 18h5"/>'),
 print:ic('<path d="M7 8V3h10v5"/><rect x="3" y="8" width="18" height="9" rx="2"/><path d="M7 14h10v7H7z"/>'),
 klank:ic('<path d="M12 3a3 3 0 00-3 3v6a3 3 0 006 0V6a3 3 0 00-3-3z"/><path d="M5 11a7 7 0 0014 0M12 18v3"/>'),

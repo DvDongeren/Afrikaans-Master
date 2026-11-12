@@ -3,7 +3,7 @@ import json
 from playwright.sync_api import sync_playwright
 U='http://127.0.0.1:8765/'; errs=[]
 def page(b,state=None,**kw):
-    ctx=b.new_context(viewport={'width':390,'height':844},**kw); pg=ctx.new_page()
+    ctx=b.new_context(viewport={'width':390,'height':844},**kw); pg=ctx.new_page(); pg.add_init_script("new MutationObserver(()=>document.querySelectorAll('details.more:not([open])').forEach(d=>d.open=true)).observe(document,{childList:true,subtree:true})")
     pg.add_init_script("addEventListener('securitypolicyviolation',e=>console.error('CSP '+e.violatedDirective+' '+e.blockedURI))")
     pg.on('pageerror',lambda e:errs.append(str(e)[:160])); pg.on('console',lambda m:errs.append(m.text[:140]) if m.type=='error' else None)
     if state: pg.add_init_script("if(!localStorage.getItem('af2'))localStorage.setItem('af2',JSON.stringify(%s))"%json.dumps(state))

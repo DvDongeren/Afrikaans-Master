@@ -641,3 +641,14 @@ html{scrollbar-color:color-mix(in srgb,var(--muted) 45%,transparent) transparent
 
 /* een open venster gaat voor: meldingen wachten zolang het open is */
 body:has(#sheet) #mstoast,body:has(#sheet) #toast{visibility:hidden}
+
+/* lettertoetsen, dictee per letter, omzetter en slepen in de zinsbouwer */
+.acc{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.acc .chip{min-width:44px;min-height:44px;justify-content:center;font-family:var(--serif);font-size:1.05rem;padding:0 10px}
+.dict u{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px;font-weight:650}
+.dict .badw{text-decoration:none}.accw{color:var(--goldi)}
+.omz{list-style:none;margin:12px 0 0;padding:0;counter-reset:omz;display:grid;gap:8px}
+.omz li{counter-increment:omz;background:var(--surface);border-radius:var(--r,16px);padding:12px 14px 12px 46px;position:relative}
+.omz li::before{content:counter(omz);position:absolute;left:12px;top:12px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--afs);color:var(--af);font-size:.8rem;font-weight:700}
+.omz .af{font-size:1.15rem;margin:2px 0 4px}.omz mark,.tip mark{background:var(--golds);color:inherit;border-radius:4px;padding:0 3px}
+.zin-area .chip{touch-action:none}.zin-area .chip.drag{position:relative;z-index:5;box-shadow:0 6px 18px rgb(0 0 0/.22);cursor:grabbing}
+.zin-area .chip.okc{background:var(--ok);border-color:var(--ok);opacity:1}.zin-area .chip.badc{background:var(--bad);border-color:var(--bad);opacity:1}

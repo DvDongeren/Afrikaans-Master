@@ -45,27 +45,39 @@ V.mc=()=>{const T=MCT[st.kind];if(!T)return go('oef');
  else $('#nx').onclick=()=>{st.i++;st.pick=null;st.perm=null;V.mc();scrollTo(0,0)}};
 
 /* ---------- zinnen bouwen ---------- */
+/* Slepen binnen het antwoordvak: een geplaatst woord naar een andere plek. Tikken blijft gewoon werken. */
+function zinDrag(){const za=$('#za');if(!za)return;let d=null;const stop=()=>{if(d&&d.on){d.b.classList.remove('drag');d.b.style.transform=''}d=null};
+ za.onpointerdown=e=>{const b=e.target.closest('[data-i]');if(b&&!b.disabled)d={b,x:e.clientX,y:e.clientY,on:false,id:e.pointerId}};
+ za.onpointermove=e=>{if(!d||e.pointerId!==d.id)return;if(!d.on){if(Math.hypot(e.clientX-d.x,e.clientY-d.y)<8)return;d.on=true;try{d.b.setPointerCapture(d.id)}catch{}d.b.classList.add('drag')}
+  d.b.style.transform=`translate(${e.clientX-d.x}px,${e.clientY-d.y}px)`};
+ za.onpointercancel=stop;
+ za.onpointerup=e=>{if(!d||!d.on)return stop();const me=+d.b.dataset.i,rest=[...za.querySelectorAll('[data-i]')].filter(x=>x!==d.b);let at=rest.length;
+  for(let k=0;k<rest.length;k++){const r=rest[k].getBoundingClientRect();if(e.clientY<r.top||e.clientY<=r.bottom&&e.clientX<r.left+r.width/2){at=k;break}}
+  const a=st.a.filter(x=>x!==me);a.splice(at,0,me);st.a=a;st.dragT=Date.now();stop();V.zin()}}
+
 let ZM='nl';
 V.zin=()=>{const BS=X().BS;st.zm=st.zm||ZM;
  if(!st.items){const lv=st.zl||'Alles',f={Alles:()=>1,Kort:b=>b.af.length<=4,Middel:b=>b.af.length===5,Lang:b=>b.af.length>=6}[lv];
-  if(!st.go){st.zl=lv;draw(`${back('oef','Oefenen')}<h1>Zinnen bouwen</h1><p class="muted" style="margin:8px 0 16px">Tik de Afrikaanse woorden in de goede volgorde. De plaats van het werkwoord en van 'nie' zijn het lastigst.</p><div class="lbl" style="margin:0 2px 6px">Lengte</div><div class="seg" id="zl">${['Alles','Kort','Middel','Lang'].map(l=>`<button class="chip ${lv===l?'on':''}" data-l="${l}">${l}</button>`).join('')}</div>
+  if(!st.go){st.zl=lv;draw(`${back('oef','Oefenen')}<h1>Zinnen bouwen</h1><p class="muted" style="margin:8px 0 16px">Tik de Afrikaanse woorden aan in de goede volgorde. Staat er een verkeerd, sleep het dan naar de goede plek of tik erop om het terug te leggen. De plaats van het werkwoord en van 'nie' zijn het lastigst.</p><div class="lbl" style="margin:0 2px 6px">Lengte</div><div class="seg" id="zl">${['Alles','Kort','Middel','Lang'].map(l=>`<button class="chip ${lv===l?'on':''}" data-l="${l}">${l}</button>`).join('')}</div>
+   <div class="lbl" style="margin:16px 2px 6px">Oefen op</div><div class="seg" id="zf">${[['','Alles'],['nie','Ontkenning'],['ww','Werkwoord']].map(([k,l])=>`<button class="chip ${(st.zf||'')===k?'on':''}" data-zf="${k}">${l}</button>`).join('')}</div>
    <div class="lbl" style="margin:16px 2px 6px">Zo krijg je de zin</div><div class="seg" id="zm">${[['nl','Nederlandse zin'],['oor','Luisteren']].map(([k,l])=>`<button class="chip ${(st.zm||'nl')===k?'on':''}" data-m2="${k}">${l}</button>`).join('')}</div>
    ${st.zm==='oor'?`<p class="muted small" style="margin-top:8px">Je hoort de Afrikaanse zin en zet de woorden in dezelfde volgorde. De Nederlandse vertaling zie je pas na het controleren.${canSpeak()?'':' Je toestel heeft geen spraak; deze vorm werkt hier niet.'}</p>`:''}<button class="btn" id="zs" style="margin-top:16px" ${st.zm==='oor'&&!canSpeak()?'disabled':''}>Start met 10 zinnen</button>`);
-   $('#zl').onclick=e=>{const b=e.target.closest('[data-l]');if(b){st.zl=b.dataset.l;V.zin()}};$('#zm').onclick=e=>{const b=e.target.closest('[data-m2]');if(b){st.zm=ZM=b.dataset.m2;V.zin()}};$('#zs').onclick=()=>{st.go=1;V.zin()};return}
-  st.items=shuffle(BS.filter(f)).slice(0,10);st.i=0;st.sc=0;st.t=null}
+   $('#zl').onclick=e=>{const b=e.target.closest('[data-l]');if(b){st.zl=b.dataset.l;V.zin()}};$('#zf').onclick=e=>{const b=e.target.closest('[data-zf]');if(b){st.zf=b.dataset.zf;V.zin()}};$('#zm').onclick=e=>{const b=e.target.closest('[data-m2]');if(b){st.zm=ZM=b.dataset.m2;V.zin()}};$('#zs').onclick=()=>{st.go=1;V.zin()};return}
+  const HW=['het','sal','kan','moet','wil','gaan','kon','moes','wou'],ff={nie:b=>b.af.includes('nie'),ww:b=>b.af.length>3&&HW.includes(b.af[1])}[st.zf]||(()=>1);
+  let pool=BS.filter(b=>f(b)&&ff(b));if(pool.length<5)pool=BS.filter(ff);st.items=shuffle(pool).slice(0,10);st.i=0;st.sc=0;st.t=null}
  const u=st.items[st.i],n=st.items.length;
  if(!u){result(st.sc,n,praise(st.sc,n),'<button class="btn" data-a="zin">Nog een ronde</button><button class="btn ghost" data-a="oef">Terug naar oefenen</button>');return}
  if(!st.t){st.t=shuffle(u.af.map((w,i)=>i));st.a=[];st.res=null}
  const bank=st.t.filter(i=>!st.a.includes(i)),sent=st.a.map(i=>u.af[i]).join(' ');
  const oor=st.zm==='oor';
  draw(`${topbar(st.i,n,'oef')}${oor?`<div class="card q"><div class="lbl">Luister en zet de woorden in volgorde</div><div class="row" style="justify-content:center;gap:12px;margin-top:10px"><button class="icon" style="width:64px;height:64px" id="zp" aria-label="Zin afspelen">${I.spk}</button><button class="chip" id="zp2">Langzaam</button></div>${st.res?`<div class="nl" style="margin-top:10px">${esc(u.nl)}</div>`:''}</div>`:`<div class="card q"><div class="lbl">Vertaal naar het Afrikaans</div><div class="big" style="font-size:1.4rem">${esc(u.nl)}</div></div>`}
- <div class="card zin-area" id="za" style="margin-top:12px">${st.a.map(i=>`<button class="chip on" data-i="${i}" ${st.res?'disabled':''}>${esc(u.af[i])}</button>`).join('')||'<span class="muted">Tik hieronder de woorden aan</span>'}</div>
+ <div class="card zin-area" id="za" style="margin-top:12px">${st.a.map((i,p)=>`<button class="chip on${st.res==='bad'?(nzs(u.af[i])===nzs(u.af[p])?' okc':' badc'):''}" data-i="${i}" ${st.res?'disabled':''}>${esc(u.af[i])}</button>`).join('')||'<span class="muted">Tik hieronder de woorden aan</span>'}</div>
  ${st.res?`<div class="tip" style="margin-top:12px;${st.res==='ok'?'':'background:color-mix(in srgb,var(--bad) 12%,var(--surface))'}">${st.res==='ok'?'Goed!':'Niet helemaal. De standaardzin is: <b class="af">'+esc(u.af.join(' '))+'</b><br><span class="muted">Soms kan een andere volgorde ook.</span>'}</div><div class="row" style="margin-top:12px">${spk(u.af.join(' '))}<button class="btn" id="zn">${st.i+1<n?'Volgende':'Klaar'}</button></div>`
  :`<div class="chips wrap" id="zb" style="margin-top:14px">${bank.map(i=>`<button class="chip" data-i="${i}" style="font-family:var(--serif);font-size:1rem">${esc(u.af[i])}</button>`).join('')}</div><div class="row" style="margin-top:16px"><button class="btn ghost" id="zw">Wissen</button><button class="btn" id="zc" ${bank.length?'disabled':''}>Controleer</button></div>`}`);
  if(oor){const say=u.af.join(' ');$('#zp').onclick=()=>speak(say);$('#zp2').onclick=()=>speak(say,.6);if(st.played!==st.i+1&&!st.res){st.played=st.i+1;setTimeout(()=>{if(view==='zin')speak(say)},300)}}
  if(st.res){$('#zn').onclick=()=>{st.i++;st.t=null;V.zin();scrollTo(0,0)};return}
  $('#zb').onclick=e=>{const b=e.target.closest('[data-i]');if(b){st.a.push(+b.dataset.i);V.zin()}};
- $('#za').onclick=e=>{const b=e.target.closest('[data-i]');if(b){st.a.splice(st.a.indexOf(+b.dataset.i),1);V.zin()}};
+ zinDrag();$('#za').onclick=e=>{if(Date.now()-(st.dragT||0)<400)return;const b=e.target.closest('[data-i]');if(b){st.a.splice(st.a.indexOf(+b.dataset.i),1);V.zin()}};
  $('#zw').onclick=()=>{st.a=[];V.zin()};
  $('#zc').onclick=()=>{if(bank.length)return;const ok=nzs(sent)===nzs(u.af.join(' '));st.res=ok?'ok':'bad';if(ok){st.sc++;count()}else buzz('bad');V.zin()}};
 

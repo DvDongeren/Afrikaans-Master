@@ -61,7 +61,7 @@ function addLevel(i){if(GOT.has(i))return;GOT.add(i);const own=CARDS.filter(c=>c
 /* Kaarten die bij een taalcontrole zijn geschrapt, verdwijnen ook uit de voortgang (anders blijven ze als 'te herhalen' staan). */
 function pruneGone(){const m=byId();let n=0;for(const k in S.srs)if(+k>0&&!m.has(+k)){delete S.srs[k];n++}const f=S.favs.filter(x=>x<0||m.has(x));if(f.length!==S.favs.length){S.favs=f;n++}if(n)save()}
 const allCards=()=>ALLP||(ALLP=Promise.all(LVN.map(i=>load('cards'+i).then(()=>addLevel(i)))).then(()=>{pruneGone();try{checkMs()}catch{}if(['home','meer'].includes(view))render()}).catch(e=>{ALLP=null;throw e}));
-const NEEDALL=v=>!['seizoen','szquiz','beeld','plaat','home','paden','dlgs','dlg','gram','les','media','klank','cult','reis','vv','stories','story','beheer'].includes(v);
+const NEEDALL=v=>!['omzet','zin','seizoen','szquiz','beeld','plaat','home','paden','dlgs','dlg','gram','les','media','klank','cult','reis','vv','stories','story','beheer'].includes(v);
 /* Opstarten: alleen de beginnerskaarten en wat het eerste scherm nodig heeft (staan al als preload in de pagina);
    de overige kaarten en inhoud pas na het eerste beeld, zodat ze daar niet mee om bandbreedte concurreren. */
 const later=f=>requestAnimationFrame(()=>setTimeout(f,0));
@@ -74,7 +74,7 @@ async function boot(){{const r=parseHash(location.hash);if(r&&!EXER.has(r[0])){v
  render();later(()=>{allCards().catch(()=>{});loadConf().then(c=>{AUDIO.on=!!(c&&c.audio)})});setTimeout(()=>['facts','paths','dlg','les','ext','vv','media','pics'].forEach(n=>load(n).catch(()=>{})),1200);
  if(/[?&](apiKey|state)=|#.*state=/.test(location.href))setTimeout(startCloud,0);else if(S.cloud)idle(startCloud,2500);idle(()=>loadFixes(),4000)}
 /* Alleen lokaal (tests): inkijk in de staat. */
-if(TESTHOOK)window.__t={get st(){return st},get S(){return S},D,set:o=>{Object.assign(S,o);saveNow()}};
+if(TESTHOOK)window.dictDiffT=dictDiff;if(TESTHOOK)window.__t={get st(){return st},get S(){return S},D,set:o=>{Object.assign(S,o);saveNow()}};
 boot();
 /* offline en updates */
 if('serviceWorker' in navigator&&(location.protocol==='https:'||TESTHOOK&&location.protocol==='http:')){const had=!!navigator.serviceWorker.controller;

@@ -53700,6 +53700,838 @@
      ]
     ]
    }
+  ],
+  "OMR": {
+   "vnw": [
+    "Voornaamwoorden",
+    "Ik → ek, jij/je → jy, hij → hy, zij (één) → sy, wij → ons, jullie → julle, zij (meer) → hulle. Mij en mijn → my, je en jouw → jou.",
+    "Het voornaamwoord krijgt zijn Afrikaanse vorm."
+   ],
+   "lw": [
+    "Lidwoorden",
+    "De en het worden allebei die. Een wordt 'n.",
+    "De en het → die, een → 'n."
+   ],
+   "ww": [
+    "Eén werkwoordsvorm",
+    "Het werkwoord verandert niet per persoon: geen -t en geen -en. Ben, bent, is en zijn → is. Heb, hebt, heeft en hebben → het.",
+    "Eén vorm voor alle personen."
+   ],
+   "vt": [
+    "Verleden tijd: het + ge-",
+    "Bijna elke verleden tijd is het + ge + werkwoord, met het deelwoord achteraan. Ook waar Nederlands 'zijn' gebruikt. Werkwoorden met be-, ver- en ont- krijgen geen ge-.",
+    "Het + ge- + stam, met het deelwoord achteraan."
+   ],
+   "mod": [
+    "Vaste verleden vormen",
+    "Een paar werkwoorden houden een eigen verleden vorm: was, kon, moes, wou, sou. Die krijgen geen het + ge-.",
+    "Deze verleden vorm blijft bestaan."
+   ],
+   "nie": [
+    "Dubbele ontkenning",
+    "Niet wordt nie. Komt er na die nie nog iets, dan sluit je de zin af met een tweede nie. Dat geldt ook na niemand, niks, nooit en geen.",
+    "Niet → nie, met een tweede nie aan het eind."
+   ],
+   "dit": [
+    "Het en dat → dit",
+    "Het als los woord (het regent, ik zie het) wordt dit. Dat wordt meestal ook dit.",
+    "Het als los woord → dit."
+   ],
+   "se": [
+    "Bezit met se",
+    "'De auto van mijn vader' draai je om: bezitter + se + bezit.",
+    "Bezitter + se + bezit."
+   ],
+   "toe": [
+    "Richting met toe",
+    "'Naar' een plaats wordt vaak: plaats + toe. Huis toe, stad toe, Kaapstad toe.",
+    "Plaats + toe in plaats van 'naar'."
+   ],
+   "vir": [
+    "Vir bij personen",
+    "'Aan' iemand wordt vir.",
+    "Aan iemand → vir."
+   ],
+   "wat": [
+    "Die en dat → wat",
+    "Het betrekkelijk voornaamwoord is altijd wat: die man wat, die boek wat.",
+    "Altijd wat."
+   ],
+   "vk": [
+    "Verkleinwoorden",
+    "-je wordt -ie, -tje wordt -tjie, -pje wordt -pie.",
+    "-je → -ie, -tje → -tjie."
+   ],
+   "tk": [
+    "Toekomst met sal",
+    "Zal en zullen → sal. Het werkwoord erachter is de kale stam.",
+    "Zal → sal, daarna de kale stam."
+   ],
+   "sp": [
+    "Spelling en klank",
+    "z → s, ij → y, sch → sk, cht → g, en letters aan het eind of in het midden vallen weg (nacht → nag, regen → reën, ouders → ouers).",
+    "De spelling volgt de Afrikaanse klank."
+   ],
+   "wd": [
+    "Ander woord",
+    "Soms is het woord gewoon anders. Dat moet je leren.",
+    "Dit woord is in het Afrikaans anders."
+   ]
+  },
+  "OMZ": [
+   {
+    "nl": "Ik ben moe.",
+    "af": "Ek is moeg.",
+    "s": [
+     [
+      "vnw",
+      "*Ek* ben moe."
+     ],
+     [
+      "ww",
+      "Ek *is* moe.",
+      "Ben, bent, is en zijn: altijd is."
+     ],
+     [
+      "sp",
+      "Ek is *moeg*.",
+      "Moe krijgt in het Afrikaans een g."
+     ]
+    ]
+   },
+   {
+    "nl": "Wij hebben een hond.",
+    "af": "Ons het 'n hond.",
+    "s": [
+     [
+      "vnw",
+      "*Ons* hebben een hond."
+     ],
+     [
+      "ww",
+      "Ons *het* een hond."
+     ],
+     [
+      "lw",
+      "Ons het *'n* hond."
+     ]
+    ]
+   },
+   {
+    "nl": "Hij werkt in de stad.",
+    "af": "Hy werk in die stad.",
+    "s": [
+     [
+      "vnw",
+      "*Hy* werkt in de stad."
+     ],
+     [
+      "ww",
+      "Hy *werk* in de stad.",
+      "Geen -t achter het werkwoord."
+     ],
+     [
+      "lw",
+      "Hy werk in *die* stad."
+     ]
+    ]
+   },
+   {
+    "nl": "Ik heb gisteren gewerkt.",
+    "af": "Ek het gister gewerk.",
+    "s": [
+     [
+      "vnw",
+      "*Ek* heb gisteren gewerkt."
+     ],
+     [
+      "ww",
+      "Ek *het* gisteren gewerkt."
+     ],
+     [
+      "vt",
+      "Ek het gisteren *gewerk*.",
+      "Het deelwoord is ge + stam, zonder -t, -d of -en."
+     ],
+     [
+      "sp",
+      "Ek het *gister* gewerk."
+     ]
+    ]
+   },
+   {
+    "nl": "Zij kocht een boek.",
+    "af": "Sy het 'n boek gekoop.",
+    "s": [
+     [
+      "vnw",
+      "*Sy* kocht een boek."
+     ],
+     [
+      "vt",
+      "Sy *het* een boek *gekoop*.",
+      "'Kocht' bestaat niet: je zegt het + gekoop, met het deelwoord achteraan."
+     ],
+     [
+      "lw",
+      "Sy het *'n* boek gekoop."
+     ]
+    ]
+   },
+   {
+    "nl": "Ik begrijp het niet.",
+    "af": "Ek verstaan dit nie.",
+    "s": [
+     [
+      "vnw",
+      "*Ek* begrijp het niet."
+     ],
+     [
+      "wd",
+      "Ek *verstaan* het niet.",
+      "Begrijpen is verstaan."
+     ],
+     [
+      "dit",
+      "Ek verstaan *dit* niet."
+     ],
+     [
+      "nie",
+      "Ek verstaan dit *nie*.",
+      "Na nie komt niets meer, dus één nie is genoeg."
+     ]
+    ]
+   },
+   {
+    "nl": "Ik spreek geen Afrikaans.",
+    "af": "Ek praat nie Afrikaans nie.",
+    "s": [
+     [
+      "vnw",
+      "*Ek* spreek geen Afrikaans."
+     ],
+     [
+      "wd",
+      "Ek *praat* geen Afrikaans.",
+      "Spreken is praat."
+     ],
+     [
+      "nie",
+      "Ek praat *nie* Afrikaans *nie*.",
+      "Geen wordt hier nie. Er staat nog een woord achter, dus aan het eind volgt de tweede nie."
+     ]
+    ]
+   },
+   {
+    "nl": "Hij komt morgen niet.",
+    "af": "Hy kom nie môre nie.",
+    "s": [
+     [
+      "vnw",
+      "*Hy* komt morgen niet."
+     ],
+     [
+      "ww",
+      "Hy *kom* morgen niet."
+     ],
+     [
+      "nie",
+      "Hy kom *nie* morgen *nie*.",
+      "De eerste nie staat direct na het werkwoord, de tweede sluit de zin af."
+     ],
+     [
+      "sp",
+      "Hy kom nie *môre* nie."
+     ]
+    ]
+   },
+   {
+    "nl": "Wij hebben het niet gezien.",
+    "af": "Ons het dit nie gesien nie.",
+    "s": [
+     [
+      "vnw",
+      "*Ons* hebben het niet gezien."
+     ],
+     [
+      "ww",
+      "Ons *het* het niet gezien."
+     ],
+     [
+      "dit",
+      "Ons het *dit* niet gezien."
+     ],
+     [
+      "nie",
+      "Ons het dit *nie* gezien *nie*."
+     ],
+     [
+      "sp",
+      "Ons het dit nie *gesien* nie.",
+      "z → s."
+     ]
+    ]
+   },
+   {
+    "nl": "De auto van mijn vader is nieuw.",
+    "af": "My pa se motor is nuut.",
+    "s": [
+     [
+      "se",
+      "*Mijn vader se auto* is nieuw."
+     ],
+     [
+      "wd",
+      "*My pa* se *motor* is nieuw.",
+      "Mijn → my, vader → pa, auto → motor."
+     ],
+     [
+      "sp",
+      "My pa se motor is *nuut*."
+     ]
+    ]
+   },
+   {
+    "nl": "Dat is het huis van Anna.",
+    "af": "Dit is Anna se huis.",
+    "s": [
+     [
+      "dit",
+      "*Dit* is het huis van Anna."
+     ],
+     [
+      "se",
+      "Dit is *Anna se huis*."
+     ]
+    ]
+   },
+   {
+    "nl": "Geef het boek aan Jan.",
+    "af": "Gee die boek vir Jan.",
+    "s": [
+     [
+      "sp",
+      "*Gee* het boek aan Jan.",
+      "De f aan het eind valt weg."
+     ],
+     [
+      "lw",
+      "Gee *die* boek aan Jan."
+     ],
+     [
+      "vir",
+      "Gee die boek *vir* Jan."
+     ]
+    ]
+   },
+   {
+    "nl": "Ik zal je morgen bellen.",
+    "af": "Ek sal jou môre bel.",
+    "s": [
+     [
+      "vnw",
+      "*Ek* zal *jou* morgen bellen."
+     ],
+     [
+      "tk",
+      "Ek *sal* jou morgen *bel*."
+     ],
+     [
+      "sp",
+      "Ek sal jou *môre* bel."
+     ]
+    ]
+   },
+   {
+    "nl": "Wij gaan morgen naar Kaapstad.",
+    "af": "Ons gaan môre Kaapstad toe.",
+    "s": [
+     [
+      "vnw",
+      "*Ons* gaan morgen naar Kaapstad."
+     ],
+     [
+      "toe",
+      "Ons gaan morgen *Kaapstad toe*."
+     ],
+     [
+      "sp",
+      "Ons gaan *môre* Kaapstad toe."
+     ]
+    ]
+   },
+   {
+    "nl": "Ik ga naar huis.",
+    "af": "Ek gaan huis toe.",
+    "s": [
+     [
+      "vnw",
+      "*Ek* ga naar huis."
+     ],
+     [
+      "ww",
+      "Ek *gaan* naar huis.",
+      "De ene vorm is hier gaan."
+     ],
+     [
+      "toe",
+      "Ek gaan *huis toe*."
+     ]
+    ]
+   },
+   {
+    "nl": "Het meisje heeft een hondje.",
+    "af": "Die meisie het 'n hondjie.",
+    "s": [
+     [
+      "lw",
+      "*Die* meisje heeft *'n* hondje."
+     ],
+     [
+      "vk",
+      "Die *meisie* heeft 'n *hondjie*."
+     ],
+     [
+      "ww",
+      "Die meisie *het* 'n hondjie."
+     ]
+    ]
+   },
+   {
+    "nl": "Ik kon niet slapen.",
+    "af": "Ek kon nie slaap nie.",
+    "s": [
+     [
+      "vnw",
+      "*Ek* kon niet slapen."
+     ],
+     [
+      "mod",
+      "Ek *kon* niet slapen.",
+      "Kon blijft kon."
+     ],
+     [
+      "ww",
+      "Ek kon niet *slaap*.",
+      "Het hele werkwoord is de kale stam."
+     ],
+     [
+      "nie",
+      "Ek kon *nie* slaap *nie*."
+     ]
+    ]
+   },
+   {
+    "nl": "Wij moesten lang wachten.",
+    "af": "Ons moes lank wag.",
+    "s": [
+     [
+      "vnw",
+      "*Ons* moesten lang wachten."
+     ],
+     [
+      "mod",
+      "Ons *moes* lang wachten.",
+      "Moest en moesten → moes."
+     ],
+     [
+      "sp",
+      "Ons moes *lank wag*.",
+      "Lang → lank. Wachten → wag: cht wordt g en -en valt weg."
+     ]
+    ]
+   },
+   {
+    "nl": "Ik was gisteren ziek.",
+    "af": "Ek was gister siek.",
+    "s": [
+     [
+      "vnw",
+      "*Ek* was gisteren ziek."
+     ],
+     [
+      "mod",
+      "Ek *was* gisteren ziek.",
+      "Was blijft was, ook bij ons en hulle."
+     ],
+     [
+      "sp",
+      "Ek was *gister siek*."
+     ]
+    ]
+   },
+   {
+    "nl": "Zij wilden niet komen.",
+    "af": "Hulle wou nie kom nie.",
+    "s": [
+     [
+      "vnw",
+      "*Hulle* wilden niet komen.",
+      "Zij (meer mensen) → hulle."
+     ],
+     [
+      "mod",
+      "Hulle *wou* niet komen."
+     ],
+     [
+      "ww",
+      "Hulle wou niet *kom*."
+     ],
+     [
+      "nie",
+      "Hulle wou *nie* kom *nie*."
+     ]
+    ]
+   },
+   {
+    "nl": "De man die daar staat, is mijn oom.",
+    "af": "Die man wat daar staan, is my oom.",
+    "s": [
+     [
+      "lw",
+      "*Die* man die daar staat, is mijn oom."
+     ],
+     [
+      "wat",
+      "Die man *wat* daar staat, is mijn oom."
+     ],
+     [
+      "ww",
+      "Die man wat daar *staan*, is mijn oom."
+     ],
+     [
+      "vnw",
+      "Die man wat daar staan, is *my* oom."
+     ]
+    ]
+   },
+   {
+    "nl": "Het boek dat ik lees, is goed.",
+    "af": "Die boek wat ek lees, is goed.",
+    "s": [
+     [
+      "lw",
+      "*Die* boek dat ik lees, is goed."
+     ],
+     [
+      "wat",
+      "Die boek *wat* ik lees, is goed."
+     ],
+     [
+      "vnw",
+      "Die boek wat *ek* lees, is goed."
+     ]
+    ]
+   },
+   {
+    "nl": "Ik heb acht uur geslapen.",
+    "af": "Ek het agt uur geslaap.",
+    "s": [
+     [
+      "vnw",
+      "*Ek* heb acht uur geslapen."
+     ],
+     [
+      "ww",
+      "Ek *het* acht uur geslapen."
+     ],
+     [
+      "vt",
+      "Ek het acht uur *geslaap*."
+     ],
+     [
+      "sp",
+      "Ek het *agt* uur geslaap.",
+      "cht → g."
+     ]
+    ]
+   },
+   {
+    "nl": "De school begint om acht uur.",
+    "af": "Die skool begin om agtuur.",
+    "s": [
+     [
+      "lw",
+      "*Die* school begint om acht uur."
+     ],
+     [
+      "sp",
+      "Die *skool* begint om acht uur.",
+      "sch → sk."
+     ],
+     [
+      "ww",
+      "Die skool *begin* om acht uur."
+     ],
+     [
+      "sp",
+      "Die skool begin om *agtuur*.",
+      "Kloktijden schrijf je aan elkaar: agtuur."
+     ]
+    ]
+   },
+   {
+    "nl": "Mijn zus woont in Zuid-Afrika.",
+    "af": "My suster woon in Suid-Afrika.",
+    "s": [
+     [
+      "vnw",
+      "*My* zus woont in Zuid-Afrika."
+     ],
+     [
+      "wd",
+      "My *suster* woont in Zuid-Afrika."
+     ],
+     [
+      "ww",
+      "My suster *woon* in Zuid-Afrika."
+     ],
+     [
+      "sp",
+      "My suster woon in *Suid-Afrika*."
+     ]
+    ]
+   },
+   {
+    "nl": "Het regent vandaag niet.",
+    "af": "Dit reën nie vandag nie.",
+    "s": [
+     [
+      "dit",
+      "*Dit* regent vandaag niet."
+     ],
+     [
+      "sp",
+      "Dit *reën vandag* niet.",
+      "De g tussen twee klinkers valt weg: regen → reën. Vandaag → vandag."
+     ],
+     [
+      "nie",
+      "Dit reën *nie* vandag *nie*."
+     ]
+    ]
+   },
+   {
+    "nl": "Wat heb jij gegeten?",
+    "af": "Wat het jy geëet?",
+    "s": [
+     [
+      "ww",
+      "Wat *het* jij gegeten?"
+     ],
+     [
+      "vnw",
+      "Wat het *jy* gegeten?"
+     ],
+     [
+      "vt",
+      "Wat het jy *geëet*?",
+      "ge + eet. Het trema laat zien dat de tweede e een nieuwe lettergreep begint."
+     ]
+    ]
+   },
+   {
+    "nl": "Ik heb het vergeten.",
+    "af": "Ek het dit vergeet.",
+    "s": [
+     [
+      "vnw",
+      "*Ek* heb het vergeten."
+     ],
+     [
+      "ww",
+      "Ek *het* het vergeten."
+     ],
+     [
+      "dit",
+      "Ek het *dit* vergeten."
+     ],
+     [
+      "vt",
+      "Ek het dit *vergeet*.",
+      "Werkwoorden met ver- krijgen geen ge-."
+     ]
+    ]
+   },
+   {
+    "nl": "Zij heeft mij gebeld.",
+    "af": "Sy het my gebel.",
+    "s": [
+     [
+      "vnw",
+      "*Sy* heeft *my* gebeld."
+     ],
+     [
+      "ww",
+      "Sy *het* my gebeld."
+     ],
+     [
+      "vt",
+      "Sy het my *gebel*."
+     ]
+    ]
+   },
+   {
+    "nl": "Ik ben in Nederland geboren.",
+    "af": "Ek is in Nederland gebore.",
+    "s": [
+     [
+      "vnw",
+      "*Ek* ben in Nederland geboren."
+     ],
+     [
+      "ww",
+      "Ek *is* in Nederland geboren."
+     ],
+     [
+      "sp",
+      "Ek is in Nederland *gebore*.",
+      "De n aan het eind valt weg."
+     ]
+    ]
+   },
+   {
+    "nl": "Wij zijn naar het strand gegaan.",
+    "af": "Ons het strand toe gegaan.",
+    "s": [
+     [
+      "vnw",
+      "*Ons* zijn naar het strand gegaan."
+     ],
+     [
+      "vt",
+      "Ons *het* naar het strand gegaan.",
+      "Ook waar Nederlands 'zijn' gebruikt, is het hulpwerkwoord het."
+     ],
+     [
+      "toe",
+      "Ons het *strand toe* gegaan."
+     ]
+    ]
+   },
+   {
+    "nl": "Hij is gisteren gekomen.",
+    "af": "Hy het gister gekom.",
+    "s": [
+     [
+      "vnw",
+      "*Hy* is gisteren gekomen."
+     ],
+     [
+      "vt",
+      "Hy *het* gisteren *gekom*.",
+      "Niet 'is gekomen' maar het + gekom."
+     ],
+     [
+      "sp",
+      "Hy het *gister* gekom."
+     ]
+    ]
+   },
+   {
+    "nl": "Kun je mij helpen?",
+    "af": "Kan jy my help?",
+    "s": [
+     [
+      "ww",
+      "*Kan* je mij *help*?",
+      "Kun en kan → kan. Helpen → help."
+     ],
+     [
+      "vnw",
+      "Kan *jy my* help?"
+     ]
+    ]
+   },
+   {
+    "nl": "Ik heb geen geld.",
+    "af": "Ek het nie geld nie.",
+    "s": [
+     [
+      "vnw",
+      "*Ek* heb geen geld."
+     ],
+     [
+      "ww",
+      "Ek *het* geen geld."
+     ],
+     [
+      "nie",
+      "Ek het *nie* geld *nie*."
+     ]
+    ]
+   },
+   {
+    "nl": "Niemand weet het.",
+    "af": "Niemand weet dit nie.",
+    "s": [
+     [
+      "dit",
+      "Niemand weet *dit*."
+     ],
+     [
+      "nie",
+      "Niemand weet dit *nie*.",
+      "Na niemand, niks en nooit sluit je de zin ook af met nie."
+     ]
+    ]
+   },
+   {
+    "nl": "Ik heb nooit in Afrika gewoond.",
+    "af": "Ek het nooit in Afrika gewoon nie.",
+    "s": [
+     [
+      "vnw",
+      "*Ek* heb nooit in Afrika gewoond."
+     ],
+     [
+      "ww",
+      "Ek *het* nooit in Afrika gewoond."
+     ],
+     [
+      "vt",
+      "Ek het nooit in Afrika *gewoon*."
+     ],
+     [
+      "nie",
+      "Ek het nooit in Afrika gewoon *nie*."
+     ]
+    ]
+   },
+   {
+    "nl": "Het is erg lekker.",
+    "af": "Dit is baie lekker.",
+    "s": [
+     [
+      "dit",
+      "*Dit* is erg lekker."
+     ],
+     [
+      "wd",
+      "Dit is *baie* lekker.",
+      "Erg, heel en veel → baie."
+     ]
+    ]
+   },
+   {
+    "nl": "Wij eten vanavond bij mijn ouders.",
+    "af": "Ons eet vanaand by my ouers.",
+    "s": [
+     [
+      "vnw",
+      "*Ons* eten vanavond bij *my* ouders."
+     ],
+     [
+      "ww",
+      "Ons *eet* vanavond bij my ouders."
+     ],
+     [
+      "sp",
+      "Ons eet *vanaand by* my *ouers*.",
+      "Avond → aand, ij → y, en de d in ouders valt weg."
+     ]
+    ]
+   }
   ]
  },
  "vvd": {
@@ -53903,6 +54735,206 @@
      "Er staat warme soep op het fornuis."
     ],
     "tip": "Een Nederlandse soep is in het Afrikaans dus 'sop'."
+   },
+   {
+    "af": "vies",
+    "schijn": "vies, vuil",
+    "echt": "boos, geërgerd",
+    "ex": [
+     "Sy is vies vir my.",
+     "Ze is boos op me."
+    ],
+    "tip": "Vies in de Nederlandse betekenis is 'vuil' of 'morsig'."
+   },
+   {
+    "af": "kaal",
+    "schijn": "kaal (zonder haar)",
+    "echt": "naakt, bloot",
+    "ex": [
+     "Die kinders swem kaal.",
+     "De kinderen zwemmen naakt."
+    ],
+    "tip": "Iemand zonder haar is 'bles' of 'n 'kaalkop'. 'Kaalvoet' is blootsvoets."
+   },
+   {
+    "af": "lemoen",
+    "schijn": "limoen",
+    "echt": "sinaasappel",
+    "ex": [
+     "Ek drink graag lemoensap.",
+     "Ik drink graag sinaasappelsap."
+    ],
+    "tip": "Een citroen is 'n 'suurlemoen', een limoen 'n 'lemmetjie'."
+   },
+   {
+    "af": "seekoei",
+    "schijn": "zeekoe",
+    "echt": "nijlpaard",
+    "ex": [
+     "Daar lê 'n seekoei in die rivier.",
+     "Er ligt een nijlpaard in de rivier."
+    ],
+    "tip": "Meer dieren heten anders dan je denkt: 'n 'kameelperd' is een giraf."
+   },
+   {
+    "af": "geitjie",
+    "schijn": "geitje",
+    "echt": "gekko (kleine hagedis)",
+    "ex": [
+     "Daar sit 'n geitjie teen die muur.",
+     "Er zit een gekko op de muur."
+    ],
+    "tip": "Een jong geitje is 'n 'bokkie'."
+   },
+   {
+    "af": "bees",
+    "schijn": "beest (elk dier)",
+    "echt": "rund: koe, stier of os",
+    "ex": [
+     "Die boer het honderd beeste.",
+     "De boer heeft honderd runderen."
+    ],
+    "tip": "Een dier in het algemeen is 'n 'dier'. 'Beesvleis' is rundvlees."
+   },
+   {
+    "af": "vat",
+    "schijn": "vat (ton)",
+    "echt": "pakken, nemen",
+    "ex": [
+     "Vat jou sleutels saam.",
+     "Neem je sleutels mee."
+    ],
+    "tip": "'Vat' is het gewone woord voor pakken of nemen: 'Vat dit!' is 'Pak aan!'."
+   },
+   {
+    "af": "motor",
+    "schijn": "motor (motorfiets)",
+    "echt": "auto",
+    "ex": [
+     "Ons ry met my pa se motor.",
+     "We rijden met de auto van mijn vader."
+    ],
+    "tip": "Een motor op twee wielen is 'n 'motorfiets'. Voor auto hoor je ook 'kar'."
+   },
+   {
+    "af": "jammer",
+    "schijn": "jammer (spijtig)",
+    "echt": "sorry, het spijt me",
+    "ex": [
+     "Ek is jammer, ek is laat.",
+     "Sorry, ik ben te laat."
+    ],
+    "tip": "'Ek is jammer' is je excuses aanbieden. 'Dis jammer' betekent wel gewoon: dat is jammer."
+   },
+   {
+    "af": "seer",
+    "schijn": "zeer (heel erg)",
+    "echt": "pijnlijk; pijn",
+    "ex": [
+     "My kop is seer.",
+     "Ik heb hoofdpijn."
+    ],
+    "tip": "'Heel erg' is 'baie'. 'Seer' in de betekenis 'zeer' hoor je alleen in deftige taal."
+   },
+   {
+    "af": "stadig",
+    "schijn": "stadig (gestaag, voortdurend)",
+    "echt": "langzaam",
+    "ex": [
+     "Praat asseblief stadiger.",
+     "Praat alsjeblieft langzamer."
+    ],
+    "tip": "Handig om te onthouden als iemand te snel praat."
+   },
+   {
+    "af": "rok",
+    "schijn": "rok",
+    "echt": "jurk",
+    "ex": [
+     "Sy dra 'n rooi rok.",
+     "Ze draagt een rode jurk."
+    ],
+    "tip": "Een rok (alleen het onderstuk) is 'n 'romp'."
+   },
+   {
+    "af": "stort",
+    "schijn": "storten (geld overmaken, iets neergooien)",
+    "echt": "douchen; de douche",
+    "ex": [
+     "Ek gaan gou stort.",
+     "Ik ga even douchen."
+    ],
+    "tip": "'Stort' is ook de douche zelf: 'Die stort is koud.'"
+   },
+   {
+    "af": "lus",
+    "schijn": "lus (lusje)",
+    "echt": "zin, trek",
+    "ex": [
+     "Ek is lus vir koffie.",
+     "Ik heb zin in koffie."
+    ],
+    "tip": "'Ek is nie lus nie' betekent: ik heb geen zin."
+   },
+   {
+    "af": "seker",
+    "schijn": "zeker (vast en zeker)",
+    "echt": "waarschijnlijk, vast wel",
+    "ex": [
+     "Hy kom seker môre.",
+     "Hij komt waarschijnlijk morgen."
+    ],
+    "tip": "Echt zeker is 'verseker' of 'beslis'. 'Ek is seker' (ik weet het zeker) bestaat wel."
+   },
+   {
+    "af": "net",
+    "schijn": "net (zojuist)",
+    "echt": "alleen maar, slechts",
+    "ex": [
+     "Ek het net tien rand.",
+     "Ik heb maar tien rand."
+    ],
+    "tip": "'Zojuist' is 'so pas' of 'nou net'. 'Net so' betekent wel 'net zo'."
+   },
+   {
+    "af": "stap",
+    "schijn": "stappen (uitgaan)",
+    "echt": "wandelen, lopen",
+    "ex": [
+     "Ons gaan in die berge stap.",
+     "We gaan in de bergen wandelen."
+    ],
+    "tip": "Uitgaan is 'uitgaan' of 'jol'. 'Loop' betekent vaak gewoon weggaan: 'Ek moet loop.'"
+   },
+   {
+    "af": "maak",
+    "schijn": "maken",
+    "echt": "doen (in een vraag)",
+    "ex": [
+     "Wat maak jy hier?",
+     "Wat doe jij hier?"
+    ],
+    "tip": "'Maak' betekent ook gewoon maken. Maar vraagt iemand 'Wat maak jy?', dan wil hij weten wat je aan het doen bent."
+   },
+   {
+    "af": "kafee",
+    "schijn": "café (kroeg)",
+    "echt": "buurtwinkel",
+    "ex": [
+     "Ek koop brood by die kafee.",
+     "Ik koop brood bij de buurtwinkel."
+    ],
+    "tip": "Iets drinken doe je in 'n 'kroeg' of 'n 'koffiewinkel'."
+   },
+   {
+    "af": "kêrel",
+    "schijn": "kerel (vent)",
+    "echt": "vriendje (verkering)",
+    "ex": [
+     "Dis my suster se kêrel.",
+     "Dat is het vriendje van mijn zus."
+    ],
+    "tip": "Een willekeurige man is 'n 'ou'. Een vriendin (verkering) is 'n 'meisie'."
    }
   ],
   "ST": [
